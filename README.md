@@ -31,6 +31,7 @@ $(document).ready(function() {
 	$('section#animation-objects > article').iFSM(animatedObjectMachine);
 	//initialize and start the general animation with 'mainAnimation' defined in iFSMAnimation.hs
 	$('section#animation-objects').iFSM(mainAnimation);
+</script>
 ```
 
 DEMO
@@ -52,11 +53,11 @@ To work properly, you need to include the following javascript library:
 * [iFSM by intersel](https://github.com/intersel/iFSM/)
   * this library manages finite state machines
   
-  FAQ
+FAQ
 ===
 
 If you have questions or unsolved problems, you can have a look on the our [FAQs](https://github.com/intersel/iFSM/wiki) 
-or leave a message on the [Issue board](https://github.com/intersel/iFSM/issues).
+or leave a message on the [Issue board](https://github.com/intersel/iFSMAnimation/issues).
 
 
 Contact
