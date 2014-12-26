@@ -30,6 +30,7 @@
      *  destination-top
      *  startposition-left - optional
      *  startposition-top - optional
+   * animateNoWait - same as animate but does not wait the end of animation to start the next animation 
    * display - display article (opacity set to 1) with animation from current position or startposition to destination
      *  duration
      *  destination-left
@@ -45,6 +46,13 @@
    * rotate - rotate article 
      *  duration
      *  angle
+   * loop - loop animation
+     *  duration
+     *  destination-left
+     *  destination-top
+     *  startposition-left - optional
+     *  startposition-top - optional
+     *  loops number - optional default:infinite - give the number of loops
    * specialAnimate
      *  duration
      *  animation description object as in jQuery. ex: {left: 20;top:100;width:300}
@@ -74,7 +82,8 @@ var SPECIALANIMATION_DEFINITION = 2;
 var ANIMATION_Y_DESTINATION		= 3;
 var ANIMATION_X_ORIGIN			= 4;
 var ANIMATION_Y_ORIGIN			= 5;
-var ANIMATION_NOTWAIT			= 6;
+var ANIMATION_LOOP_NUMBER		= 6; // if == 0 then infinite loop
+var ANIMATION_NOTWAIT			= 100;
 
 var animatedObjectMachine = {
 	InitAnimatedObject: 
@@ -156,6 +165,21 @@ var animatedObjectMachine = {
 			propagate_event:'animate',
 			next_state:'ObjectInMotion',
 		},
+		loop:
+		{
+			init_function: function() {
+				this.opts.currentAnimationData[ANIMATION_NOTWAIT]=1;
+				if (this.opts.currentAnimationData[ANIMATION_LOOP_NUMBER]) this.opts.numberOfLoops=this.opts.currentAnimationData[ANIMATION_LOOP_NUMBER];
+				else this.opts.numberOfLoops=10000000;
+				if (this.opts.currentAnimationCaller) 
+				{
+					this.opts.currentAnimationCaller.trigger('animationStopped');
+					this.opts.currentAnimationCaller = null;
+				}
+			},
+			propagate_event:'loop',
+			next_state:'ObjectInMotion',
+		},
 		animate:
 		{
 			init_function: function() {
@@ -174,6 +198,7 @@ var animatedObjectMachine = {
 		{
 			init_function: function() {
 				var aFSM = this;
+				this.opts.numberOfLoops--;
 				this.myUIObject.stop().animate({
 						left	: this.opts.currentAnimationData[ANIMATION_X_DESTINATION],
 						top		: this.opts.currentAnimationData[ANIMATION_Y_DESTINATION],
@@ -184,7 +209,10 @@ var animatedObjectMachine = {
 				if ( 	(this.opts.currentAnimationData[ANIMATION_NOTWAIT] == 1) 
 					 && (this.opts.currentAnimationCaller) 
 					) 
+				{
 					this.opts.currentAnimationCaller.trigger('animationStopped');
+					this.opts.currentAnimationCaller = null;
+				}
 			}
 		},
 		specialAnimate:
@@ -197,6 +225,44 @@ var animatedObjectMachine = {
 						complete	: function(){aFSM.trigger('animationStopped');},
 				});
 			}
+		},
+		loop:
+		{
+			init_function: function() {
+				var aFSM = this;
+				this.opts.numberOfLoops--;
+				this._log('numberOfLoop:'+this.opts.numberOfLoops,2);
+				this.myUIObject.animate({
+					left	: parseInt(this.opts.currentAnimationData[ANIMATION_X_DESTINATION]),
+					top		: parseInt(this.opts.currentAnimationData[ANIMATION_Y_DESTINATION]),
+					},{
+						duration	: parseInt(this.opts.currentAnimationData[ANIMATION_DURATION]), 
+						complete	: function(){
+							aFSM.trigger('loopEnd');
+						},
+				});
+			}
+		},
+		loopEnd:
+		{
+			init_function: function() {
+				var aFSM = this;
+				this.myUIObject.stop().animate({
+					left	: parseInt(this.opts.currentAnimationData[ANIMATION_X_ORIGIN]),
+					top		: parseInt(this.opts.currentAnimationData[ANIMATION_Y_ORIGIN]),
+					},{
+					duration	: parseInt(100), 
+					complete	: function(){
+						aFSM.trigger('loopEndReinit');
+					},
+				});
+			},
+		},
+		loopEndReinit:
+		{
+			propagate_event:'loop',
+			process_event_if:'this.opts.numberOfLoops>0',
+			propagate_event_on_refused:'animationStopped',
 		},
 		rotate:
 		{
@@ -211,7 +277,11 @@ var animatedObjectMachine = {
 				      },
 				      duration:parseInt(aFSM.opts.currentAnimationData[ANIMATION_DURATION])
 				  },'linear');
-				if (this.opts.currentAnimationCaller) this.opts.currentAnimationCaller.trigger('animationStopped');
+				if (this.opts.currentAnimationCaller) 
+				{
+					this.opts.currentAnimationCaller.trigger('animationStopped');
+					this.opts.currentAnimationCaller = null;
+				}
 			}
 		},
 		smoothHide:
