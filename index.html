@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="UTF-8">
+	<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+	<title>Intersel | Meilleures voeux 2015 DEMO</title>
+	<meta name="viewport" content="initial-scale=1.0">
+	<meta content="" name="description">
+	<link rel="stylesheet" href="structure.css" media="all">
+	<!-- include of iFSM - see https://github.com/intersel/iFSM/ -->
+	<script type="text/javascript" src="http://rawgit.com/intersel/iFSM/master/extlib/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="http://rawgit.com/intersel/iFSM/master/extlib/jquery.dorequesttimeout.js"></script>
+	<script type="text/javascript" src="http://rawgit.com/intersel/iFSM/master/extlib/jquery.attrchange.js"></script>
+	<script type="text/javascript" src="http://rawgit.com/intersel/iFSM/master/iFSM.js"></script>
+	
+	<!--  include of the iFSM Animation tool -->
+	<script type="text/javascript" src="iFSMAnimation.js"></script>
+	
+<!-- End Chunk La Compagnie - GlobalHead -->
+</head>
+<body>
+	<header id="header" role="banner">
+		<h2>this is a animation example using iFMSAnimation :-)</h2>
+	</header>
+    <section id="animation-objects" data-delay-before-restart="3000">
+        <article id="HappyNewYear_B" data-animation="dummy" data-enter-animation="display, 200, 90, 104, 90, 104" data-exit-animation="smoothHide,100,90,104">
+        	<img src="images/B.png">
+        </article>
+        <article id="HappyNewYear_O" data-animation="dummy" data-enter-animation="display,200,170,104,170,104" data-exit-animation="smoothHide,100,170,104">
+        	<img src="images/O.png">
+        </article>
+        <article id="HappyNewYear_N3" data-animation="dummy" data-enter-animation="display,200,252,104,252,104" data-exit-animation="smoothHide,100,252,104">
+        	<img src="images/N.png">
+        </article>
+        <article id="HappyNewYear_N4" data-animation="dummy" data-enter-animation="display,200,343,104,343,104" data-exit-animation="smoothHide,100,343,104">
+        	<img src="images/N.png">
+        </article>
+        <article id="HappyNewYear_E2" data-animation="dummy" data-enter-animation="display,200,433,104,433,104" data-exit-animation="smoothHide,100,433,104">
+        	<img src="images/E.png">
+        </article>
+        <article id="HappyNewYear_A" data-animation="specialAnimate,300,{left:78;top:220}" data-enter-animation="display,10,78,-220,78,-220" data-exit-animation="smoothHide,100,78,-220">
+        	<img src="images/A.png">
+        </article>
+        <article id="HappyNewYear_N" data-animation="animate,300,168,220" data-enter-animation="display,10,168,-220,168,-220" data-exit-animation="smoothHide,100,168,-220">
+        	<img src="images/N.png">
+        </article>
+        <article id="HappyNewYear_Nbis" data-animation="animate,300,264,220" data-enter-animation="display,10,264,-220,264,-220" data-exit-animation="smoothHide,100,264,-220">
+        	<img src="images/N.png">
+        </article>
+        <article id="HappyNewYear_EAccent" data-animation="animate,300,357,194" data-enter-animation="display,10,357,-220,357,-220" data-exit-animation="smoothHide,100,357,-220">
+        	<img src="images/Eaccent.png">
+        </article>
+        <article id="HappyNewYear_E" data-animation="animate,300,433,220" data-enter-animation="display,10,433,-220,433,-220" data-exit-animation="smoothHide,100,433,-220">
+        	<img src="images/E.png">
+        </article>
+        <article id="HappyNewYear_two" data-animation="animate,300,75,347" data-enter-animation="display,10,-200,347,-200,347" data-exit-animation="smoothHide,100,433,-220">
+        	<img src="images/deux.png">
+        </article>
+        <article id="HappyNewYear_zero" data-animation="animate,300,251,347" data-enter-animation="display,10,-300,347,-300,347" data-exit-animation="smoothHide,100,433,-220">
+        	<img src="images/zero.png">
+        </article>
+        <article id="HappyNewYear_one" data-animation="animate,300,427,347" data-enter-animation="display,10,-300,347,-300,347" data-exit-animation="smoothHide,100,433,-220">
+        	<img src="images/un.png">
+        </article>
+        <article id="HappyNewYear_five" data-animation="animate,300, 545,350" data-enter-animation="display,10,900,350,900,350" data-exit-animation="smoothHide,100,433,-220">
+        	<img src="images/cinq.png">
+        </article>
+        <article id="HappyNewYear_glow" class="glow" data-animation="animateNoWait,700, 545,300" data-enter-animation="display,10,900,350,900,350" data-exit-animation="smoothHide,100,433,-220">
+        </article>
+        <article id="HappyNewYear_glow2" class="glow" data-animation="animateNoWait,700, 700,550" data-enter-animation="display,10,900,350,900,350" data-exit-animation="smoothHide,100,433,-220">
+        </article>
+        <article id="HappyNewYear_star" data-animation="rotate,20000,3060" data-enter-animation="display,10,277,417,277,417" data-exit-animation="smoothHide,100,433,-220">
+        	<img src="images/etoile.png">
+        </article>
+        <article id="HappyNewYear_intersel" data-animation="specialAnimate,300,{left:500;top:130;width:250}" data-enter-animation="display,10,900,630,900,630" data-exit-animation="smoothHide,100,433,-220">
+        	<img src="images/logo-intersel.png">
+        </article>
+	</section>
+	<audio id="music" src="musique/bethlem-jazz.mp3" preload="auto"></audio>
+	<button class="playMusic" id="onoff_button1"></button>
+	<button class="playMusic" id="onoff_button2"></button>
+	<footer id="footer" role="footer">
+		<p>
+            <a class="signature" href="http://www.intersel.fr/">Animation par V.Marty</a>
+		</p>
+<!-- End Chunk La Compagnie - GlobalFooter -->
+	</footer>
+		<script>
+		$(document).ready(function() {
+			var myAnimationSequence = [
+										'#HappyNewYear_E2',
+			                               '#HappyNewYear_N4',
+			                               '#HappyNewYear_N3',
+			                               '#HappyNewYear_O',
+			                               '#HappyNewYear_B',
+			                               '#HappyNewYear_E',
+			                               '#HappyNewYear_EAccent',
+			                               '#HappyNewYear_Nbis',
+			                               '#HappyNewYear_N',
+			                               '#HappyNewYear_A',
+			                               '#HappyNewYear_two',
+			                               '#HappyNewYear_zero',
+			                               '#HappyNewYear_star',
+			                               '#HappyNewYear_one',
+			                               '#HappyNewYear_five',
+			                               '#HappyNewYear_intersel',
+			                               '#HappyNewYear_glow',
+			                               '#HappyNewYear_glow2',
+			                               ];
+			//initialize the machine of every articles
+			$('section#animation-objects > article').iFSM(animatedObjectMachine);//,debug:true});
+			//initialize and start the general animation
+			$('section#animation-objects').iFSM(mainAnimation,{animationSequence:myAnimationSequence});//,{debug:true});
+			//$('section#animation-objects').iFSM(mainAnimation);//,{debug:true});
+			//Button
+			$("#music").iFSM(musicMachine,{volume:0.3});
+			$("#onoff_button1").iFSM(buttonOnOffMachine,{sendTo:$('#music'),text:{on:'Stop Music',off:'Play Music'}});
+			$("#onoff_button2").iFSM(buttonOnOffMachine,{sendTo:$('section#animation-objects'),sendToMessage:{on:'tempStartAnimation',off:'tempStopAnimation'},text:{on:'Stop Anim',off:'Play Anim'}});
+				
+		});
+	</script>
+	
+</body>
+</html>

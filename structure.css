@@ -1,0 +1,105 @@
+/**
+ * -----------------------------------------------------------------------------------------
+ * INTERSEL - 4 cité d'Hauteville - 75010 PARIS
+ * RCS PARIS 488 379 660 - NAF 721Z
+ *
+ * File    : structure.css
+ * Abstract: style for animation
+ * Remark  :
+ * -----------------------------------------------------------------------------------------
+ * Modifications:
+ * - 20141223 - EPO - V1.0.0 - Creation
+ * -  -  - V<current_version of the developed software> - Rename into P1P2_MYClassName
+ * -----------------------------------------------------------------------------------------
+ * @copyright Intersel 2014
+ * @author    E.Podvin emmanuel.podvin@intersel.fr
+ * @author    second... IAM me.iam@intersel.fr
+ * @version   <1.0.0> (to be updated to the current_version of the developed software if file is touched)
+ * -----------------------------------------------------------------------------------------
+ */
+
+body {
+	margin		: 0px; 
+	padding		: 0px;
+	text-align	: center;
+	}
+	
+#animation-objects {
+	display		: block;
+	width		: 735px;
+	height		: 735px;
+	margin		: 0px auto;
+	overflow	: hidden;
+	position	: relative;
+	text-align	: left;
+}
+
+section#animation-objects article {
+	position 	: absolute;
+	/*display		: none;*/
+	padding		: 0px;
+	margin		: 0px;
+	opacity		: 0;
+	/*top			: -200px;*/
+	
+}
+section#animation-objects article img {
+	width		: 100%;
+}
+
+.glow {
+	width: 1px;
+	height: 1px;
+	border-radius: 50%;
+	background-color: #fff;
+	box-shadow: 0 0 10px 1px #fff, /* inner */ 
+				0 0 10px 1px #fff, /* middle */ 
+				0 0 140px 70px #fff;
+}
+
+.signature {
+	font-family:Helvetica, Arial, 'lucida grande',tahoma,verdana,arial,sans-serif;
+	font-size:12px;
+}
+
+button {
+	margin: 0 2px;
+	font-size: 20px;
+	border: 1px solid #333;
+	width: 70px;
+	text-shadow: 0 -1px 0 #333;
+	border-radius: 5px;
+}
+
+button.on {
+	color: #dfd;
+	background: -moz-linear-gradient(top, rgba(228, 37, 0, 1) 0%,
+		rgba(198, 38, 7, 1) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(0,
+		153, 0, 1)), color-stop(100%, rgba(198, 38, 7, 1)));
+	background: -webkit-linear-gradient(top, rgba(228, 37, 0, 1) 0%,
+		rgba(198, 38, 7, 1) 100%);
+	background: -o-linear-gradient(top, rgba(228, 37, 0, 1) 0%,
+		rgba(198, 38, 7, 1) 100%);
+	background: -ms-linear-gradient(top, rgba(228, 37, 0, 1) 0%,
+		rgba(198, 38, 7, 1) 100%);
+	background: linear-gradient(top, rgba(228, 37, 0, 1) 0%,
+		rgba(198, 38, 7, 1) 100%);
+}
+
+button.off {
+	color: #fdd;
+	background: #00aa00;
+	background: -moz-linear-gradient(top, rgba(204, 0, 0, 1) 0%,
+		rgba(153, 0, 0, 1) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(204,
+		0, 0, 1)), color-stop(100%, rgba(153, 0, 0, 1)));
+	background: -webkit-linear-gradient(top, rgba(204, 0, 0, 1) 0%,
+		rgba(153, 0, 0, 1) 100%);
+	background: -o-linear-gradient(top, rgba(204, 0, 0, 1) 0%,
+		rgba(153, 0, 0, 1) 100%);
+	background: -ms-linear-gradient(top, rgba(204, 0, 0, 1) 0%,
+		rgba(153, 0, 0, 1) 100%);
+	background: linear-gradient(top, rgba(204, 0, 0, 1) 0%,
+		rgba(153, 0, 0, 1) 100%);
+}
