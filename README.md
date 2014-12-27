@@ -29,8 +29,6 @@ Mainly, you need to create:
 </section>
 <script>
 $(document).ready(function() {
-	//initialize machines on every articles with the 'animatedObjectMachine' defined in iFSMAnimation.hs
-	$('section#animation-objects > article').iFSM(animatedObjectMachine);
 	//initialize and start the general animation with 'mainAnimation' defined in iFSMAnimation.hs
 	$('section#animation-objects').iFSM(mainAnimation);
 </script>
@@ -98,6 +96,33 @@ data-enter-animation / data-animation / data-exit-animation
      *  duration
      *  animation description object as in jQuery. ex: {left: 20;top:100;width:300}
 
+Start the animation with javascript
+===================================
+To start the animation, you will need to add this script:
+```javascript
+<script>
+$(document).ready(function() {
+	//initialize and start the general animation with 'mainAnimation' defined in iFSMAnimation.js
+	$('section').iFSM(mainAnimation);
+</script>
+```
+
+You can define some options on the iFSM machine:
+animationSequence
+-----------------
+array, defines the order of animation of the objects. By default, the order is the one found in the DOM.
+
+animatedObjectDefinition
+------------------------
+string, gives the HTML tag to find the animated objects (in css/jquery format).
+
+examples:
+---------
+```javascript
+var myAnimationSequence=['#myAnimObj2','#myAnimObj1'];
+$('#animation-objects').iFSM(mainAnimation,{animationSequence:myAnimationSequence})
+$('#animation2').iFSM(mainAnimation,{animatedObjectDefinition:'div',debug:true});
+```
 CCS
 ===
 
