@@ -53,6 +53,7 @@
      *  startposition-left - optional
      *  startposition-top - optional
      *  loops number - optional default:infinite - give the number of loops
+     *  loop back delay - optional default: duration - give the delay to go to the initial position
    * specialAnimate
      *  duration
      *  animation description object as in jQuery. ex: {left: 20;top:100;width:300}
@@ -83,6 +84,7 @@ var ANIMATION_Y_DESTINATION		= 3;
 var ANIMATION_X_ORIGIN			= 4;
 var ANIMATION_Y_ORIGIN			= 5;
 var ANIMATION_LOOP_NUMBER		= 6; // if == 0 then infinite loop
+var ANIMATION_LOOP_BACK_DELAY	= 7; // 
 var ANIMATION_NOTWAIT			= 100;
 
 var animatedObjectMachine = {
@@ -169,8 +171,12 @@ var animatedObjectMachine = {
 		{
 			init_function: function() {
 				this.opts.currentAnimationData[ANIMATION_NOTWAIT]=1;
+				
 				if (this.opts.currentAnimationData[ANIMATION_LOOP_NUMBER]) this.opts.numberOfLoops=this.opts.currentAnimationData[ANIMATION_LOOP_NUMBER];
 				else this.opts.numberOfLoops=10000000;
+
+				if (!this.opts.currentAnimationData[ANIMATION_LOOP_BACK_DELAY]) this.opts.currentAnimationData[ANIMATION_LOOP_BACK_DELAY]=this.opts.currentAnimationData[ANIMATION_DURATION];
+				
 				if (this.opts.currentAnimationCaller) 
 				{
 					this.opts.currentAnimationCaller.trigger('animationStopped');
@@ -251,7 +257,7 @@ var animatedObjectMachine = {
 					left	: parseInt(this.opts.currentAnimationData[ANIMATION_X_ORIGIN]),
 					top		: parseInt(this.opts.currentAnimationData[ANIMATION_Y_ORIGIN]),
 					},{
-					duration	: parseInt(100), 
+					duration	: parseInt(this.opts.currentAnimationData[ANIMATION_LOOP_BACK_DELAY]), 
 					complete	: function(){
 						aFSM.trigger('loopEndReinit');
 					},
