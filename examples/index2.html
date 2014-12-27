@@ -15,22 +15,25 @@
 	
 	<!--  include of the iFSM Animation tool -->
 	<script type="text/javascript" src="ext_lib/jquery.path/jquery.path.js"></script>
-	<script type="text/javascript" src="iFSMAnimation.js"></script>
+	<script type="text/javascript" src="../iFSMAnimation.js"></script>
 </head>
 <body>
 	<header id="header" role="banner">
 		<h2>this is a animation example using iFMSAnimation :-)</h2>
 	</header>
     <section id="animation-objects" data-delay-before-restart="3000">
-        <article id="HappyNewYear_B" data-animation="loop, 2000, 190, 204, 90, 104,3000" data-enter-animation="display, 2000, 90, 104, 90, 0" data-exit-animation="smoothHide,1000,90,104">
+        <article id="HappyNewYear_B" data-animation="loop, 2000, 190, 204, 90, 104, 0, 3000" data-enter-animation="display, 2000, 90, 104, 90, 0" data-exit-animation="smoothHide,1000,90,104">
         	<img src="images/B.png" style="width:50px">I'm looping forth and back....
         </article>
         <article id="HappyNewYear_A" data-animation="specialAnimate,3000,{path : aPath}" data-enter-animation="display,10,78,-220,78,-220" data-exit-animation="smoothHide,100,78,-220">
         	<img src="images/A.png" style="width:50px">I'm turning following an arc path...
         </article>
 	</section>
-	<button class="playMusic" id="onoff_button1"></button>
-	<button class="playMusic" id="onoff_button2"></button>
+	<div id="animation2" class="animated_section" style="height:140px;">
+		<div id="hello" data-animation="loop, 2000, 10, 0, 50, 0, 3000">hello</div>
+		<div id="world" data-animation="specialAnimate,3000,{path : aPath2}">World!</div>
+	</div>
+	<button class="playAnimation" id="onoff_animation"></button>
 	<footer id="footer" role="footer">
 		<p>
             <a class="signature" href="http://www.intersel.fr/">Animation par V.Marty</a>
@@ -45,14 +48,20 @@
 			        dir: -1
 			  }
 		var aPath = new $.path.arc(arc_params);
+		var arc_params2 = {
+			    center: [50,50],  
+			        radius: 50,    
+			        start: 100,
+			        end: 90,
+			        dir: 1
+			  }
+		var aPath2 = new $.path.arc(arc_params2);
 		$(document).ready(function() {
-			//initialize the machine of every articles
-			$('section#animation-objects > article').iFSM(animatedObjectMachine,{debug:true});
 			//initialize and start the general animation
 			$('section#animation-objects').iFSM(mainAnimation,{debug:true});
-			//Button
-			$("#music").iFSM(musicMachine,{volume:0.3});
-			$("#onoff_button2").iFSM(buttonOnOffMachine,{sendTo:$('section#animation-objects'),sendToMessage:{on:'tempStartAnimation',off:'tempStopAnimation'},text:{on:'Stop Anim',off:'Play Anim'}});
+			$('div#animation2').iFSM(mainAnimation,{animatedObjectDefinition:'div',debug:true});
+			//Animation Button
+			$("#onoff_animation").iFSM(buttonOnOffMachine,{sendTo:$('section#animation-objects'),sendToMessage:{on:'tempStartAnimation',off:'tempStopAnimation'},text:{on:'Stop Anim',off:'Play Anim'}});
 				
 		});
 	</script>

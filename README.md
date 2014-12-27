@@ -1,12 +1,14 @@
 iFSMAnimation
 =============
 
-iFSM machines to create simple HTML5 animations easily and quickly
+iFSM machines to create simple HTML5 animations easily and quickly!
 
-To use it,  have a look on the index.html file and see an example for a french "Happy new year" card...
+You describe the DOM objects that you want to animate, attached them to the iFSM machines, and let's animate!
+
+To use it, have a look on the examples provided...
 
 Mainly, you need to create:
-* a 'section' that will define where is the animation and 'articles' to define the different animated objects
+* a HTML 'section' (or whatever) that will define where is the animation and HTML 'articles' to define the different animated objects
 * at the end, add a little script to start the animation... 
 * that's it!
 
@@ -40,6 +42,8 @@ General process
 An animation is defined by a main animation object attached to a container such a 'section'.
 
 Within the container, you define the different animated objects attached/described by a subcontainer that is by default an 'article'. 
+
+Take care to **give an id to each object you will animate**.
 
 The animation starts by calling each animated objects using the 'data-enter-animation' and just after 'data-animation' attributes to animate them.
 
@@ -100,6 +104,10 @@ DEMO
 
 http://intersel.net/demos/intersel/voeux_demo/
 
+Examples
+========
+
+The 'examples' folder gives you some examples on how to animate your DOM objects with iFSMAnimation...
 
 LIBRARY DEPENDENCIES
 ====================

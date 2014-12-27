@@ -24,10 +24,10 @@ body {
 	text-align	: center;
 	}
 	
-#animation-objects {
+#animation-objects,.animated_section {
 	display		: block;
-	width		: 735px;
-	height		: 735px;
+	width		: 700px;
+	height		: 400px;
 	margin		: 0px auto;
 	overflow	: hidden;
 	position	: relative;

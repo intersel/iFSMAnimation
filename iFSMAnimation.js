@@ -518,7 +518,10 @@ var mainAnimation = {
 				if (!this.opts.animatedObjectDefinition) this.opts.animatedObjectDefinition='article';
 				if (!this.opts.animationSequence)
 				{
+					//get the animated objects
 					this.opts.animationSequence=this.myUIObject.find(this.opts.animatedObjectDefinition);
+					//attached them to the animatedObjectMachine machine
+					this.opts.animationSequence.iFSM(animatedObjectMachine);
 				};
 			},
 			next_state : 'InitAnimation',
