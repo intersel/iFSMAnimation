@@ -1,7 +1,7 @@
 iFSMAnimation
 =============
 
-iFSM machines to create simple HTML5 animations easily and quickly!
+Create simple HTML5 animations easily and quickly!
 
 You describe the DOM objects that you want to animate, attached them to the iFSM machines, and let's animate!
 
