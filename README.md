@@ -51,14 +51,14 @@ When all objects were animated, the animation applies the 'data-exit-animation' 
 
 Attributes on the main container
 ===============================
-  data-delay-before-restart
-  =========================
+data-delay-before-restart
+-------------------------
 The 'data-delay-before-restart' attribute allows to define the delay before the animation restarts. 
  
 Attributes on a sub container
 =============================
-  data-enter-animation / data-animation / data-exit-animation
-  ===========================================================
+data-enter-animation / data-animation / data-exit-animation
+-----------------------------------------------------------
   
   These attributes define the animation of the object.
   
@@ -113,14 +113,14 @@ LIBRARY DEPENDENCIES
 ====================
 To work properly, you need to include the following javascript library:
 * jQuery (>= 1.10) `<script type="text/javascript" src="extlib/jquery-1.10.2.min.js"></script>`
-* doTimeout by ["Cowboy" Ben Alman](http://benalman.com/projects/jquery-dotimeout-plugin/)
-	* this library brings some very usefull feature on the usual javascript setTimeout function like Debouncing, Delays & Polling Loops, Hover Intent...
-	* `<script type="text/javascript" src="extlib/jquery.dotimeout.js"></script>`
-* attrchange by Selvakumar Arumugam](http://meetselva.github.io/attrchange/) 
-	* a simple jQuery function to bind a listener function to any HTML element on attribute change
-	* `<script type="text/javascript" src="extlib/jquery.attrchange.js"></script>`
 * [iFSM by intersel](https://github.com/intersel/iFSM/)
-  * this library manages finite state machines
+  * this library manages finite state machines and needs these libraries:
+    * doTimeout by ["Cowboy" Ben Alman](http://benalman.com/projects/jquery-dotimeout-plugin/)
+	  * this library brings some very usefull feature on the usual javascript setTimeout function like Debouncing, Delays & Polling Loops, Hover Intent...
+	  * `<script type="text/javascript" src="extlib/jquery.dotimeout.js"></script>`
+    * attrchange by Selvakumar Arumugam](http://meetselva.github.io/attrchange/) 
+	  * a simple jQuery function to bind a listener function to any HTML element on attribute change
+	  * `<script type="text/javascript" src="extlib/jquery.attrchange.js"></script>`
 
 If you need to do some specific animations, these libraries may be useful:
   * [jquery.path](https://github.com/weepy/jquery.path) - allows to animate objects following a path as an arc or a curve 
