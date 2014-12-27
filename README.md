@@ -34,6 +34,67 @@ $(document).ready(function() {
 </script>
 ```
 
+General process
+===============
+
+An animation is defined by a main animation object attached to a container such a 'section'.
+
+Within the container, you define the different animated objects attached/described by a subcontainer that is by default an 'article'. 
+
+The animation starts by calling each animated objects using the 'data-enter-animation' and just after 'data-animation' attributes to animate them.
+
+When all objects were animated, the animation applies the 'data-exit-animation' definition of every animated objects to ending their animations, and then loops back.
+
+Attributes on the main container
+===============================
+  data-delay-before-restart
+  =========================
+The 'data-delay-before-restart' attribute allows to define the delay before the animation restarts. 
+ 
+Attributes on a sub container
+=============================
+  data-enter-animation / data-animation / data-exit-animation
+  ===========================================================
+  
+  These attributes define the animation of the object.
+  
+  The available animation are:
+   * dummy - non animation
+   * animate - animate article from current position or startposition to destination
+     *  duration
+     *  destination-left
+     *  destination-top
+     *  startposition-left - optional
+     *  startposition-top - optional
+   * animateNoWait - same as animate but does not wait the end of animation to start the next animation 
+   * display - display article (opacity set to 1) with animation from current position or startposition to destination
+     *  duration
+     *  destination-left
+     *  destination-top
+     *  startposition-left - optional
+     *  startposition-top - optional
+   * smoothHide - display article (opacity set to 0) with animation from current position or startposition to destination
+     *  duration
+     *  destination-left
+     *  destination-top
+     *  startposition-left - optional
+     *  startposition-top - optional
+   * rotate - rotate article 
+     *  duration
+     *  angle
+   * loop - loop animation
+     *  duration
+     *  destination-left
+     *  destination-top
+     *  startposition-left - optional
+     *  startposition-top - optional
+     *  loops number - optional default:infinite - give the number of loops
+     *  loop back delay - optional default: duration - give the delay to go to the initial position
+   * specialAnimate
+     *  duration
+     *  animation description object as in jQuery. ex: {left: 20;top:100;width:300}
+
+
 DEMO
 ====
 
@@ -52,11 +113,14 @@ To work properly, you need to include the following javascript library:
 	* `<script type="text/javascript" src="extlib/jquery.attrchange.js"></script>`
 * [iFSM by intersel](https://github.com/intersel/iFSM/)
   * this library manages finite state machines
-  
+
+If you need to do some specific animations, these libraries may be useful:
+  * [jquery.path](https://github.com/weepy/jquery.path) - allows to animate objects following a path as an arc or a curve 
+
 FAQ
 ===
 
-If you have questions or unsolved problems, you can have a look on the our [FAQs](https://github.com/intersel/iFSM/wiki) 
+If you have questions or unsolved problems, you can have a look on the our [FAQs](https://github.com/intersel/iFSMAnimation/wiki) 
 or leave a message on the [Issue board](https://github.com/intersel/iFSMAnimation/issues).
 
 

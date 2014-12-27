@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
-	<title>Intersel | Meilleures voeux 2015 DEMO</title>
+	<title>Intersel | Some special animations</title>
 	<meta name="viewport" content="initial-scale=1.0">
 	<meta content="" name="description">
 	<link rel="stylesheet" href="structure.css" media="all">
@@ -14,6 +14,7 @@
 	<script type="text/javascript" src="http://rawgit.com/intersel/iFSM/master/iFSM.js"></script>
 	
 	<!--  include of the iFSM Animation tool -->
+	<script type="text/javascript" src="ext_lib/jquery.path/jquery.path.js"></script>
 	<script type="text/javascript" src="iFSMAnimation.js"></script>
 </head>
 <body>
@@ -22,13 +23,10 @@
 	</header>
     <section id="animation-objects" data-delay-before-restart="3000">
         <article id="HappyNewYear_B" data-animation="loop, 2000, 190, 204, 90, 104,3000" data-enter-animation="display, 2000, 90, 104, 90, 0" data-exit-animation="smoothHide,1000,90,104">
-        	<img src="images/B.png">
+        	<img src="images/B.png" style="width:50px">I'm looping forth and back....
         </article>
-        <article id="HappyNewYear_O" data-animation="dummy" data-enter-animation="display,5000,170,104,170,104" data-exit-animation="smoothHide,1000,170,104">
-        	<img src="images/O.png">
-        </article>
-        <article id="HappyNewYear_A" data-animation="specialAnimate,3000,{left:78;top:220}" data-enter-animation="display,10,78,-220,78,-220" data-exit-animation="smoothHide,100,78,-220">
-        	<img src="images/A.png">
+        <article id="HappyNewYear_A" data-animation="specialAnimate,3000,{path : aPath}" data-enter-animation="display,10,78,-220,78,-220" data-exit-animation="smoothHide,100,78,-220">
+        	<img src="images/A.png" style="width:50px">I'm turning following an arc path...
         </article>
 	</section>
 	<button class="playMusic" id="onoff_button1"></button>
@@ -39,6 +37,14 @@
 		</p>
 	</footer>
 		<script>
+		var arc_params = {
+			    center: [285,185],  
+			        radius: 100,    
+			        start: 30,
+			        end: 100,
+			        dir: -1
+			  }
+		var aPath = new $.path.arc(arc_params);
 		$(document).ready(function() {
 			//initialize the machine of every articles
 			$('section#animation-objects > article').iFSM(animatedObjectMachine,{debug:true});
