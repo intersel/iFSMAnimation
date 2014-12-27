@@ -172,7 +172,8 @@ var animatedObjectMachine = {
 			init_function: function() {
 				this.opts.currentAnimationData[ANIMATION_NOTWAIT]=1;
 				
-				if (this.opts.currentAnimationData[ANIMATION_LOOP_NUMBER]) this.opts.numberOfLoops=this.opts.currentAnimationData[ANIMATION_LOOP_NUMBER];
+				if (this.opts.currentAnimationData[ANIMATION_LOOP_NUMBER] && this.opts.currentAnimationData[ANIMATION_LOOP_NUMBER] != 0) 
+					this.opts.numberOfLoops=this.opts.currentAnimationData[ANIMATION_LOOP_NUMBER];
 				else this.opts.numberOfLoops=10000000;
 
 				if (!this.opts.currentAnimationData[ANIMATION_LOOP_BACK_DELAY]) this.opts.currentAnimationData[ANIMATION_LOOP_BACK_DELAY]=this.opts.currentAnimationData[ANIMATION_DURATION];
