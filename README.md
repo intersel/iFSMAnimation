@@ -98,6 +98,35 @@ data-enter-animation / data-animation / data-exit-animation
      *  duration
      *  animation description object as in jQuery. ex: {left: 20;top:100;width:300}
 
+CCS
+===
+
+In order to have the animation playing correctly, you can use the following css as a start:
+
+```css
+body {
+	margin		: 0px; 
+	padding		: 0px;
+	text-align	: center;
+	}
+/*for the main container*/
+#animation-objects,.animated_section {
+	display		: block;
+	width		: 700px;
+	height		: 400px;
+	margin		: 0px auto;
+	overflow	: hidden;
+	position	: relative;
+	text-align	: left;
+}
+/*for the animated objects*/
+section#animation-objects article {
+	position 	: absolute;
+	padding		: 0px;
+	margin		: 0px;
+	opacity		: 0;
+}
+```
 
 DEMO
 ====
