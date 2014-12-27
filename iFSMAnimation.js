@@ -239,7 +239,7 @@ var animatedObjectMachine = {
 				var aFSM = this;
 				this.opts.numberOfLoops--;
 				this._log('numberOfLoop:'+this.opts.numberOfLoops,2);
-				this.myUIObject.animate({
+				this.myUIObject.stop().animate({
 					left	: parseInt(this.opts.currentAnimationData[ANIMATION_X_DESTINATION]),
 					top		: parseInt(this.opts.currentAnimationData[ANIMATION_Y_DESTINATION]),
 					},{
