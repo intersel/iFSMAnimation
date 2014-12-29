@@ -3,60 +3,69 @@
  * INTERSEL - 4 cité d'Hauteville - 75010 PARIS
  * RCS PARIS 488 379 660 - NAF 721Z
  *
- * File    : intersel_animation.js
- * Abstract: animation pour carte de voeux
- * Remark  :
+ * File    : iFSMAnimation.js
+ * Abstract: iFSMAnimation allows to create simple jQuery animations easily on DOM objects
+ * Remark  : based on iFSM (cf. https://github.com/intersel/iFSM)
+ * Official help: https://github.com/intersel/iFSMAnimation
  * 
- * Help	   :
+ * Description:
  * 
  * create a section with articles with the animation definition for each article as the following example:
- *  <section id="animation-objects">
-        <article id="anim1" data-animation="dummy,10,90,104" data-enter-animation="display, 200, 90, 104, 90, 104" data-exit-animation="smoothHide,100,90,104">
-        	<img src="images/B.png">
-        </article>
-		<article id="anim2" data-animation="animate,400,78,220" data-enter-animation="display,10,78,-220" data-exit-animation="smoothHide,100,78,-220">
-        	<img src="images/A.png">
-        </article>
-        <article id="anim3" data-animation="rotate,20000,3060" data-enter-animation="display,10,272,417,272,417" data-exit-animation="smoothHide,100,433,-220">
-        	<img src="images/etoile.png">
-        </article>
-   </section>
-   
-   The available animations are:
-   * dummy - non animation
-   * animate - animate article from current position or startposition to destination
-     *  duration
-     *  destination-left
-     *  destination-top
-     *  startposition-left - optional
-     *  startposition-top - optional
-   * animateNoWait - same as animate but does not wait the end of animation to start the next animation 
-   * display - display article (opacity set to 1) with animation from current position or startposition to destination
-     *  duration
-     *  destination-left
-     *  destination-top
-     *  startposition-left - optional
-     *  startposition-top - optional
-   * smoothHide - display article (opacity set to 0) with animation from current position or startposition to destination
-     *  duration
-     *  destination-left
-     *  destination-top
-     *  startposition-left - optional
-     *  startposition-top - optional
-   * rotate - rotate article 
-     *  duration
-     *  angle
-   * loop - loop animation
-     *  duration
-     *  destination-left
-     *  destination-top
-     *  startposition-left - optional
-     *  startposition-top - optional
-     *  loops number - optional default:infinite - give the number of loops
-     *  loop back delay - optional default: duration - give the delay to go to the initial position
-   * specialAnimate
-     *  duration
-     *  animation description object as in jQuery. ex: {left: 20;top:100;width:300}
+ * 
+ * @code
+ * <section id="animation-objects">
+ *  	<article id="anim1" data-animation="dummy,10,90,104" data-enter-animation="display, 200, 90, 104, 90, 104" data-exit-animation="smoothHide,100,90,104">
+ *          	<img src="images/B.png">
+ * 		</article>
+ * 		<article id="anim2" data-animation="animate,400,78,220" data-enter-animation="display,10,78,-220" data-exit-animation="smoothHide,100,78,-220">
+ *         	<img src="images/A.png">
+ * 		</article>
+ * 		<article id="anim3" data-animation="rotate,20000,3060" data-enter-animation="display,10,272,417,272,417" data-exit-animation="smoothHide,100,433,-220">
+ *         	<img src="images/etoile.png">
+ * 		</article>
+ * </section>
+ * then call the following script to activate your animation:
+ * <script>
+ * 	$(document).ready(function() {
+ * //initialize and start the general animation
+ * 	$('section#animation-objects').iFSM(mainAnimation);
+ * </script>
+ * 
+ * The available animations are:
+ * - dummy - non animation
+ * 	- animate - animate article from current position or startposition to destination
+ * 	- duration
+ * 	- destination-left
+ * 	- destination-top
+ * 	- startposition-left - optional
+ * 	- startposition-top - optional
+ * 	- animateNoWait - same as animate but does not wait the end of animation to start the next animation 
+ * -display - display article (opacity set to 1) with animation from current position or startposition to destination
+ * 	- duration
+ * 	- destination-left
+ * 	- destination-top
+ * 	- startposition-left - optional
+ * 	- startposition-top - optional
+ * -smoothHide - display article (opacity set to 0) with animation from current position or startposition to destination
+ * 	- duration
+ * 	- destination-left
+ * 	- destination-top
+ * 	- startposition-left - optional
+ * 	- startposition-top - optional
+ * -rotate - rotate article 
+ * 	- duration
+ * 	- angle
+ * -loop - loop animation
+ * 	- duration
+ * 	- destination-left
+ * 	- destination-top
+ * 	- startposition-left - optional
+ * 	- startposition-top - optional
+ * 	- loops number - optional default:infinite - give the number of loops
+ * 	- loop back delay - optional default: duration - give the delay to go to the initial position
+ * -specialAnimate
+ * 	- duration
+ * 	- animation description object as in jQuery. ex: {left: 20;top:100;width:300}
  * -----------------------------------------------------------------------------------------
  * Modifications:
  * - 20141223 - EPO - V1.0.0 - Creation
