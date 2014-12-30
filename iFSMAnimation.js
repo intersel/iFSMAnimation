@@ -4,7 +4,7 @@
  * RCS PARIS 488 379 660 - NAF 721Z
  *
  * File    : iFSMAnimation.js
- * Abstract: iFSMAnimation allows to create simple jQuery animations easily on DOM objects
+ * Abstract: iFSMAnimation allows to create simple HTML5 animations easily on DOM objects
  * Remark  : based on iFSM (cf. https://github.com/intersel/iFSM)
  * Official help: https://github.com/intersel/iFSMAnimation
  * 
@@ -181,19 +181,8 @@ var animatedObjectMachine = {
 			init_function: function() {
 				this.opts.currentAnimationData[ANIMATION_NOTWAIT]=1;
 				
-				if (this.opts.currentAnimationData[ANIMATION_LOOP_NUMBER] && this.opts.currentAnimationData[ANIMATION_LOOP_NUMBER] != 0) 
-					this.opts.numberOfLoops=this.opts.currentAnimationData[ANIMATION_LOOP_NUMBER];
-				else this.opts.numberOfLoops=10000000;
-
-				if (!this.opts.currentAnimationData[ANIMATION_LOOP_BACK_DELAY]) this.opts.currentAnimationData[ANIMATION_LOOP_BACK_DELAY]=this.opts.currentAnimationData[ANIMATION_DURATION];
-				
-				if (this.opts.currentAnimationCaller) 
-				{
-					this.opts.currentAnimationCaller.trigger('animationStopped');
-					this.opts.currentAnimationCaller = null;
-				}
 			},
-			propagate_event:'loop',
+			propagate_event:'initLoop',
 			next_state:'ObjectInMotion',
 		},
 		animate:
@@ -207,9 +196,109 @@ var animatedObjectMachine = {
 	},
 	ObjectInMotion:
 	{
-		enterState:
+	    enterState:
 		{
 		},
+		delegate_machines: 
+	    {
+	        LoopSubmachine: 
+	        {
+	            submachine: 
+	            {
+	            	LoopInMotionStart:
+	            	{
+	            		initLoop:
+	            		{
+	            			init_function: function() {
+	            				if (this.rootMachine.opts.currentAnimationData[ANIMATION_LOOP_NUMBER] && this.rootMachine.opts.currentAnimationData[ANIMATION_LOOP_NUMBER] != 0) 
+	            					this.opts.numberOfLoops=this.rootMachine.opts.currentAnimationData[ANIMATION_LOOP_NUMBER];
+	            				else this.opts.numberOfLoops=10000000;
+
+	            				if (!this.rootMachine.opts.currentAnimationData[ANIMATION_LOOP_BACK_DELAY]) this.rootMachine.opts.currentAnimationData[ANIMATION_LOOP_BACK_DELAY]=this.rootMachine.opts.currentAnimationData[ANIMATION_DURATION];
+
+	            				if ( 	(this.rootMachine.opts.currentAnimationData[ANIMATION_NOTWAIT] == 1) 
+	            						 && (this.rootMachine.opts.currentAnimationCaller) 
+	            						) 
+	            				{
+	            					this.rootMachine.opts.currentAnimationCaller.trigger('animationStopped');
+	            				}
+	            			},
+	            			prevent_bubble:true,
+	            			propagate_event:'loop',
+	            			next_state:'LoopInMotion',
+	            		},
+	            	},
+	            	LoopInMotion:
+	            	{
+	            		loop:
+	            		{
+	            			init_function: function() {
+	            				var aFSM = this;
+	            				this.opts.numberOfLoops--;
+	            				this._log('numberOfLoop:'+this.opts.numberOfLoops,2);
+	            				this.myUIObject.stop().animate({
+	            					left	: parseInt(this.rootMachine.opts.currentAnimationData[ANIMATION_X_DESTINATION]),
+	            					top		: parseInt(this.rootMachine.opts.currentAnimationData[ANIMATION_Y_DESTINATION]),
+	            					},{
+	            						duration	: parseInt(this.rootMachine.opts.currentAnimationData[ANIMATION_DURATION]), 
+	            						complete	: function(){
+	            							aFSM.trigger('loopEnd');
+	            						},
+	            				});
+	            			},
+	            			prevent_bubble:true,
+	            		},
+	            		loopEnd:
+	            		{
+	            			init_function: function() {
+	            				var aFSM = this;
+	            				this.myUIObject.stop().animate({
+	            					left	: parseInt(this.rootMachine.opts.currentAnimationData[ANIMATION_X_ORIGIN]),
+	            					top		: parseInt(this.rootMachine.opts.currentAnimationData[ANIMATION_Y_ORIGIN]),
+	            					},{
+	            					duration	: parseInt(this.rootMachine.opts.currentAnimationData[ANIMATION_LOOP_BACK_DELAY]), 
+	            					complete	: function(){
+	            						aFSM.trigger('loopEndReinit');
+	            					},
+	            				});
+	            			},
+	            			prevent_bubble:true,
+	            		},
+	            		loopEndReinit:
+	            		{
+	            			propagate_event:'loop',
+	            			process_event_if:'this.opts.numberOfLoops>0',
+	            			propagate_event_on_refused:'animationStopped',
+	            			prevent_bubble:true,
+	            		},
+	            		animationStopped:
+	            		{
+	            			next_state : 'initLoop',
+	            		},
+	            		//do not react on external stimulations...
+	            		startEnterAnimation:'startExitAnimation',
+	            		startAnimation:'startExitAnimation',
+	            		startExitAnimation:
+	            		{
+	            			init_function: function() {
+		            			if (this.rootMachine.opts.currentAnimationCaller) 
+		           				{
+		           					this.rootMachine.opts.currentAnimationCaller.trigger('animationStopped');
+		           				}
+	            			},
+	            			prevent_bubble:true, //while loop is not finished, continue...
+	            		}
+	            	},
+	            	DefaultState: 
+	            	{
+	            		start: 
+	            		{
+	            			next_state : 'LoopInMotionStart',
+	            		},
+	            	},
+	            },
+	        },          
+	    },          
 		animate:
 		{
 			init_function: function() {
@@ -242,49 +331,11 @@ var animatedObjectMachine = {
 				});
 			}
 		},
-		loop:
-		{
-			init_function: function() {
-				var aFSM = this;
-				this.opts.numberOfLoops--;
-				this._log('numberOfLoop:'+this.opts.numberOfLoops,2);
-				this.myUIObject.stop().animate({
-					left	: parseInt(this.opts.currentAnimationData[ANIMATION_X_DESTINATION]),
-					top		: parseInt(this.opts.currentAnimationData[ANIMATION_Y_DESTINATION]),
-					},{
-						duration	: parseInt(this.opts.currentAnimationData[ANIMATION_DURATION]), 
-						complete	: function(){
-							aFSM.trigger('loopEnd');
-						},
-				});
-			}
-		},
-		loopEnd:
-		{
-			init_function: function() {
-				var aFSM = this;
-				this.myUIObject.stop().animate({
-					left	: parseInt(this.opts.currentAnimationData[ANIMATION_X_ORIGIN]),
-					top		: parseInt(this.opts.currentAnimationData[ANIMATION_Y_ORIGIN]),
-					},{
-					duration	: parseInt(this.opts.currentAnimationData[ANIMATION_LOOP_BACK_DELAY]), 
-					complete	: function(){
-						aFSM.trigger('loopEndReinit');
-					},
-				});
-			},
-		},
-		loopEndReinit:
-		{
-			propagate_event:'loop',
-			process_event_if:'this.opts.numberOfLoops>0',
-			propagate_event_on_refused:'animationStopped',
-		},
 		rotate:
 		{
 			init_function: function() {
 				var aFSM = this;
-				this.myUIObject.css('border-spacing','200');
+				this.myUIObject.css('border-spacing','0px');
 				this.myUIObject.stop().animate({ borderSpacing: parseInt(aFSM.opts.currentAnimationData[ROTATE_ANGLE]) }, {
 				    step: function(now,fx) {
 				        $(this).css('-webkit-transform','rotate('+now+'deg)'); 

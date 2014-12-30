@@ -25,23 +25,25 @@ body {
 	}
 	
 #animation-objects,.animated_section {
+	background-color:	#1c395d;
 	display		: block;
-	width		: 700px;
-	height		: 400px;
-	margin		: 0px auto;
+	height		: 551px;
+	margin		: 10px auto;
 	overflow	: hidden;
 	position	: relative;
 	text-align	: left;
+	width		: 551px;
 }
 
 section#animation-objects article {
 	position 	: absolute;
-	/*display		: none;*/
 	padding		: 0px;
 	margin		: 0px;
 	opacity		: 0;
-	/*top			: -200px;*/
-	
+}
+section#animation-objects article.snow {
+	width		: 550px;
+	height		: 650px;
 }
 section#animation-objects article img {
 	width		: 100%;
@@ -54,7 +56,7 @@ section#animation-objects article img {
 	background-color: #fff;
 	box-shadow: 0 0 10px 1px #fff, /* inner */ 
 				0 0 10px 1px #fff, /* middle */ 
-				0 0 140px 70px #fff;
+				0 0 140px 50px #fff;
 }
 
 .signature {
