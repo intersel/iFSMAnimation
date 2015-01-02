@@ -25,7 +25,7 @@ body {
 	}
 	
 #animation-objects,.animated_section {
-	background-color:	#1c395d;
+	background-color:	#1c3970;
 	display		: block;
 	height		: 551px;
 	margin		: 10px auto;
@@ -65,12 +65,13 @@ section#animation-objects article img {
 }
 
 button {
-	margin: 0 2px;
-	font-size: 20px;
-	border: 1px solid #333;
-	width: 70px;
-	text-shadow: 0 -1px 0 #333;
-	border-radius: 5px;
+	margin			: 0 2px;
+	font-size		: 20px;
+	border			: 1px solid #333;
+	width			: 70px;
+	text-shadow		: 0 -1px 0 #333;
+	border-radius	: 5px;
+	cursor			: pointer;
 }
 
 button.on {
@@ -104,4 +105,7 @@ button.off {
 		rgba(153, 0, 0, 1) 100%);
 	background: linear-gradient(top, rgba(204, 0, 0, 1) 0%,
 		rgba(153, 0, 0, 1) 100%);
+}
+button:hover {
+	color: #fcc;
 }

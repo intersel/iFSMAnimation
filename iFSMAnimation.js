@@ -458,7 +458,7 @@ var mainAnimation = {
 		enterState:
 		{
 			init_function: function() {
-				if (this.opts.animationSequence[this.opts.animationStep]) $(this.opts.animationSequence[this.opts.animationStep]).trigger('startEnterAnimation',this);
+				if ($(this.opts.animationSequence[this.opts.animationStep]).length>0) $(this.opts.animationSequence[this.opts.animationStep]).trigger('startEnterAnimation',this);
 				else this.trigger('animationObjectVoid');
 			},
 			next_state:'WaitForStartAnimationDone',
@@ -544,7 +544,7 @@ var mainAnimation = {
 		eraseAnimation:
 		{
 			init_function: function() {
-				if (this.opts.animationSequence[this.opts.animationStep]) $(this.opts.animationSequence[this.opts.animationStep]).trigger('startExitAnimation',this);
+				if ($(this.opts.animationSequence[this.opts.animationStep]).length>0) $(this.opts.animationSequence[this.opts.animationStep]).trigger('startExitAnimation',this);
 				else this.trigger('animationStopped');
 				this.opts.animationStep++;
 			},
@@ -595,6 +595,16 @@ var mainAnimation = {
 };
 
 /**
+ * buttonOnOffMachine - manages button with On/Off states that can handle a distant object
+ * @example: 
+ * <code>
+ * 		<button class="playMusic" id="onoff_music"></button>
+ * ....
+ * 		$("#onoff_music").iFSM(buttonOnOffMachine,{sendTo:$('#music'),text:{on:'Stop Music',off:'Play Music'}});
+ * </code>
+ * @param handle events
+ * 		- click - event click on the button
+ * @param default state: ButtonOff
  * @param opts
  * 		- text (optional):
  * 			- on: text to set when button is on
@@ -603,6 +613,7 @@ var mainAnimation = {
  * 		- sendToMessage (optional):
  * 			- on: text to trigger when button is on (default:'setOn')
  * 			- off: text to set when button is off (default:'setOff')
+ * 		- buttonIsOn (optional): if true, the start state of the button is 'on' (default: 'off')
  * 
  */
 var buttonOnOffMachine = {
@@ -640,46 +651,65 @@ var buttonOnOffMachine = {
 			{
 				init_function		: function (){
 					if (!this.opts.sendToMessage) this.opts.sendToMessage = {on:'setOn',off:'setOff'};
+					if (this.opts.buttonIsOn) this._stateDefinition['DefaultState']['start']['next_state'] = 'ButtonOn';
 				},
-				next_state		: 'ButtonOn'
+				next_state		: 'ButtonOff'
 			}
 		}				
 	};
-	 
+
+/**
+ * musicMachine - manages an audio object
+ * @example
+ * <code>
+ * 		<audio id="music" src="myMusic.mp3" preload="auto"></audio>
+ * 		.....
+ * 		$("#music").iFSM(musicMachine,{volume:0.3});
+ * </code>
+ * @param default state: Paused
+ * @param handle events:
+ * 		- setOn
+ * 		- setOff
+ * @param opts
+ * 		- volume (default: 0.2)
+ */
 var musicMachine = {
-		Playing		: 
+	Playing		: 
+	{
+		enterState : 
 		{
-			enterState : 
-			{
-				init_function		: function (){
-					this.myUIObject.prop("volume",this.opts.volume);
-					this.myUIObject.trigger('play');
-				}
-			},
-			setOff	:	
-			{
-				next_state			: 'Paused'
-			},
-		},
-		Paused		: 
-		{
-			enterState : 
-			{
-				init_function		: function (){this.myUIObject.trigger('pause');},
-			},
-			setOn	:	
-			{
-				next_state		: 'Playing'
+			init_function		: function (){
+				this.myUIObject.trigger('play');
 			}
 		},
-		DefaultState			:
+		setOff	:	
 		{
-			start	:	
-			{
-				next_state		: 'Playing'
-			}
-		}				
-	};
+			next_state			: 'Paused'
+		},
+	},
+	Paused		: 
+	{
+		enterState : 
+		{
+			init_function		: function (){this.myUIObject.trigger('pause');},
+		},
+		setOn	:	
+		{
+			next_state		: 'Playing'
+		}
+	},
+	DefaultState			:
+	{
+		start	:	
+		{
+			init_function		: function (){
+				if (!this.opts.volume) this.opts.volume=0.2;
+				this.myUIObject.prop("volume",this.opts.volume);
+			},
+			next_state		: 'Paused'
+		}
+	}				
+};
 
 
 
