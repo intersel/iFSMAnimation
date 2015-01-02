@@ -3,8 +3,8 @@
  * INTERSEL - 4 cité d'Hauteville - 75010 PARIS
  * RCS PARIS 488 379 660 - NAF 721Z
  *
- * iFSM - Intersel Finite State Machine
- * Abstract : a simple finite state machine for javascript and jQuery
+ * iFSMAnimation - Intersel Finite State Machine for Animation
+ * Abstract : a simple finite state machine for javascript and jQuery to create HTML5 animations
  * Remark :
  * -----------------------------------------------------------------------------------------
  * @copyright : Intersel 2014
