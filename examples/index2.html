@@ -15,18 +15,19 @@
 	
 	<!--  include of the iFSM Animation tool -->
 	<script type="text/javascript" src="ext_lib/jquery.path/jquery.path.js"></script>
+	<script type="text/javascript" src="ext_lib/FitText/jquery.fittext.js"></script>
 	<script type="text/javascript" src="../iFSMAnimation.js"></script>
 </head>
 <body>
 	<header id="header" role="banner">
 		<h2>this is a animation example using iFMSAnimation :-)</h2>
 	</header>
-    <section id="animation-objects" data-delay-before-restart="3000">
+    <section id="animation-objects" data-delay-before-restart="3000" data-box-responsive="true"  data-div-class="animation">
         <article id="HappyNewYear_B" data-animation="loop, 2000, 190, 204, 90, 104, 0, 3000" data-enter-animation="display, 2000, 90, 104, 90, 0" data-exit-animation="smoothHide,1000,90,104">
-        	<img src="images/B.png" style="width:50px">I'm looping forth and back....
+        	<img src="images/B.png" style="width:20%">I'm looping forth and back....
         </article>
-        <article id="HappyNewYear_A" data-animation="specialAnimate,3000,{path : aPath}" data-enter-animation="display,10,78,-220,78,-220" data-exit-animation="smoothHide,100,78,-220">
-        	<img src="images/A.png" style="width:50px">I'm turning following an arc path...
+        <article id="HappyNewYear_A" data-animation="specialAnimate,3000,{path : aPath}" data-enter-animation="display,2000,335,275,335,235" data-exit-animation="smoothHide,1000,383,168,383,168">
+        	<img src="images/A.png" style="width:20%">I'm turning following an arc path...
         </article>
 	</section>
 	<div id="animation2" class="animated_section" style="height:140px;">
@@ -58,6 +59,7 @@
 		var aPath2 = new $.path.arc(arc_params2);
 		$(document).ready(function() {
 			//initialize and start the general animation
+			$('section#animation-objects').fitText(2, { minFontSize: '5px',maxFontSize: '20px' });
 			$('section#animation-objects').iFSM(mainAnimation,{debug:true});
 			$('div#animation2').iFSM(mainAnimation,{animatedObjectDefinition:'div',debug:true});
 			//Animation Button

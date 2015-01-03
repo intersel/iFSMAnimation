@@ -52,9 +52,34 @@ Attributes on the main container
 data-delay-before-restart
 -------------------------
 The 'data-delay-before-restart' attribute allows to define the delay before the animation restarts. 
+
+Example: <section id="animation-objects" data-delay-before-restart="10000">
+
+data-box-responsive
+-------------------
+Boolean, if 'true', the animation will be 'responsive'.
+Limitations known with using 'specialAnimate'.
+
+Example: <section id="animation-objects" data-box-responsive="true">
+
+
+data-box-size-reference
+-----------------------
+
+"BoxWidth,BoxHeight" give the used dimensions as reference for the position of the animated objects. Useful in Responsive mode.
+
+Example: <section id="animation-objects" data-box-size-reference="551,551" >
+
+
+data-div-class
+--------------
+Actually, a 'div' encapsultes the animation. It is possible to define the class that should be used on this div.
+
+Example: <section id="animation-objects" data-div-class="animation">
  
 Attributes on a sub container
 =============================
+
 data-enter-animation / data-animation / data-exit-animation
 -----------------------------------------------------------
   
