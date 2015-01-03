@@ -642,7 +642,7 @@ var mainAnimation = {
 				
 				
 				var doResponsive = this.myUIObject.attr('data-box-responsive');
-				if (!doResponsive) doResponsive=false;
+				if (!doResponsive || doResponsive == "false") doResponsive=false;
 				
 				$.each(this.opts.animationSequence, 
 						function(aKey,aValue)
@@ -651,7 +651,7 @@ var mainAnimation = {
 							if (!aFSM || aFSM.length == 0) return;
 							aFSM.opts.generalSize = {X:aGeneralSize[0],Y:aGeneralSize[1]};
 							aFSM.opts.doResponsive = doResponsive;
-							aFSM.myUIObject.css({width:aFSM.myUIObject.width()*100/parseInt(aFSM.opts.generalSize.X)+"%"});
+							if (doResponsive) aFSM.myUIObject.css({width:aFSM.myUIObject.width()*100/parseInt(aFSM.opts.generalSize.X)+"%"});
 						});
 			},
 			next_state : 'InitAnimation',
