@@ -49,10 +49,7 @@ section#animation-objects article {
 	margin		: 0px;
 	opacity		: 0;
 }
-section#animation-objects article.snow {
-	width		: 100%;
-	height		: 650px;
-}
+
 section#animation-objects article img {
 	width		: 100%;
 }
