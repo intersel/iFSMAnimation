@@ -127,8 +127,12 @@ To start the animation, you will need to add this script:
 ```javascript
 <script>
 $(document).ready(function() {
-	//initialize and start the general animation with 'mainAnimation' defined in iFSMAnimation.js
-	$('section').iFSM(mainAnimation);
+	//should wait for all the download of the images...
+	$('body').waitForImages().done(function() {
+		//initialize and start the general animation with 'mainAnimation' defined in iFSMAnimation.js
+		$('section').iFSM(mainAnimation);
+	});
+)};
 </script>
 ```
 
@@ -159,21 +163,16 @@ body {
 	padding		: 0px;
 	text-align	: center;
 	}
-/*for the main container*/
-#animation-objects,.animated_section {
-	display		: block;
-	width		: 700px;
-	height		: 400px;
-	margin		: 0px auto;
-	overflow	: hidden;
-	position	: relative;
-	text-align	: left;
+/*for the div that embeds your animation section, will center it*/
+#animation, .animation {
+	margin : 0 20% 30px 20%;
 }
-/*for the animated objects*/
+/*for the main animation section container, let's have a background*/
+#animation-objects,.animated_section {
+	background-color:	#1c3970;
+}
+/*for the animated objects (here, all objects will start as hidden at beginning - opacity=0)*/
 section#animation-objects article {
-	position 	: absolute;
-	padding		: 0px;
-	margin		: 0px;
 	opacity		: 0;
 }
 ```
@@ -200,6 +199,7 @@ To work properly, you need to include the following javascript library:
     * attrchange by Selvakumar Arumugam](http://meetselva.github.io/attrchange/) 
 	  * a simple jQuery function to bind a listener function to any HTML element on attribute change
 	  * `<script type="text/javascript" src="extlib/jquery.attrchange.js"></script>`
+* [waitForImages](http://github.com/alexanderdickson/waitForImages/) by Alexander Dickson, in order to garantee that all images of the animation are downloaded and ready. This library is automatically loaded by iFSMAnimation. You can change the used URL by setting yours in the ANIMATION_NEEDED_SCRIPTS[WAITFORIMAGES_ULR] global variable.
 
 If you need to do some specific animations, these libraries may be useful:
   * [jquery.path](https://github.com/weepy/jquery.path) - allows to animate objects following a path as an arc or a curve 

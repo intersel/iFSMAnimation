@@ -14,7 +14,6 @@
 	<script type="text/javascript" src="http://rawgit.com/intersel/iFSM/master/iFSM.js"></script>
 	
 	<!--  include of the iFSM Animation tool -->
-	<script type="text/javascript" src="ext_lib/waitForImages/dist/jquery.waitforimages.js"></script>
 	<script type="text/javascript" src="../iFSMAnimation.js"></script>
 </head>
 <body>
@@ -25,10 +24,10 @@
 	</header>
 	<div id="animation">
 	    <section id="animation-objects" data-delay-before-restart="10000" data-box-size-reference="551,551" data-box-responsive="true" data-div-class="animationDiv">
-	        <article id="HappyNewYear_Snow1" class="snow" data-animation="loop,28000,-30,551,0,-650,0,0" data-enter-animation="display, 0, 0, -650, 0, -650" data-exit-animation="dummy,100,0,-1000">
+	        <article id="HappyNewYear_Snow1" class="snow" data-animation="loop,28000,-30,551,0,-800,0,0" data-enter-animation="display, 0, 0, -650, 0, -650" data-exit-animation="dummy,100,0,-1000">
 	        	<img src="images/snow.png">
 	        </article>
-	        <article id="HappyNewYear_Snow2" class="snow" data-animation="loop,50000,30,551,0,-670,0,0" data-enter-animation="display, 0, 0, -700, 0, -700" data-exit-animation="dummy,100,0,-1000">
+	        <article id="HappyNewYear_Snow2" class="snow" data-animation="loop,50000,30,551,0,-830,0,0" data-enter-animation="display, 0, 0, -700, 0, -700" data-exit-animation="dummy,100,0,-1000">
 	        	<img src="images/snow.png">
 	        </article>
 	        <article id="HappyNewYear_B" data-animation="dummy" data-enter-animation="display,250, 66, 56, 66, 56" data-exit-animation="smoothHide,100,66,56">
@@ -121,13 +120,14 @@
 			                               '#HappyNewYear_glow',
 			                               ];
 			
-			$('body').waitForImages().done(function() {
-				//initialize the machine of every articles
-				$('section#animation-objects > article').iFSM(animatedObjectMachine,{debug:false});
-				//initialize and start the general animation
-				$('section#animation-objects').iFSM(mainAnimation,{animationSequence:myAnimationSequence,debug:false});
-				//$('section#animation-objects').iFSM(mainAnimation);//,{debug:true});
-			});
+			//ANIMATION_NEEDED_SCRIPTS[WAITFORIMAGES_ULR] = 'ext_lib/waitForImages/dist/jquery.waitforimages.js';
+			
+			//initialize the machine of every articles
+			$('section#animation-objects > article').iFSM(animatedObjectMachine,{debug:false});
+			//initialize and start the general animation
+			$('section#animation-objects').iFSM(mainAnimation,{animationSequence:myAnimationSequence,debug:false});
+			//$('section#animation-objects').iFSM(mainAnimation);//,{debug:true});
+
 			//Button
 			$("#music").iFSM(musicMachine);
 			$("#onoff_music").iFSM(buttonOnOffMachine,{sendTo:$('#music'),text:{on:'Stop Music',off:'Play Music'}});

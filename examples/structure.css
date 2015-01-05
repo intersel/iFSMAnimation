@@ -40,28 +40,10 @@ body {
 
 #animation-objects,.animated_section {
 	background-color:	#1c3970;
-	height		: 100%;
-	min-height	: 50px;
-	max-height	: 500px;
-	margin		: 0px auto;
-	overflow	: hidden;
-	padding-bottom : 90%;
-	position	: relative;
-	text-align	: left;
-	width		: 100%;
-	max-width	: 551px;
-	font-family	: arial;
 }
 
 section#animation-objects article {
-	position 	: absolute;
-	padding		: 0px;
-	margin		: 0px;
 	opacity		: 0;
-}
-
-section#animation-objects article img {
-	width		: 100%;
 }
 
 .glow {

@@ -96,6 +96,11 @@ var ANIMATION_LOOP_NUMBER		= 6; // if == 0 then infinite loop
 var ANIMATION_LOOP_BACK_DELAY	= 7; // 
 var ANIMATION_NOTWAIT			= 100;
 
+var ANIMATION_NEEDED_SCRIPTS	= [
+	'http://rawgit.com/alexanderdickson/waitForImages/master/dist/jquery.waitforimages.js',
+	];
+var WAITFORIMAGES_ULR = 0;
+
 var animatedObjectMachine = {
 	InitAnimatedObject: 
 	{
@@ -180,11 +185,12 @@ var animatedObjectMachine = {
 		enterState:
 		{
 			init_function: function() {
-				var styles = {position 	: "absolute"};
+				var styles = {};
 
 				if (this.opts.currentAnimationData[ANIMATION_X_ORIGIN]) styles['left'] = this.opts.currentAnimationData[ANIMATION_X_ORIGIN];
 				if (this.opts.currentAnimationData[ANIMATION_Y_ORIGIN]) styles['top']  = this.opts.currentAnimationData[ANIMATION_Y_ORIGIN];
 				this.myUIObject.css(styles);
+				if (this.opts.doResponsive) this.myUIObject.find('img').css({width:'100%'});
 				this.trigger(this.opts.currentAnimationData[ANIMATION_TYPE]);
 			},
 		},
@@ -610,9 +616,52 @@ var mainAnimation = {
 			next_state:'InitAnimation',
 		},
 	},
+	WaitForImagesDownloaded:
+	{
+		enterState:
+		{
+			init_function: function() {
+				var myFSM = this;
+				this.myUIObject.waitForImages().done(function() {
+					myFSM.trigger('imagesDownloaded');
+				});
+
+			},
+		},
+		imagesDownloaded:
+		{
+			init_function: function() {
+				this.trigger('initAnimatedObjects');
+			},
+		},
+	},
+	WaitForJavascriptFileDownloaded:
+	{
+		enterState:
+		{
+			init_function: function() {
+				var myFSM = this;
+				this.opts.scriptsToLoad = ANIMATION_NEEDED_SCRIPTS;
+				$.each(this.opts.scriptsToLoad,	function(aKey,aScriptURL){				
+					$.getScript( aScriptURL, function() {
+						myFSM.trigger('scriptDownloaded');
+					});
+				});
+			},
+		},
+		scriptDownloaded:
+		{
+			next_state: 'WaitForImagesDownloaded',
+			next_state_when:'this.EventIteration == this.opts.scriptsToLoad.length',
+		},
+	},
 	DefaultState: 
 	{
 		start: 
+		{
+			next_state: 'WaitForJavascriptFileDownloaded',
+		},
+		initAnimatedObjects: 
 		{
 			init_function: function() {
 				if (!this.opts.animatedObjectDefinition) this.opts.animatedObjectDefinition='article';
@@ -638,7 +687,22 @@ var mainAnimation = {
 				this.myUIObject.wrapAll('<div '+aClass+'/>');
 				if (aGeneralSize[0] <= 0) aGeneralSize[0] = $(window).width(); 
 				if (aGeneralSize[1] <= 0) aGeneralSize[1] = $(window).height(); 
-				this.myUIObject.parent().css({maxWidth:aGeneralSize[0]+'px',maxHeight:aGeneralSize[1]+'px',overflow:'hidden'});
+				this.myUIObject.parent().css({
+					maxWidth	:aGeneralSize[0]+'px',
+					maxHeight	:aGeneralSize[1]+'px',
+					overflow	:'hidden',
+				});
+				this.myUIObject.css({
+					overflow	:'hidden',
+					height		: '100%',
+					minHeight	: '50px',
+					maxHeight	:aGeneralSize[1]+'px',
+					margin		: '0px auto',
+					paddingBottom : '90%',
+					position	: 'relative',
+					width		: '100%',
+					maxWidth	:aGeneralSize[0]+'px',
+				});
 				
 				
 				var doResponsive = this.myUIObject.attr('data-box-responsive');
@@ -651,7 +715,12 @@ var mainAnimation = {
 							if (!aFSM || aFSM.length == 0) return;
 							aFSM.opts.generalSize = {X:aGeneralSize[0],Y:aGeneralSize[1]};
 							aFSM.opts.doResponsive = doResponsive;
-							if (doResponsive) aFSM.myUIObject.css({width:aFSM.myUIObject.width()*100/parseInt(aFSM.opts.generalSize.X)+"%"});
+							aFSM.myUIObject.css({
+								position:'absolute',
+							});
+							if (doResponsive) aFSM.myUIObject.css({
+								width:aFSM.myUIObject.width()*100/parseInt(aFSM.opts.generalSize.X)+"%"
+							});
 						});
 			},
 			next_state : 'InitAnimation',
