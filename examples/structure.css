@@ -25,21 +25,31 @@ body {
 	}
 
 #animation, .animation {
-	margin : 0 20% 10px 20%;
+	margin : 0 20% 30px 20%;
+}
+.animationDiv {
+	-moz-box-shadow: 10px 10px 5px 0px #656565;
+	-webkit-box-shadow: 10px 10px 5px 0px #656565;
+	-o-box-shadow: 10px 10px 5px 0px #656565;
+	box-shadow: 10px 10px 5px 0px #656565;
+	filter:progid:DXImageTransform.Microsoft.Shadow(color=#656565, Direction=134, Strength=5);
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
 }
 
 #animation-objects,.animated_section {
 	background-color:	#1c3970;
 	height		: 100%;
+	min-height	: 50px;
+	max-height	: 500px;
 	margin		: 0px auto;
 	overflow	: hidden;
-	padding-bottom : 100%;
+	padding-bottom : 90%;
 	position	: relative;
 	text-align	: left;
 	width		: 100%;
 	max-width	: 551px;
-	font-size	: 12px;
-	font-weight	: bold;
 	font-family	: arial;
 }
 
@@ -71,7 +81,7 @@ section#animation-objects article img {
 
 button {
 	margin			: 0 2px;
-	font-size		: 20px;
+	font-size		: 10px;
 	border			: 1px solid #333;
 	width			: 70px;
 	text-shadow		: 0 -1px 0 #333;
