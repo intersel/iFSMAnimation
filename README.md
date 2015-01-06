@@ -70,6 +70,10 @@ data-box-size-reference
 
 Example: <section id="animation-objects" data-box-size-reference="551,551" >
 
+data-keep-height-visible
+------------------------
+Boolean, if 'true', the width and height will be fixed in order that the animation is fully shown on the window display.
+Example: <section id="animation-objects" data-keep-height-visible="true"> 
 
 data-div-class
 --------------
