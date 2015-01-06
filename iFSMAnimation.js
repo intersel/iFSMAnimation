@@ -687,21 +687,34 @@ var mainAnimation = {
 				this.myUIObject.wrapAll('<div '+aClass+'/>');
 				if (aGeneralSize[0] <= 0) aGeneralSize[0] = $(window).width(); 
 				if (aGeneralSize[1] <= 0) aGeneralSize[1] = $(window).height(); 
+
+				var widthAnim = Math.min($(window).width(),aGeneralSize[0]);
+				var ratio = aGeneralSize[0] / aGeneralSize[1];
+				var heightAnim = widthAnim/ratio;
+
+				if (this.myUIObject.attr('data-keep-height-visible') == 'true')
+				{
+					if (heightAnim > $(window).height()) 
+					{
+						widthAnim = $(window).height() * ratio;
+					}
+				}
+				
 				this.myUIObject.parent().css({
-					maxWidth	:aGeneralSize[0]+'px',
-					maxHeight	:aGeneralSize[1]+'px',
-					overflow	:'hidden',
+					maxWidth	: widthAnim+'px',
+					maxHeight	: heightAnim+'px',
+					overflow	: 'hidden',
 				});
 				this.myUIObject.css({
-					overflow	:'hidden',
+					overflow	: 'hidden',
 					height		: '100%',
 					minHeight	: '50px',
-					maxHeight	:aGeneralSize[1]+'px',
+					maxHeight	: heightAnim+'px',
 					margin		: '0px auto',
 					paddingBottom : '90%',
 					position	: 'relative',
 					width		: '100%',
-					maxWidth	:aGeneralSize[0]+'px',
+					maxWidth	: widthAnim+'px',
 				});
 				
 				
@@ -849,6 +862,3 @@ var musicMachine = {
 		}
 	}				
 };
-
-
-
