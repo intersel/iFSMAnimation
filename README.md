@@ -1,9 +1,9 @@
 iFSMAnimation
 =============
 
-Create simple HTML5 animations easily and quickly!
+Create simple HTML5 animations in responsive design easily and quickly!
 
-You describe the DOM objects that you want to animate, attached them to the iFSM machines, and let's animate!
+You describe the DOM objects that you want to animate, attached them to the animation machine, and let's animate!
 
 To use it, have a look on the examples provided...
 
