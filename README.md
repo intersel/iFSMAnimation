@@ -1,16 +1,24 @@
 iFSMAnimation
 =============
 
-Create simple HTML5 animations in responsive design easily and quickly!
+Create simple HTML5 animations in responsive design easily and quickly, writing only one line of javascript code!
 
 You describe the DOM objects that you want to animate, attached them to the animation machine, and let's animate!
 
 To use it, have a look on the examples provided...
 
+What is iFSMAnimation?
+======================
+
+iFSMAnimation is javascript library that allows to create animations from an html description.
+
+Getting started
+===============
+
 Mainly, you need to create:
-* a HTML 'section' (or whatever) that will define where is the animation and HTML 'articles' to define the different animated objects
+* a HTML 'section' (or whatever) that will define where is defined the animation and HTML 'articles' to define the different objects that must be animated.
 * at the end, add a little script to start the animation... 
-* that's it!
+* that's it! You've got an animation that is RESPONSIVE ! Without having to know how to write javascript code lines...
 
 ```html
 <section id="animation-objects" data-delay-before-restart="3000">
