@@ -7,8 +7,8 @@ You describe the DOM objects that you want to animate, attached them to the anim
 
 To use it, have a look on the examples provided...
 
-What is iFSMAnimation?
-======================
+What is iFSMAnimation ?
+=======================
 
 iFSMAnimation is javascript library that allows to create animations from an html description.
 
@@ -37,8 +37,12 @@ Mainly, you need to create:
 </section>
 <script>
 $(document).ready(function() {
-	//initialize and start the general animation with 'mainAnimation' defined in iFSMAnimation.hs
-	$('section#animation-objects').iFSM(mainAnimation);
+	//wait for the download of the images if any...
+	$('#animation-objects').waitForImages().done(function() {
+		//initialize and start the general animation
+		$('#animation-objects').iFSM(mainAnimation);
+	});
+)};
 </script>
 ```
 
@@ -140,8 +144,8 @@ To start the animation, you will need to add this script:
 <script>
 $(document).ready(function() {
 	//should wait for all the download of the images...
-	$('body').waitForImages().done(function() {
-		//initialize and start the general animation with 'mainAnimation' defined in iFSMAnimation.js
+	$('section').waitForImages().done(function() {
+		//initialize and start the general animation
 		$('section').iFSM(mainAnimation);
 	});
 )};
