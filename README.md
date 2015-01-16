@@ -65,14 +65,20 @@ data-delay-before-restart
 -------------------------
 The 'data-delay-before-restart' attribute allows to define the delay before the animation restarts. 
 
-Example: <section id="animation-objects" data-delay-before-restart="10000">
+Example: 
+```html
+<section id="animation-objects" data-delay-before-restart="10000">
+```
 
 data-box-responsive
 -------------------
 Boolean, if 'true', the animation will be 'responsive'.
 Limitations known with using 'specialAnimate'.
 
-Example: <section id="animation-objects" data-box-responsive="true">
+Example: 
+```html
+<section id="animation-objects" data-box-responsive="true">
+```
 
 
 data-box-size-reference
@@ -80,18 +86,28 @@ data-box-size-reference
 
 "BoxWidth,BoxHeight" give the used dimensions as reference for the position of the animated objects. Useful in Responsive mode.
 
-Example: <section id="animation-objects" data-box-size-reference="551,551" >
+Example: 
+```html
+<section id="animation-objects" data-box-size-reference="551,551" >
+```
 
 data-keep-height-visible
 ------------------------
 Boolean, if 'true', the width and height will be fixed in order that the animation is fully shown on the window display.
-Example: <section id="animation-objects" data-keep-height-visible="true"> 
+Example: 
+```html
+<section id="animation-objects" data-keep-height-visible="true">
+```
+ 
 
 data-div-class
 --------------
 Actually, a 'div' encapsultes the animation. It is possible to define the class that should be used on this div.
 
-Example: <section id="animation-objects" data-div-class="animation">
+Example: 
+```html
+<section id="animation-objects" data-div-class="animation">
+```
 
 data-loader-class
 -----------------
@@ -100,8 +116,10 @@ A loader may be set during initialization.
 
 To display a loader, just indicate the class to use with the data-loader-class attribute.
 
-Example: <section id="animation-objects" data-loader-class="myLoaderClass">
-
+Example: 
+```html
+<section id="animation-objects" data-loader-class="myLoaderClass">
+```
 
  
 Attributes on a sub container
