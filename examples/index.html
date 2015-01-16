@@ -23,12 +23,12 @@
 		<p></p>
 	</header>
 	<div id="animation">
-	    <section id="animation-objects" data-delay-before-restart="10000" data-box-size-reference="551,551" data-box-responsive="true" data-div-class="animationDiv">
-	        <article id="HappyNewYear_Snow1" class="snow" data-animation="loop,28000,-30,551,0,-800,0,0" data-enter-animation="display, 0, 0, -650, 0, -650" data-exit-animation="dummy,100,0,-1000">
-	        	<img src="images/snow.png">
+	    <section id="animation-objects" data-delay-before-restart="10000" data-box-size-reference="551,551" data-box-responsive="true" data-div-class="animationDiv" data-loader-class="animationLoader">
+	        <article id="HappyNewYear_Snow1" class="snow" data-animation="loop,28000,0,551,0,-775,0,0" data-enter-animation="display, 0, 0, -775, 0, -775" data-exit-animation="dummy,100,0,-1000">
+	        	<img src="images/bulles1.png" width="551px">
 	        </article>
-	        <article id="HappyNewYear_Snow2" class="snow" data-animation="loop,50000,30,551,0,-830,0,0" data-enter-animation="display, 0, 0, -700, 0, -700" data-exit-animation="dummy,100,0,-1000">
-	        	<img src="images/snow.png">
+	        <article id="HappyNewYear_Snow2" class="snow" data-animation="loop,50000,0,551,0,-775,0,0" data-enter-animation="display, 0, 0, -775, 0, -775" data-exit-animation="dummy,100,0,-1000">
+	        	<img src="images/bulles2.png"  width="551px">
 	        </article>
 	        <article id="HappyNewYear_B" data-animation="dummy" data-enter-animation="display,250, 66, 56, 66, 56" data-exit-animation="smoothHide,100,66,56">
 	        	<img src="images/B.png">
@@ -122,7 +122,7 @@
 			
 			//ANIMATION_NEEDED_SCRIPTS[WAITFORIMAGES_ULR] = 'ext_lib/waitForImages/dist/jquery.waitforimages.js';
 			
-			//initialize the machine of every articles
+			//as we want to define the objects to animate and the order, we need to initialize the machine of every articles
 			$('section#animation-objects > article').iFSM(animatedObjectMachine,{debug:false});
 			//initialize and start the general animation
 			$('section#animation-objects').iFSM(mainAnimation,{animationSequence:myAnimationSequence,debug:false});

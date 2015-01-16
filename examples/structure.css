@@ -39,11 +39,29 @@ body {
 }
 
 #animation-objects,.animated_section {
-	background-color:	#1c3970;
+	background: rgba(34,113,182,1);
+	background: -moz-linear-gradient(top, rgba(34,113,182,1) 0%, rgba(34,113,182,1) 15%, rgba(28,57,112,1) 84%, rgba(28,57,112,1) 100%);
+	background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(34,113,182,1)), color-stop(15%, rgba(34,113,182,1)), color-stop(84%, rgba(28,57,112,1)), color-stop(100%, rgba(28,57,112,1)));
+	background: -webkit-linear-gradient(top, rgba(34,113,182,1) 0%, rgba(34,113,182,1) 15%, rgba(28,57,112,1) 84%, rgba(28,57,112,1) 100%);
+	background: -o-linear-gradient(top, rgba(34,113,182,1) 0%, rgba(34,113,182,1) 15%, rgba(28,57,112,1) 84%, rgba(28,57,112,1) 100%);
+	background: -ms-linear-gradient(top, rgba(34,113,182,1) 0%, rgba(34,113,182,1) 15%, rgba(28,57,112,1) 84%, rgba(28,57,112,1) 100%);
+	background: linear-gradient(to bottom, rgba(34,113,182,1) 0%, rgba(34,113,182,1) 15%, rgba(28,57,112,1) 84%, rgba(28,57,112,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2271b6', endColorstr='#1c3970', GradientType=0 );	
+/*	background-color:	#1c3970;*/
 }
 
 section#animation-objects article {
 	opacity		: 0;
+}
+
+.animationLoader
+{
+	background-image	: url("images/ajax-loader.gif");
+	background-repeat	: no-repeat;
+	background-position	: center 33%;
+	background-color	: rgba(240, 240, 240, .84);
+	position			: absolute;
+	z-index				: 9999;
 }
 
 .glow {
@@ -65,7 +83,7 @@ button {
 	margin			: 0 2px;
 	font-size		: 10px;
 	border			: 1px solid #333;
-	width			: 70px;
+	width			: 75px;
 	text-shadow		: 0 -1px 0 #333;
 	border-radius	: 5px;
 	cursor			: pointer;

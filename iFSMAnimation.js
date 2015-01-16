@@ -107,9 +107,9 @@ var animatedObjectMachine = {
 		enterState:
 		{
 			init_function: function() {
-				if (this.myUIObject.attr('data-animation')) 		this.opts.data_animation 		= this.myUIObject.attr('data-animation').replace(/[ \t\r]+/g,"").split(',');
-				if (this.myUIObject.attr('data-enter-animation')) 	this.opts.data_enter_animation 	= this.myUIObject.attr('data-enter-animation').replace(/[ \t\r]+/g,"").split(',');
-				if (this.myUIObject.attr('data-exit-animation')) 	this.opts.data_exit_animation 	= this.myUIObject.attr('data-exit-animation').replace(/[ \t\r]+/g,"").split(',');
+				if (this.myUIObject.attr('data-animation') 			&& (this.myUIObject.attr('data-animation')!= '') ) 			this.opts.data_animation 		= this.myUIObject.attr('data-animation').replace(/[ \t\r]+/g,"").split(',');
+				if (this.myUIObject.attr('data-enter-animation') 	&& (this.myUIObject.attr('data-enter-animation')!= '')) 	this.opts.data_enter_animation 	= this.myUIObject.attr('data-enter-animation').replace(/[ \t\r]+/g,"").split(',');
+				if (this.myUIObject.attr('data-exit-animation') 	&& (this.myUIObject.attr('data-exit-animation')!= '')) 		this.opts.data_exit_animation 	= this.myUIObject.attr('data-exit-animation').replace(/[ \t\r]+/g,"").split(',');
 			},
 			next_state: 'ObjectInitialized',
 		},
@@ -151,15 +151,15 @@ var animatedObjectMachine = {
 			init_function: function() {
 				//TO DO - we should create states and events to process these statements according to requested animation!
 
-				if (this.opts.currentAnimationData[ANIMATION_X_ORIGIN]) this.opts.currentAnimationData[ANIMATION_X_ORIGIN] = parseInt(this.opts.currentAnimationData[ANIMATION_X_ORIGIN]);
-				if (this.opts.currentAnimationData[ANIMATION_Y_ORIGIN]) this.opts.currentAnimationData[ANIMATION_Y_ORIGIN] = parseInt(this.opts.currentAnimationData[ANIMATION_Y_ORIGIN]);
+				if (this.opts.currentAnimationData[ANIMATION_X_ORIGIN] != null) this.opts.currentAnimationData[ANIMATION_X_ORIGIN] = parseInt(this.opts.currentAnimationData[ANIMATION_X_ORIGIN]);
+				if (this.opts.currentAnimationData[ANIMATION_Y_ORIGIN] != null) this.opts.currentAnimationData[ANIMATION_Y_ORIGIN] = parseInt(this.opts.currentAnimationData[ANIMATION_Y_ORIGIN]);
 				this.opts.currentAnimationData[ANIMATION_X_DESTINATION] = parseInt(this.opts.currentAnimationData[ANIMATION_X_DESTINATION]);
 				this.opts.currentAnimationData[ANIMATION_Y_DESTINATION] = parseInt(this.opts.currentAnimationData[ANIMATION_Y_DESTINATION]);
 
 				if (this.opts.doResponsive && this.opts.currentAnimationData[ANIMATION_TYPE] != 'rotate')
 				{
-					if (this.opts.currentAnimationData[ANIMATION_X_ORIGIN]) this.opts.currentAnimationData[ANIMATION_X_ORIGIN] = this.opts.currentAnimationData[ANIMATION_X_ORIGIN]*100/parseInt(this.opts.generalSize.X)+"%";
-					if (this.opts.currentAnimationData[ANIMATION_Y_ORIGIN]) this.opts.currentAnimationData[ANIMATION_Y_ORIGIN] = this.opts.currentAnimationData[ANIMATION_Y_ORIGIN]*100/parseInt(this.opts.generalSize.Y)+"%";
+					if (this.opts.currentAnimationData[ANIMATION_X_ORIGIN] != null) this.opts.currentAnimationData[ANIMATION_X_ORIGIN] = this.opts.currentAnimationData[ANIMATION_X_ORIGIN]*100/parseInt(this.opts.generalSize.X)+"%";
+					if (this.opts.currentAnimationData[ANIMATION_Y_ORIGIN] != null) this.opts.currentAnimationData[ANIMATION_Y_ORIGIN] = this.opts.currentAnimationData[ANIMATION_Y_ORIGIN]*100/parseInt(this.opts.generalSize.Y)+"%";
 					this.opts.currentAnimationData[ANIMATION_X_DESTINATION] = this.opts.currentAnimationData[ANIMATION_X_DESTINATION]*100/parseInt(this.opts.generalSize.X)+'%';
 					this.opts.currentAnimationData[ANIMATION_Y_DESTINATION] = this.opts.currentAnimationData[ANIMATION_Y_DESTINATION]*100/parseInt(this.opts.generalSize.Y)+'%';
 					
@@ -659,12 +659,30 @@ var mainAnimation = {
 	{
 		start: 
 		{
+			init_function: function() {
+ 				this.myUIObject.css({width:'0px'}); // a way to undisplay without breaking things during rendering...
+ 				
+ 				//if the data-loader-class attribute is define, will remove any pre-defined opts.loader
+ 				if (this.myUIObject.attr('data-loader-class')) this.opts.loader={class:this.myUIObject.attr('data-loader-class')};
+ 				
+ 				if (this.opts.loader)
+ 				{
+ 	 				if (!this.opts.loader.id) this.opts.loader.id = 'AnimationLoader-'+this.myUIObject.attr('id');
+ 	 				if (!this.opts.loader.class) this.opts.loader.class = 'AnimationLoader';
+ 	 				//Show a loader
+ 	 				this.myUIObject.before( '<div id="'+this.opts.loader.id+'" class="'+this.opts.loader.class+'"></div>');
+ 	 				$('#'+this.opts.loader.id).stop().fadeIn( 500 );
+ 				}
+ 				
+			},
 			next_state: 'WaitForJavascriptFileDownloaded',
 		},
 		initAnimatedObjects: 
 		{
 			init_function: function() {
+				
 				if (!this.opts.animatedObjectDefinition) this.opts.animatedObjectDefinition='article';
+				
 				if (!this.opts.animationSequence)
 				{
 					//get the animated objects
@@ -697,6 +715,7 @@ var mainAnimation = {
 					if (heightAnim > $(window).height()) 
 					{
 						widthAnim = $(window).height() * ratio;
+						heightAnim = widthAnim/ratio;
 					}
 				}
 				
@@ -734,7 +753,10 @@ var mainAnimation = {
 							if (doResponsive) aFSM.myUIObject.css({
 								width:aFSM.myUIObject.width()*100/parseInt(aFSM.opts.generalSize.X)+"%"
 							});
-						});
+				});
+				
+				if (this.opts.loader) $('#'+this.opts.loader.id).stop().fadeOut( 500 );
+
 			},
 			next_state : 'InitAnimation',
 		},

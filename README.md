@@ -92,6 +92,17 @@ data-div-class
 Actually, a 'div' encapsultes the animation. It is possible to define the class that should be used on this div.
 
 Example: <section id="animation-objects" data-div-class="animation">
+
+data-loader-class
+-----------------
+
+A loader may be set during initialization. 
+
+To display a loader, just indicate the class to use with the data-loader-class attribute.
+
+Example: <section id="animation-objects" data-loader-class="myLoaderClass">
+
+
  
 Attributes on a sub container
 =============================
@@ -143,11 +154,8 @@ To start the animation, you will need to add this script:
 ```javascript
 <script>
 $(document).ready(function() {
-	//should wait for all the download of the images...
-	$('section').waitForImages().done(function() {
-		//initialize and start the general animation
-		$('section').iFSM(mainAnimation);
-	});
+	//initialize and start the general animation
+	$('section').iFSM(mainAnimation);
 )};
 </script>
 ```
@@ -168,6 +176,8 @@ var myAnimationSequence=['#myAnimObj2','#myAnimObj1'];
 $('#animation-objects').iFSM(mainAnimation,{animationSequence:myAnimationSequence})
 $('#animation2').iFSM(mainAnimation,{animatedObjectDefinition:'div',debug:true});
 ```
+
+
 CCS
 ===
 
