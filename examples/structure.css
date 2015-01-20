@@ -52,6 +52,21 @@ body {
 
 section#animation-objects article {
 	opacity		: 0;
+	width:1000px;
+	height:1000px;
+}
+#Slide1
+{
+	background-color : blue;
+}
+#Slide1 div,#Slide2 div
+{
+	width:100%;
+	height:100%;
+	}
+#Slide2
+{
+	background-color : red;
 }
 
 .animationLoader

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="UTF-8">
+	<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+	<title>Intersel | Some special animations</title>
+	<meta name="viewport" content="initial-scale=1.0">
+	<meta content="" name="description">
+	<link rel="stylesheet" href="structure.css" media="all">
+	<!-- include of iFSM - see https://github.com/intersel/iFSM/ -->
+	<script type="text/javascript" src="http://rawgit.com/intersel/iFSM/master/extlib/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="http://rawgit.com/intersel/iFSM/master/extlib/jquery.dorequesttimeout.js"></script>
+	<script type="text/javascript" src="http://rawgit.com/intersel/iFSM/master/extlib/jquery.attrchange.js"></script>
+	<script type="text/javascript" src="http://rawgit.com/intersel/iFSM/master/iFSM.js"></script>
+	
+	<!--  include of the iFSM Animation tool -->
+	<script type="text/javascript" src="ext_lib/jquery.path/jquery.path.js"></script>
+	<script type="text/javascript" src="ext_lib/FitText/jquery.fittext.js"></script>
+	<script type="text/javascript" src="../iFSMAnimation.js"></script>
+</head>
+<body>
+	<header id="header" role="banner">
+		<h2>this is a animation example using iFMSAnimation :-)</h2>
+	</header>
+    <section id="animation-objects" data-delay-before-restart="0" data-box-size-reference="1000,1000"  data-box-responsive="true"  data-div-class="animation">
+        <article id="Slide1" data-animation="display,2000,0,0" data-enter-animation="display, 1000, 0,0, -500, 0" data-exit-animation="smoothHide,10,550,0">
+        	<div>I'm a 1 slide....<br>good to be here!</div>
+        </article>
+        <article id="Slide2" data-animation="display,2000,0,0" data-enter-animation="display, 1000, 0,0, 0, -500" data-exit-animation="smoothHide,1000,550,0">
+        	<div>I'm a second slide....</div>
+        </article>
+	</section>
+	<button class="playAnimation" id="onoff_animation"></button>
+	<footer id="footer" role="footer">
+		<p>
+            <a class="signature" href="http://www.intersel.fr/">Animation par Intersel</a>
+		</p>
+	</footer>
+		<script>
+		$(document).ready(function() {
+			//initialize and start the general animation
+			$('section#animation-objects div').fitText(1);
+			$('section#animation-objects').iFSM(mainAnimation,{debug:true});
+			//Animation Button
+			$("#onoff_animation").iFSM(buttonOnOffMachine,{sendTo:$('section#animation-objects'),sendToMessage:{on:'tempStartAnimation',off:'tempStopAnimation'},text:{on:'Stop Anim',off:'Play Anim'}});
+			$("#onoff_animation").click();
+				
+		});
+	</script>
+	
+</body>
+</html>
