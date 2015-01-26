@@ -97,7 +97,7 @@ var ANIMATION_LOOP_BACK_DELAY	= 7; //
 var ANIMATION_NOTWAIT			= 100;
 
 var ANIMATION_NEEDED_SCRIPTS	= [
-	'http://rawgit.com/alexanderdickson/waitForImages/master/dist/jquery.waitforimages.js',
+	'ext_lib/waitForImages/dist/jquery.waitforimages.js',
 	];
 var WAITFORIMAGES_ULR = 0;
 
@@ -406,7 +406,6 @@ var animatedObjectMachine = {
 						duration	: parseInt(this.opts.currentAnimationData[ANIMATION_DURATION]), 
 						complete	: function(){aFSM.trigger('animationStopped');},
 				});
-				//this.myUIObject.css({display:'none'});//utile?
 			}
 		},
 		display:

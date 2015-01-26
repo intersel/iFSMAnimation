@@ -1,0 +1,138 @@
+/**
+ * -----------------------------------------------------------------------------------------
+ * INTERSEL - 4 cité d'Hauteville - 75010 PARIS
+ * RCS PARIS 488 379 660 - NAF 721Z
+ *
+ * File    : structure.css
+ * Abstract: style for animation
+ * Remark  :
+ * -----------------------------------------------------------------------------------------
+ * Modifications:
+ * - 20141223 - EPO - V1.0.0 - Creation
+ * -  -  - V<current_version of the developed software> - Rename into P1P2_MYClassName
+ * -----------------------------------------------------------------------------------------
+ * @copyright Intersel 2014
+ * @author    E.Podvin emmanuel.podvin@intersel.fr
+ * @author    second... IAM me.iam@intersel.fr
+ * @version   <1.0.0> (to be updated to the current_version of the developed software if file is touched)
+ * -----------------------------------------------------------------------------------------
+ */
+
+body {
+	margin		: 0px; 
+	padding		: 0px;
+	text-align	: center;
+	}
+
+#animation, .animation {
+	margin : 0 0% 30px 0%;
+}
+.animationDiv {
+	-moz-box-shadow: 10px 10px 5px 0px #656565;
+	-webkit-box-shadow: 10px 10px 5px 0px #656565;
+	-o-box-shadow: 10px 10px 5px 0px #656565;
+	box-shadow: 10px 10px 5px 0px #656565;
+	filter:progid:DXImageTransform.Microsoft.Shadow(color=#656565, Direction=134, Strength=5);
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+}
+
+#animation-objects,.animated_section {
+	background: rgba(34,113,182,1);
+	background: -moz-linear-gradient(top, rgba(34,113,182,1) 0%, rgba(34,113,182,1) 15%, rgba(28,57,112,1) 84%, rgba(28,57,112,1) 100%);
+	background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(34,113,182,1)), color-stop(15%, rgba(34,113,182,1)), color-stop(84%, rgba(28,57,112,1)), color-stop(100%, rgba(28,57,112,1)));
+	background: -webkit-linear-gradient(top, rgba(34,113,182,1) 0%, rgba(34,113,182,1) 15%, rgba(28,57,112,1) 84%, rgba(28,57,112,1) 100%);
+	background: -o-linear-gradient(top, rgba(34,113,182,1) 0%, rgba(34,113,182,1) 15%, rgba(28,57,112,1) 84%, rgba(28,57,112,1) 100%);
+	background: -ms-linear-gradient(top, rgba(34,113,182,1) 0%, rgba(34,113,182,1) 15%, rgba(28,57,112,1) 84%, rgba(28,57,112,1) 100%);
+	background: linear-gradient(to bottom, rgba(34,113,182,1) 0%, rgba(34,113,182,1) 15%, rgba(28,57,112,1) 84%, rgba(28,57,112,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2271b6', endColorstr='#1c3970', GradientType=0 );	
+/*	background-color:	#1c3970;*/
+}
+
+section#animation-objects article {
+	opacity		: 0;
+	width:1300px;
+	height:500px;
+
+}
+#Slide1
+{
+	background-color : blue;
+}
+#Slide1 div,#Slide2 div
+{
+	}
+#Slide2
+{
+	background-color : red;
+}
+#Slide3
+{
+	background-color : green;
+}
+#Slide4
+{
+	background-color : grey;
+}
+
+.animationLoader
+{
+	background-image	: url("images/ajax-loader.gif");
+	background-repeat	: no-repeat;
+	background-position	: center 33%;
+	background-color	: rgba(240, 240, 240, .84);
+	position			: absolute;
+	z-index				: 9999;
+}
+
+.signature {
+	font-family:Helvetica, Arial, 'lucida grande',tahoma,verdana,arial,sans-serif;
+	font-size:12px;
+}
+
+button {
+	margin			: 0 2px;
+	font-size		: 10px;
+	border			: 1px solid #333;
+	width			: 75px;
+	text-shadow		: 0 -1px 0 #333;
+	border-radius	: 5px;
+	cursor			: pointer;
+}
+
+button.on {
+	color: #dfd;
+	background: -moz-linear-gradient(top, rgba(228, 37, 0, 1) 0%,
+		rgba(198, 38, 7, 1) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(0,
+		153, 0, 1)), color-stop(100%, rgba(198, 38, 7, 1)));
+	background: -webkit-linear-gradient(top, rgba(228, 37, 0, 1) 0%,
+		rgba(198, 38, 7, 1) 100%);
+	background: -o-linear-gradient(top, rgba(228, 37, 0, 1) 0%,
+		rgba(198, 38, 7, 1) 100%);
+	background: -ms-linear-gradient(top, rgba(228, 37, 0, 1) 0%,
+		rgba(198, 38, 7, 1) 100%);
+	background: linear-gradient(top, rgba(228, 37, 0, 1) 0%,
+		rgba(198, 38, 7, 1) 100%);
+}
+
+button.off {
+	color: #fdd;
+	background: #00aa00;
+	background: -moz-linear-gradient(top, rgba(204, 0, 0, 1) 0%,
+		rgba(153, 0, 0, 1) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(204,
+		0, 0, 1)), color-stop(100%, rgba(153, 0, 0, 1)));
+	background: -webkit-linear-gradient(top, rgba(204, 0, 0, 1) 0%,
+		rgba(153, 0, 0, 1) 100%);
+	background: -o-linear-gradient(top, rgba(204, 0, 0, 1) 0%,
+		rgba(153, 0, 0, 1) 100%);
+	background: -ms-linear-gradient(top, rgba(204, 0, 0, 1) 0%,
+		rgba(153, 0, 0, 1) 100%);
+	background: linear-gradient(top, rgba(204, 0, 0, 1) 0%,
+		rgba(153, 0, 0, 1) 100%);
+}
+button:hover {
+	color: #fcc;
+}
