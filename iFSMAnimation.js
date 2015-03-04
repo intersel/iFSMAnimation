@@ -122,7 +122,7 @@ var animatedObjectMachine = {
 		startEnterAnimation:
 		{
 			init_function: function(parameters, event, data) {
-				this.opts.currentAnimationCaller = data;
+				this.opts.currentAnimationCaller = jQuery.extend(true, {}, data);
 				if (this.opts.data_enter_animation) this.opts.currentAnimationData 	= jQuery.extend(true, {}, this.opts.data_enter_animation);
 				else this.opts.currentAnimationData = null;
 			},
@@ -131,7 +131,7 @@ var animatedObjectMachine = {
 		startAnimation:
 		{
 			init_function: function(parameters, event, data) {
-				this.opts.currentAnimationCaller = data;
+				this.opts.currentAnimationCaller = jQuery.extend(true, {}, data);
 				if (this.opts.data_animation) this.opts.currentAnimationData 	= jQuery.extend(true, {}, this.opts.data_animation);
 				else this.opts.currentAnimationData = null;
 			},
@@ -140,7 +140,7 @@ var animatedObjectMachine = {
 		startExitAnimation:
 		{
 			init_function: function(parameters, event, data) {
-				this.opts.currentAnimationCaller = data;
+				this.opts.currentAnimationCaller = jQuery.extend(true, {}, data);
 				if (this.opts.data_exit_animation) this.opts.currentAnimationData 	= jQuery.extend(true, {}, this.opts.data_exit_animation);
 				else this.opts.currentAnimationData = null;
 			},
@@ -171,6 +171,7 @@ var animatedObjectMachine = {
 		{
 			init_function: function() {
 			},
+			how_process_event:{delay:10,preventcancel:true},
 			next_state:'EnterAnimation',
 			next_state_when:'(this.opts.currentAnimationData != null) && (this.opts.currentAnimationData[ANIMATION_TYPE] != "dummy")',
 			propagate_event:'voidAnimationData',
@@ -316,7 +317,7 @@ var animatedObjectMachine = {
 	            		},
 	            		animationStopped:
 	            		{
-	            			next_state : 'initLoop',
+	            			next_state : 'LoopInMotionStart',
 	            		},
 	            		//do not react on external stimulations...
 	            		startEnterAnimation:'startExitAnimation',
@@ -418,7 +419,9 @@ var animatedObjectMachine = {
     					top		: this.rootMachine.opts.currentAnimationData[ANIMATION_Y_DESTINATION],
 				},{
 						duration	: parseInt(this.opts.currentAnimationData[ANIMATION_DURATION]), 
-						complete	: function(){aFSM.trigger('animationStopped');},
+						complete	: function(){
+							aFSM.trigger('animationStopped');
+						},
 				});
 			}
 		},
@@ -441,7 +444,9 @@ var animatedObjectMachine = {
 	{
 		enterState:
 		{
-			init_function: function() {if (this.opts.currentAnimationCaller) this.opts.currentAnimationCaller.trigger('animationStopped');},
+			init_function: function() {
+				if (this.opts.currentAnimationCaller) this.opts.currentAnimationCaller.trigger('animationStopped');
+			},
 			next_state:'ObjectInitialized',
 		}
 	},
@@ -482,7 +487,7 @@ var animatedObjectMachine = {
  *  @param int,int data-box-size-reference - gives the width and height of the reference outer box (default: 500,500)
  *  @param boolean data-box-responsive - true/false, if true, the box should be responsive 
  *  @param array  opts.animationSequence (optional) - list of the animated objects in the order of their animation. If defined, you need to previously attach the iFSM machines to them.
- *  @param string opts.animatedObjectDefinition (optional, default = 'article') - definition to find the animated objects under the object attached to the iFSM machine (myUIObject)
+ *  @param string opts.animatedObjectDefinition (optional, default = '> article') - definition to find the animated objects under the object attached to the iFSM machine (myUIObject)
  *  received events :
  *    - tempStopAnimation - stop the animation
  *    - tempStartAnimation -  restart the animation
@@ -503,7 +508,9 @@ var mainAnimation = {
 		enterState:
 		{
 			init_function: function() {
-				if ($(this.opts.animationSequence[this.opts.animationStep]).length>0) $(this.opts.animationSequence[this.opts.animationStep]).trigger('startEnterAnimation',this);
+				var aFSM=this;
+				if ($(this.opts.animationSequence[this.opts.animationStep]).length>0) 
+					$(this.opts.animationSequence[this.opts.animationStep]).trigger('startEnterAnimation',aFSM);
 				else this.trigger('animationObjectVoid');
 			},
 			next_state:'WaitForStartAnimationDone',
@@ -680,7 +687,7 @@ var mainAnimation = {
 		{
 			init_function: function() {
 				
-				if (!this.opts.animatedObjectDefinition) this.opts.animatedObjectDefinition='article';
+				if (!this.opts.animatedObjectDefinition) this.opts.animatedObjectDefinition='> article';
 				
 				if (!this.opts.animationSequence)
 				{
@@ -739,6 +746,7 @@ var mainAnimation = {
 				var doResponsive = this.myUIObject.attr('data-box-responsive');
 				if (!doResponsive || doResponsive == "false") doResponsive=false;
 				
+				var zindex = 1;
 				$.each(this.opts.animationSequence, 
 						function(aKey,aValue)
 						{
@@ -748,7 +756,9 @@ var mainAnimation = {
 							aFSM.opts.doResponsive = doResponsive;
 							aFSM.myUIObject.css({
 								position:'absolute',
+								zIndex:zindex
 							});
+							zindex++;
 							if (doResponsive) aFSM.myUIObject.css({
 								width:aFSM.myUIObject.width()*100/parseInt(aFSM.opts.generalSize.X)+"%"
 							});
