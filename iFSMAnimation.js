@@ -97,7 +97,7 @@ var ANIMATION_LOOP_BACK_DELAY	= 7; //
 var ANIMATION_NOTWAIT			= 100;
 
 var ANIMATION_NEEDED_SCRIPTS	= [
-	'../js/slide/ext_lib/waitForImages/dist/jquery.waitforimages.js',
+	'ext_lib/waitForImages/dist/jquery.waitforimages.js',
 	];
 var WAITFORIMAGES_ULR = 0;
 
@@ -513,8 +513,8 @@ var mainAnimation = {
 		{
 			init_function: function() {
 				var aFSM=this;
-				if ($(this.opts.animationSequence[this.opts.animationStep]).length>0) 
-					$(this.opts.animationSequence[this.opts.animationStep]).trigger('startEnterAnimation',aFSM);
+				if ( jQuery(this.opts.animationSequence[this.opts.animationStep]).length>0) 
+					 jQuery(this.opts.animationSequence[this.opts.animationStep]).trigger('startEnterAnimation',aFSM);
 				else this.trigger('animationObjectVoid');
 			},
 			next_state:'WaitForStartAnimationDone',
@@ -549,7 +549,7 @@ var mainAnimation = {
 		doAnimation:
 		{
 			init_function: function() {
-				$(this.opts.animationSequence[this.opts.animationStep]).trigger('startAnimation',this);
+				 jQuery(this.opts.animationSequence[this.opts.animationStep]).trigger('startAnimation',this);
 				this.opts.animationStep++;
 			},
 			next_state:'WaitForAnimationDone',
@@ -605,7 +605,7 @@ var mainAnimation = {
 		resetAnimation:
 		{
 			init_function: function() {
-				if ($(this.opts.animationSequence[this.opts.animationStep]).length>0) $(this.opts.animationSequence[this.opts.animationStep]).trigger('startExitAnimation',this);
+				if ( jQuery(this.opts.animationSequence[this.opts.animationStep]).length>0)  jQuery(this.opts.animationSequence[this.opts.animationStep]).trigger('startExitAnimation',this);
 				this.opts.animationStep++;
 			},
 		},
@@ -686,8 +686,8 @@ var mainAnimation = {
 			init_function: function() {
 				var myFSM = this;
 				this.opts.scriptsToLoad = ANIMATION_NEEDED_SCRIPTS;
-				$.each(this.opts.scriptsToLoad,	function(aKey,aScriptURL){				
-					$.getScript( aScriptURL, function() {
+				 jQuery.each(this.opts.scriptsToLoad,	function(aKey,aScriptURL){				
+					 jQuery.getScript( aScriptURL, function() {
 						myFSM.trigger('scriptDownloaded');
 					});
 				});
@@ -709,7 +709,7 @@ var mainAnimation = {
  				//if the data-loader-class attribute is define, will remove any pre-defined opts.loader
  				if (this.myUIObject.attr('data-loader-class')) this.opts.loader={class:this.myUIObject.attr('data-loader-class')};
 				
-				if (!this.opts.automaticStart) this.opts.automaticStart=false;//by default, start animation automatically 
+				if (this.opts.automaticStart==undefined) this.opts.automaticStart=true;//by default, start animation automatically  (if undefined then it's true (automactic))
  				
  				if (this.opts.loader)
  				{
@@ -752,7 +752,7 @@ var mainAnimation = {
 				if (aGeneralSize[0] <= 0) aGeneralSize[0] = $(window).width(); 
 				if (aGeneralSize[1] <= 0) aGeneralSize[1] = $(window).height(); 
 
-				var widthAnim = Math.min($(window).width(),aGeneralSize[0]);
+				var widthAnim = Math.min( jQuery(window).width(),aGeneralSize[0]);
 				var ratio = aGeneralSize[0] / aGeneralSize[1];
 				var heightAnim = widthAnim/ratio;
 
@@ -788,10 +788,10 @@ var mainAnimation = {
 				if (!doResponsive || doResponsive == "false") doResponsive=false;
 				
 				var zindex = 1;
-				$.each(this.opts.animationSequence, 
+				 jQuery.each(this.opts.animationSequence, 
 						function(aKey,aValue)
 						{
-							var aFSM = $(aValue).getFSM()[0]; 
+							var aFSM =  jQuery(aValue).getFSM()[0]; 
 							if (!aFSM || aFSM.length == 0) return;
 							aFSM.opts.generalSize = {X:aGeneralSize[0],Y:aGeneralSize[1]};
 							aFSM.opts.doResponsive = doResponsive;
@@ -808,7 +808,7 @@ var mainAnimation = {
 				if (this.opts.loader) $('#'+this.opts.loader.id).stop().fadeOut( 500 );
 
 				if (this.opts.automaticStart) this.trigger('startAnimation');
-				
+
 			},
 			next_state : 'InitAnimation',
 		},
