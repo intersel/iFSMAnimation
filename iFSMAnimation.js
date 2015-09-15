@@ -488,6 +488,7 @@ var animatedObjectMachine = {
  *  @param boolean data-box-responsive - true/false, if true, the box should be responsive 
  *  @param array  opts.animationSequence (optional) - list of the animated objects in the order of their animation. If defined, you need to previously attach the iFSM machines to them.
  *  @param string opts.animatedObjectDefinition (optional, default = '> article') - definition to find the animated objects under the object attached to the iFSM machine (myUIObject)
+ *  @param boolean opts.automaticStart (optional, default: true) : if false, the animation needs to be start with the 'startAnimation' event
  *  received events :
  *    - tempStopAnimation - stop the animation
  *    - tempStartAnimation -  restart the animation
@@ -500,6 +501,9 @@ var mainAnimation = {
 			init_function: function() {
 				this.opts.animationStep = 0;
 			},
+		},
+		startAnimation:
+		{
 			next_state:'StartAnimation',
 		},
 	},
@@ -509,8 +513,8 @@ var mainAnimation = {
 		{
 			init_function: function() {
 				var aFSM=this;
-				if ($(this.opts.animationSequence[this.opts.animationStep]).length>0) 
-					$(this.opts.animationSequence[this.opts.animationStep]).trigger('startEnterAnimation',aFSM);
+				if ( jQuery(this.opts.animationSequence[this.opts.animationStep]).length>0) 
+					 jQuery(this.opts.animationSequence[this.opts.animationStep]).trigger('startEnterAnimation',aFSM);
 				else this.trigger('animationObjectVoid');
 			},
 			next_state:'WaitForStartAnimationDone',
@@ -545,7 +549,7 @@ var mainAnimation = {
 		doAnimation:
 		{
 			init_function: function() {
-				$(this.opts.animationSequence[this.opts.animationStep]).trigger('startAnimation',this);
+				 jQuery(this.opts.animationSequence[this.opts.animationStep]).trigger('startAnimation',this);
 				this.opts.animationStep++;
 			},
 			next_state:'WaitForAnimationDone',
@@ -581,16 +585,49 @@ var mainAnimation = {
 				this.opts.animationStep=0;
 				if (this.myUIObject.attr('data-delay-before-restart')) 
 					this._stateDefinition['EndOfAnimation']['startEraseAnimation']['how_process_event'] = {delay: this.myUIObject.attr('data-delay-before-restart')};
-			},
+				},
 			propagate_event:'startEraseAnimation',
 		},
+		resetAnimation:
+		{ 
+			propagate_event : 'resetAnimation',
+			next_state:'DoingEndAndStopAnimation',
+		},
 		startEraseAnimation:
-		{
+		{ 
 			propagate_event : 'eraseAnimation',
 			how_process_event: {delay:2500},
 			next_state:'DoingEndOfAnimation',
 		},
 	},
+	DoingEndAndStopAnimation:
+	{
+		resetAnimation:
+		{
+			init_function: function() {
+				if ( jQuery(this.opts.animationSequence[this.opts.animationStep]).length>0)  jQuery(this.opts.animationSequence[this.opts.animationStep]).trigger('startExitAnimation',this);
+				this.opts.animationStep++;
+			},
+		},
+		animationStopped:
+		{
+			propagate_event:'resetAnimation',
+		},
+		startAnimation:
+		{
+			propagate_event:'startAnimation',
+			next_state:'InitAnimation',
+		},
+
+		//prevent action of stop during resetting the animation and retry the event later on...
+		tempStopAnimation:
+		{
+			propagate_event:true,
+			how_process_event:{delay:500,preventcancel:true},
+		}
+		
+	},
+
 	DoingEndOfAnimation:
 	{
 		eraseAnimation:
@@ -619,6 +656,7 @@ var mainAnimation = {
 	{
 		animationStopped:
 		{
+			propagate_event:'startAnimation',
 			next_state:'InitAnimation',
 		},
 	},
@@ -648,8 +686,8 @@ var mainAnimation = {
 			init_function: function() {
 				var myFSM = this;
 				this.opts.scriptsToLoad = ANIMATION_NEEDED_SCRIPTS;
-				$.each(this.opts.scriptsToLoad,	function(aKey,aScriptURL){				
-					$.getScript( aScriptURL, function() {
+				 jQuery.each(this.opts.scriptsToLoad,	function(aKey,aScriptURL){				
+					 jQuery.getScript( aScriptURL, function() {
 						myFSM.trigger('scriptDownloaded');
 					});
 				});
@@ -670,6 +708,8 @@ var mainAnimation = {
  				
  				//if the data-loader-class attribute is define, will remove any pre-defined opts.loader
  				if (this.myUIObject.attr('data-loader-class')) this.opts.loader={class:this.myUIObject.attr('data-loader-class')};
+				
+				if (this.opts.automaticStart==undefined) this.opts.automaticStart=true;//by default, start animation automatically  (if undefined then it's true (automactic))
  				
  				if (this.opts.loader)
  				{
@@ -712,7 +752,7 @@ var mainAnimation = {
 				if (aGeneralSize[0] <= 0) aGeneralSize[0] = $(window).width(); 
 				if (aGeneralSize[1] <= 0) aGeneralSize[1] = $(window).height(); 
 
-				var widthAnim = Math.min($(window).width(),aGeneralSize[0]);
+				var widthAnim = Math.min( jQuery(window).width(),aGeneralSize[0]);
 				var ratio = aGeneralSize[0] / aGeneralSize[1];
 				var heightAnim = widthAnim/ratio;
 
@@ -739,6 +779,7 @@ var mainAnimation = {
 					paddingBottom : '90%',
 					position	: 'relative',
 					width		: '100%',
+
 					maxWidth	: widthAnim+'px',
 				});
 				
@@ -747,10 +788,10 @@ var mainAnimation = {
 				if (!doResponsive || doResponsive == "false") doResponsive=false;
 				
 				var zindex = 1;
-				$.each(this.opts.animationSequence, 
+				 jQuery.each(this.opts.animationSequence, 
 						function(aKey,aValue)
 						{
-							var aFSM = $(aValue).getFSM()[0]; 
+							var aFSM =  jQuery(aValue).getFSM()[0]; 
 							if (!aFSM || aFSM.length == 0) return;
 							aFSM.opts.generalSize = {X:aGeneralSize[0],Y:aGeneralSize[1]};
 							aFSM.opts.doResponsive = doResponsive;
@@ -765,6 +806,8 @@ var mainAnimation = {
 				});
 				
 				if (this.opts.loader) $('#'+this.opts.loader.id).stop().fadeOut( 500 );
+
+				if (this.opts.automaticStart) this.trigger('startAnimation');
 
 			},
 			next_state : 'InitAnimation',
