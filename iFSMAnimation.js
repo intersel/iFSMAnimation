@@ -678,6 +678,11 @@ var mainAnimation = {
 				this.trigger('initAnimatedObjects');
 			},
 		},
+                startAnimation: //he! wait a minute... we're not ready!
+                {
+                        how_process_event:{delay:100,preventcancel:true},
+                        propagate_event:true,
+                },
 	},
 	WaitForJavascriptFileDownloaded:
 	{
@@ -698,6 +703,11 @@ var mainAnimation = {
 			next_state: 'WaitForImagesDownloaded',
 			next_state_when:'this.EventIteration == this.opts.scriptsToLoad.length',
 		},
+                startAnimation://he! wait a minute... we're not ready!
+                {
+                        how_process_event:{delay:100,preventcancel:true},
+                        propagate_event:true,
+                },
 	},
 	DefaultState: 
 	{
