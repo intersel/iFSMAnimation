@@ -26,9 +26,15 @@
  * </section>
  * then call the following script to activate your animation:
  * <script>
- * 	$(document).ready(function() {
- * //initialize and start the general animation
- * 	$('section#animation-objects').iFSM(mainAnimation);
+ *			$(document).ready(function() {
+ *				$('section#animation-objects').iFSM(mainAnimation);
+ *				//Possible options :
+ *				//$('section#animation-objects').iFSM(mainAnimation,
+ *				//			{	 debug:true
+ *				//				,scriptsToLoad:null
+ *				//				,<... any option of iFSM...>
+ *				//			});
+ *			});
  * </script>
  * 
  * The available animations are:
@@ -81,7 +87,7 @@
 
 /**
  * 
- * 
+ * index of information in data-.... 
  */
 
 var ANIMATION_TYPE 				= 0;
@@ -92,12 +98,17 @@ var SPECIALANIMATION_DEFINITION = 2;
 var ANIMATION_Y_DESTINATION		= 3;
 var ANIMATION_X_ORIGIN			= 4;
 var ANIMATION_Y_ORIGIN			= 5;
+var ANIMATION_EASING			= 6;
 var ANIMATION_LOOP_NUMBER		= 6; // if == 0 then infinite loop
 var ANIMATION_LOOP_BACK_DELAY	= 7; // 
 var ANIMATION_NOTWAIT			= 100;
 
 var ANIMATION_NEEDED_SCRIPTS	= [
-	'ext_lib/waitForImages/dist/jquery.waitforimages.js',
+	 'jquery.dorequesttimeout.js'
+	,'jquery.attrchange.js'
+	,'waitForImages/dist/jquery.waitforimages.js'
+	,'FitText/jquery.fittext.js'
+	,'jquery-ui/jquery-ui.min.js'
 	];
 var WAITFORIMAGES_ULR = 0;
 
@@ -162,6 +173,7 @@ var animatedObjectMachine = {
 					if (this.opts.currentAnimationData[ANIMATION_Y_ORIGIN] != null) this.opts.currentAnimationData[ANIMATION_Y_ORIGIN] = this.opts.currentAnimationData[ANIMATION_Y_ORIGIN]*100/parseInt(this.opts.generalSize.Y)+"%";
 					this.opts.currentAnimationData[ANIMATION_X_DESTINATION] = this.opts.currentAnimationData[ANIMATION_X_DESTINATION]*100/parseInt(this.opts.generalSize.X)+'%';
 					this.opts.currentAnimationData[ANIMATION_Y_DESTINATION] = this.opts.currentAnimationData[ANIMATION_Y_DESTINATION]*100/parseInt(this.opts.generalSize.Y)+'%';
+					if (!this.opts.currentAnimationData[ANIMATION_EASING]) this.opts.currentAnimationData[ANIMATION_EASING]="linear";
 					
 				};
 			},
@@ -190,7 +202,11 @@ var animatedObjectMachine = {
 
 				if (this.opts.currentAnimationData[ANIMATION_X_ORIGIN]) styles['left'] = this.opts.currentAnimationData[ANIMATION_X_ORIGIN];
 				if (this.opts.currentAnimationData[ANIMATION_Y_ORIGIN]) styles['top']  = this.opts.currentAnimationData[ANIMATION_Y_ORIGIN];
-				this.myUIObject.css(styles);
+				
+				//initialize initial position if not a loop...
+				if (this.opts.currentAnimationData[ANIMATION_TYPE] != 'loop')
+					this.myUIObject.css(styles);
+				
 				if (this.opts.doResponsive) this.myUIObject.find('img').css({width:'100%'});
 				this.trigger(this.opts.currentAnimationData[ANIMATION_TYPE]);
 			},
@@ -253,6 +269,7 @@ var animatedObjectMachine = {
 	            						) 
 	            				{
 	            					this.rootMachine.opts.currentAnimationCaller.trigger('animationStopped');
+	            					this.rootMachine.opts.currentAnimationCaller=null;
 	            				}
 	            			},
 	            			prevent_bubble:true,
@@ -277,6 +294,7 @@ var animatedObjectMachine = {
 	            					top		: this.rootMachine.opts.currentAnimationData[ANIMATION_Y_DESTINATION],
 	            					},{
 	            						duration	: parseInt(this.rootMachine.opts.currentAnimationData[ANIMATION_DURATION]), 
+	            						easing		: "linear",//this.opts.currentAnimationData[ANIMATION_EASING],
 	            						complete	: function(){
 	            							aFSM.trigger('loopEnd');
 	            						},
@@ -298,6 +316,7 @@ var animatedObjectMachine = {
 	            					top		: this.rootMachine.opts.currentAnimationData[ANIMATION_Y_ORIGIN],
 	            					},{
 	            					duration	: parseInt(this.rootMachine.opts.currentAnimationData[ANIMATION_LOOP_BACK_DELAY]), 
+            						easing		: "linear",//this.opts.currentAnimationData[ANIMATION_EASING],
 	            					complete	: function(){
 	            						aFSM.trigger('loopEndReinit');
 	            					},
@@ -328,6 +347,7 @@ var animatedObjectMachine = {
 		            			if (this.rootMachine.opts.currentAnimationCaller) 
 		           				{
 		           					this.rootMachine.opts.currentAnimationCaller.trigger('animationStopped');
+		           					this.rootMachine.opts.currentAnimationCaller=null;
 		           				}
 	            			},
 	            			prevent_bubble:true, //while loop is not finished, continue...
@@ -351,15 +371,18 @@ var animatedObjectMachine = {
 				this.myUIObject.stop().animate({
 						left	: this.rootMachine.opts.currentAnimationData[ANIMATION_X_DESTINATION],
 						top		: this.rootMachine.opts.currentAnimationData[ANIMATION_Y_DESTINATION],
-				},{
+					},{
 						duration	: parseInt(this.opts.currentAnimationData[ANIMATION_DURATION]), 
-						complete	: function(){aFSM.trigger('animationStopped');},
+						easing		: this.opts.currentAnimationData[ANIMATION_EASING],
+						complete	: function(){
+							aFSM.trigger('animationStopped');
+					},
 				});
 				if ( 	(this.opts.currentAnimationData[ANIMATION_NOTWAIT] == 1) 
 					 && (this.opts.currentAnimationCaller) 
 					) 
 				{
-					this.opts.currentAnimationCaller.trigger('animationStopped');
+					if (this.opts.currentAnimationCaller) this.opts.currentAnimationCaller.trigger('animationStopped');
 					this.opts.currentAnimationCaller = null;
 				}
 			}
@@ -372,6 +395,7 @@ var animatedObjectMachine = {
 				this.myUIObject.stop().animate(aAnimation,{
 						duration	: parseInt(this.opts.currentAnimationData[ANIMATION_DURATION]), 
 						complete	: function(){aFSM.trigger('animationStopped');},
+						easing		: this.opts.currentAnimationData[ANIMATION_EASING],
 				});
 			}
 		},
@@ -390,7 +414,7 @@ var animatedObjectMachine = {
 				  },'linear');
 				if (this.opts.currentAnimationCaller) 
 				{
-					this.opts.currentAnimationCaller.trigger('animationStopped');
+					if (this.opts.currentAnimationCaller) this.opts.currentAnimationCaller.trigger('animationStopped');
 					this.opts.currentAnimationCaller = null;
 				}
 			}
@@ -413,12 +437,13 @@ var animatedObjectMachine = {
 		{
 			init_function: function() {
 				var aFSM = this;
-				this.myUIObject.show().stop().animate({
+				this.myUIObject.stop().animate({
 						opacity	: 1,
     					left	: this.rootMachine.opts.currentAnimationData[ANIMATION_X_DESTINATION],
     					top		: this.rootMachine.opts.currentAnimationData[ANIMATION_Y_DESTINATION],
 				},{
 						duration	: parseInt(this.opts.currentAnimationData[ANIMATION_DURATION]), 
+						easing		: this.opts.currentAnimationData[ANIMATION_EASING],
 						complete	: function(){
 							aFSM.trigger('animationStopped');
 						},
@@ -446,6 +471,7 @@ var animatedObjectMachine = {
 		{
 			init_function: function() {
 				if (this.opts.currentAnimationCaller) this.opts.currentAnimationCaller.trigger('animationStopped');
+				this.opts.currentAnimationCaller = null;
 			},
 			next_state:'ObjectInitialized',
 		}
@@ -678,11 +704,11 @@ var mainAnimation = {
 				this.trigger('initAnimatedObjects');
 			},
 		},
-                startAnimation: //he! wait a minute... we're not ready!
-                {
-                        how_process_event:{delay:100,preventcancel:true},
-                        propagate_event:true,
-                },
+        startAnimation: //he! wait a minute... we're not ready!
+        {
+                how_process_event:{delay:100,preventcancel:true},
+                propagate_event:true,
+        },
 	},
 	WaitForJavascriptFileDownloaded:
 	{
@@ -690,9 +716,14 @@ var mainAnimation = {
 		{
 			init_function: function() {
 				var myFSM = this;
-				this.opts.scriptsToLoad = ANIMATION_NEEDED_SCRIPTS;
-				 jQuery.each(this.opts.scriptsToLoad,	function(aKey,aScriptURL){				
-					 jQuery.getScript( aScriptURL, function() {
+				
+				//get js path
+				var dir = document.querySelector('script[src$="iFSMAnimation.js"]').getAttribute('src');
+				var name = dir.split('/').pop(); 
+				dir = dir.replace('/'+name,"");
+				
+				 jQuery.each(this.opts.scriptsToLoad,	function(aKey,aScriptURL){			
+					 jQuery.getScript( dir+'/'+aScriptURL, function() {
 						myFSM.trigger('scriptDownloaded');
 					});
 				});
@@ -714,8 +745,11 @@ var mainAnimation = {
 		start: 
 		{
 			init_function: function() {
+				
  				this.myUIObject.css({width:'0px'}); // a way to undisplay without breaking things during rendering...
  				
+				//start loader picto if any
+
  				//if the data-loader-class attribute is define, will remove any pre-defined opts.loader
  				if (this.myUIObject.attr('data-loader-class')) this.opts.loader={class:this.myUIObject.attr('data-loader-class')};
 				
@@ -730,6 +764,10 @@ var mainAnimation = {
  	 				$('#'+this.opts.loader.id).stop().fadeIn( 500 );
  				}
  				
+ 				//initialize variables
+				if (this.opts.scriptsToLoad) this.opts.scriptsToLoad = ANIMATION_NEEDED_SCRIPTS.concat(this.opts.scriptsToLoad);
+				else this.opts.scriptsToLoad = ANIMATION_NEEDED_SCRIPTS;
+
 			},
 			next_state: 'WaitForJavascriptFileDownloaded',
 		},
@@ -745,7 +783,11 @@ var mainAnimation = {
 					this.opts.animationSequence=this.myUIObject.find(this.opts.animatedObjectDefinition);
 					
 					//attached them to the animatedObjectMachine machine
-					this.opts.animationSequence.iFSM(animatedObjectMachine,{debug:this.opts.debug});
+					var myOptions={};
+					if (this.opts.debug) myOptions['debug']=this.opts.debug;
+					if (this.opts.logFSM) myOptions['logFSM']=this.opts.logFSM;
+					if (this.opts.LogLevel) myOptions['LogLevel']=this.opts.LogLevel;
+					this.opts.animationSequence.iFSM(animatedObjectMachine,myOptions);
 				};
 				
 				//define general box size to the animated objects
@@ -798,7 +840,7 @@ var mainAnimation = {
 				if (!doResponsive || doResponsive == "false") doResponsive=false;
 				
 				var zindex = 1;
-				 jQuery.each(this.opts.animationSequence, 
+				jQuery.each(this.opts.animationSequence, 
 						function(aKey,aValue)
 						{
 							var aFSM =  jQuery(aValue).getFSM()[0]; 
@@ -807,9 +849,16 @@ var mainAnimation = {
 							aFSM.opts.doResponsive = doResponsive;
 							aFSM.myUIObject.css({
 								position:'absolute',
-								zIndex:zindex
 							});
-							zindex++;
+							
+							//Set zindex if not defined
+							if (!jQuery.isNumeric(aFSM.myUIObject.css('zIndex')))
+							{
+								aFSM.myUIObject.css({
+									zIndex:zindex
+								});
+								zindex++;
+							}
 							if (doResponsive) aFSM.myUIObject.css({
 								width:aFSM.myUIObject.width()*100/parseInt(aFSM.opts.generalSize.X)+"%"
 							});
