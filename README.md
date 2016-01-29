@@ -193,7 +193,7 @@ $('#animation2').iFSM(mainAnimation,{animatedObjectDefinition:'div',debug:true})
 ```
 
 
-CCS
+CSS
 ===
 
 In order to have the animation playing correctly, you can use the following css as a start:
@@ -222,6 +222,8 @@ DEMO
 ====
 
 http://intersel.net/demos/intersel/voeux_demo/
+http://www.macofi.fr/assets/site/voeux2015/
+http://www.macofi.fr/assets/site/voeux2016/
 
 Examples
 ========
