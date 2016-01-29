@@ -12,6 +12,14 @@ What is iFSMAnimation ?
 
 iFSMAnimation is javascript library that allows to create animations from an html description.
 
+Demos
+=====
+
+* http://intersel.net/demos/intersel/voeux_demo/
+* http://www.macofi.fr/assets/site/voeux2015/
+* http://www.macofi.fr/assets/site/voeux2016/
+
+
 Getting started
 ===============
 
@@ -218,12 +226,6 @@ section#animation-objects article {
 }
 ```
 
-DEMO
-====
-
-http://intersel.net/demos/intersel/voeux_demo/
-http://www.macofi.fr/assets/site/voeux2015/
-http://www.macofi.fr/assets/site/voeux2016/
 
 Examples
 ========
