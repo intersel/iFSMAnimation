@@ -37,11 +37,8 @@ Mainly, you need to create:
 </section>
 <script>
 $(document).ready(function() {
-	//wait for the download of the images if any...
-	$('#animation-objects').waitForImages().done(function() {
-		//initialize and start the general animation
-		$('#animation-objects').iFSM(mainAnimation);
-	});
+	//initialize and start the general animation
+	$('#animation-objects').iFSM(mainAnimation);
 )};
 </script>
 ```
