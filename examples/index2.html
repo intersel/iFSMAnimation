@@ -7,27 +7,43 @@
 	<meta name="viewport" content="initial-scale=1.0">
 	<meta content="" name="description">
 	<link rel="stylesheet" href="structure.css" media="all">
+	<script type="text/javascript" src="../extlib/jquery-2.2.0.min.js"></script>
 	<!-- include of iFSM - see https://github.com/intersel/iFSM/ -->
-	<script type="text/javascript" src="http://rawgit.com/intersel/iFSM/master/extlib/jquery-1.11.1.min.js"></script>
-	<script type="text/javascript" src="http://rawgit.com/intersel/iFSM/master/extlib/jquery.dorequesttimeout.js"></script>
-	<script type="text/javascript" src="http://rawgit.com/intersel/iFSM/master/extlib/jquery.attrchange.js"></script>
-	<script type="text/javascript" src="http://rawgit.com/intersel/iFSM/master/iFSM.js"></script>
+	<script type="text/javascript" src="../extlib/iFSM/extlib/jquery.dorequesttimeout.js"></script>
+	<script type="text/javascript" src="../extlib/iFSM/extlib/jquery.attrchange.js"></script>
+	<script type="text/javascript" src="../extlib/iFSM/iFSM.compressed.js"></script>
 	
 	<!--  include of the iFSM Animation tool -->
-	<script type="text/javascript" src="ext_lib/jquery.path/jquery.path.js"></script>
-	<script type="text/javascript" src="ext_lib/FitText/jquery.fittext.js"></script>
 	<script type="text/javascript" src="../iFSMAnimation.js"></script>
+	<script type="text/javascript" src="../extlib/jquery.path/jquery.path.js"></script>
+	
 </head>
 <body>
 	<header id="header" role="banner">
-		<h2>this is a animation example using iFMSAnimation :-)</h2>
+		<h2>this is an animation example using iFMSAnimation :-)</h2>
 	</header>
-    <section id="animation-objects" data-delay-before-restart="3000" data-box-responsive="true"  data-div-class="animation">
-        <article id="HappyNewYear_B" data-animation="loop, 2000, 190, 204, 90, 104, 0, 3000" data-enter-animation="display, 2000, 90, 104, 90, 0" data-exit-animation="smoothHide,1000,90,104">
-        	<img src="images/B.png" style="width:20%">I'm looping forth and back....
+    <section id="animation-objects" 
+    			data-delay-before-restart="3000" 
+    			data-box-responsive="true"  
+    			data-div-class="animation"
+    			data-box-size-reference="551,551"
+    			>
+        <article id="HappyNewYear_B" 
+        			data-animation="loop, 2000, 190, 204, 90, 104, 0, 3000" 
+        			data-enter-animation="display, 2000, 90, 104, 90, 0" 
+        			data-exit-animation="smoothHide,1000,90,104"
+        			style="width:50px;"
+        >
+        	<img src="images/B.png"><br>
+        	I'm looping forth and back....
         </article>
-        <article id="HappyNewYear_A" data-animation="specialAnimate,3000,{path : aPath}" data-enter-animation="display,2000,335,275,335,235" data-exit-animation="smoothHide,1000,383,168,383,168">
-        	<img src="images/A.png" style="width:20%">I'm turning following an arc path...
+        <article id="HappyNewYear_A" 
+        			data-animation="specialAnimate,3000,{path : aPath}" 
+        			data-enter-animation="display,2000,335,275,335,235" 
+        			data-exit-animation="smoothHide,1000,383,168,383,168"
+        			style="width:50px;"
+        >
+        	<img src="images/A.png">I'm turning following an arc path...
         </article>
 	</section>
 	<div id="animation2" class="animated_section" style="height:140px;">
@@ -59,11 +75,15 @@
 		var aPath2 = new $.path.arc(arc_params2);
 		$(document).ready(function() {
 			//initialize and start the general animation
-			$('section#animation-objects').fitText(2, { minFontSize: '5px',maxFontSize: '20px' });
-			$('section#animation-objects').iFSM(mainAnimation,{debug:true});
-			$('div#animation2').iFSM(mainAnimation,{animatedObjectDefinition:'div',debug:true});
+			$('section#animation-objects').iFSM(mainAnimation,{debug:false});
+			ANIMATION_NEEDED_SCRIPTS= null;
+			$('div#animation2').iFSM(mainAnimation,{animatedObjectDefinition:'div',debug:false});
 			//Animation Button
-			$("#onoff_animation").iFSM(buttonOnOffMachine,{sendTo:$('section#animation-objects'),sendToMessage:{on:'tempStartAnimation',off:'tempStopAnimation'},text:{on:'Stop Anim',off:'Play Anim'}});
+			$("#onoff_animation").iFSM(buttonOnOffMachine,
+											{	  sendTo:$('section#animation-objects')
+												, sendToMessage:{on:'tempStartAnimation',off:'tempStopAnimation'}
+												, text:{on:'Stop Anim',off:'Play Anim'}
+											});
 				
 		});
 	</script>

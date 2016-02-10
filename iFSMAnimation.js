@@ -4,7 +4,7 @@
  * RCS PARIS 488 379 660 - NAF 721Z
  *
  * File    : iFSMAnimation.js
- * Abstract: iFSMAnimation allows to create simple HTML5 animations easily on DOM objects
+ * Abstract: iFSMAnimation allows to create simple HTML5 animations in responsive design easily on DOM objects
  * Remark  : based on iFSM (cf. https://github.com/intersel/iFSM)
  * Official help: https://github.com/intersel/iFSMAnimation
  * 
@@ -75,12 +75,11 @@
  * -----------------------------------------------------------------------------------------
  * Modifications:
  * - 20141223 - EPO - V1.0.0 - Creation
- * -  -  - V<current_version of the developed software> - Rename into P1P2_MYClassName
+ * - 20160210 - EPO - V1.1.0 - bug fixes
  * -----------------------------------------------------------------------------------------
  * @copyright Intersel 2014
  * @author    E.Podvin emmanuel.podvin@intersel.fr
- * @author    second... IAM me.iam@intersel.fr
- * @version   <1.0.0> (to be updated to the current_version of the developed software if file is touched)
+ * @version   <1.1.0> (to be updated to the current_version of the developed software if file is touched)
  * -----------------------------------------------------------------------------------------
  */
 
@@ -101,14 +100,13 @@ var ANIMATION_Y_ORIGIN			= 5;
 var ANIMATION_EASING			= 6;
 var ANIMATION_LOOP_NUMBER		= 6; // if == 0 then infinite loop
 var ANIMATION_LOOP_BACK_DELAY	= 7; // 
+var ANIMATION_LOOP_FEATURE		= 8; // == ''(default)||'pulse' 
+
 var ANIMATION_NOTWAIT			= 100;
 
 var ANIMATION_NEEDED_SCRIPTS	= [
-	 'jquery.dorequesttimeout.js'
-	,'jquery.attrchange.js'
-	,'waitForImages/dist/jquery.waitforimages.js'
-	,'FitText/jquery.fittext.js'
-	,'jquery-ui/jquery-ui.min.js'
+	'extlib/waitForImages/dist/jquery.waitforimages.js'
+	,'extlib/FitText/jquery.fittext.js'
 	];
 var WAITFORIMAGES_ULR = 0;
 
@@ -288,13 +286,19 @@ var animatedObjectMachine = {
 	            				this._log('numberOfLoop:'+this.opts.numberOfLoops,2);
 	            				
 	            				if (this.opts.debug) $('#info').html('LOOP:x:'+this.myUIObject.position().left+';y:'+this.myUIObject.position().top);
+
+	            				var easingFunc = "linear";
+	            				if (this.rootMachine.opts.currentAnimationData[ANIMATION_LOOP_FEATURE])
+            					{
+	            					easingFunc = this.rootMachine.opts.currentAnimationData[ANIMATION_LOOP_FEATURE];
+            					}
 	            				
 	            				this.myUIObject.stop().animate({
 	            					left	: this.rootMachine.opts.currentAnimationData[ANIMATION_X_DESTINATION],
 	            					top		: this.rootMachine.opts.currentAnimationData[ANIMATION_Y_DESTINATION],
 	            					},{
 	            						duration	: parseInt(this.rootMachine.opts.currentAnimationData[ANIMATION_DURATION]), 
-	            						easing		: "linear",//this.opts.currentAnimationData[ANIMATION_EASING],
+	            						easing		: easingFunc,
 	            						complete	: function(){
 	            							aFSM.trigger('loopEnd');
 	            						},
@@ -311,12 +315,18 @@ var animatedObjectMachine = {
 	            				
 	            				if (this.opts.debug)  $('#info').html('LOOPEND/x:'+this.myUIObject.position().left+';y:'+this.myUIObject.position().top);
 	            				
+	            				var easingFunc = "linear";
+	            				if (this.rootMachine.opts.currentAnimationData[ANIMATION_LOOP_FEATURE])
+            					{
+	            					easingFunc = this.rootMachine.opts.currentAnimationData[ANIMATION_LOOP_FEATURE];
+            					}
+
 	            				this.myUIObject.stop().animate({
 	            					left	: this.rootMachine.opts.currentAnimationData[ANIMATION_X_ORIGIN],
 	            					top		: this.rootMachine.opts.currentAnimationData[ANIMATION_Y_ORIGIN],
 	            					},{
 	            					duration	: parseInt(this.rootMachine.opts.currentAnimationData[ANIMATION_LOOP_BACK_DELAY]), 
-            						easing		: "linear",//this.opts.currentAnimationData[ANIMATION_EASING],
+            						easing		: easingFunc,
 	            					complete	: function(){
 	            						aFSM.trigger('loopEndReinit');
 	            					},
@@ -692,10 +702,13 @@ var mainAnimation = {
 		{
 			init_function: function() {
 				var myFSM = this;
-				this.myUIObject.waitForImages().done(function() {
-					myFSM.trigger('imagesDownloaded');
-				});
-
+				if (this.myUIObject.waitForImages)
+				{
+					this.myUIObject.waitForImages().done(function() {
+						myFSM.trigger('imagesDownloaded');
+					});
+				}
+				else myFSM.trigger('imagesDownloaded');//curious to be there...?
 			},
 		},
 		imagesDownloaded:
@@ -722,23 +735,28 @@ var mainAnimation = {
 				var name = dir.split('/').pop(); 
 				dir = dir.replace('/'+name,"");
 				
-				 jQuery.each(this.opts.scriptsToLoad,	function(aKey,aScriptURL){			
-					 jQuery.getScript( dir+'/'+aScriptURL, function() {
-						myFSM.trigger('scriptDownloaded');
+				if (this.opts.scriptsToLoad)
+				{
+					jQuery.each(this.opts.scriptsToLoad,	function(aKey,aScriptURL){			
+						jQuery.getScript( dir+'/'+aScriptURL, function() {
+							myFSM.trigger('scriptDownloaded');
+						});
 					});
-				});
+				}
+				else
+					myFSM.trigger('scriptDownloaded');
 			},
 		},
 		scriptDownloaded:
 		{
 			next_state: 'WaitForImagesDownloaded',
-			next_state_when:'this.EventIteration == this.opts.scriptsToLoad.length',
+			next_state_when:'!this.opts.scriptsToLoad || this.EventIteration >= this.opts.scriptsToLoad.length',
 		},
-                startAnimation://he! wait a minute... we're not ready!
-                {
-                        how_process_event:{delay:100,preventcancel:true},
-                        propagate_event:true,
-                },
+        startAnimation://he! wait a minute... we're not ready!
+        {
+                how_process_event:{delay:100,preventcancel:true},
+                propagate_event:true,
+        },
 	},
 	DefaultState: 
 	{
@@ -774,7 +792,6 @@ var mainAnimation = {
 		initAnimatedObjects: 
 		{
 			init_function: function() {
-				
 				if (!this.opts.animatedObjectDefinition) this.opts.animatedObjectDefinition='> article';
 				
 				if (!this.opts.animationSequence)
@@ -839,7 +856,7 @@ var mainAnimation = {
 				var doResponsive = this.myUIObject.attr('data-box-responsive');
 				if (!doResponsive || doResponsive == "false") doResponsive=false;
 				
-				var zindex = 1;
+				var zindex = 10;
 				jQuery.each(this.opts.animationSequence, 
 						function(aKey,aValue)
 						{
@@ -852,13 +869,13 @@ var mainAnimation = {
 							});
 							
 							//Set zindex if not defined
-							if (!jQuery.isNumeric(aFSM.myUIObject.css('zIndex')))
+							if (!jQuery.isNumeric(aFSM.myUIObject.css('zIndex')) || aFSM.myUIObject.css('zIndex')==0 )
 							{
 								aFSM.myUIObject.css({
 									zIndex:zindex
 								});
-								zindex++;
 							}
+							zindex=zindex+10;
 							if (doResponsive) aFSM.myUIObject.css({
 								width:aFSM.myUIObject.width()*100/parseInt(aFSM.opts.generalSize.X)+"%"
 							});
@@ -938,7 +955,7 @@ var buttonOnOffMachine = {
 					if (!this.opts.sendToMessage) this.opts.sendToMessage = {on:'setOn',off:'setOff'};
 					if (this.opts.buttonIsOn) this._stateDefinition['DefaultState']['start']['next_state'] = 'ButtonOn';
 				},
-				next_state		: 'ButtonOff'
+				next_state		: 'ButtonOn'
 			}
 		}				
 	};
@@ -988,7 +1005,7 @@ var musicMachine = {
 		start	:	
 		{
 			init_function		: function (){
-				if (!this.opts.volume) this.opts.volume=0.2;
+				if (!this.opts.volume) this.opts.volume=0.1;
 				this.myUIObject.prop("volume",this.opts.volume);
 			},
 			next_state		: 'Paused'
