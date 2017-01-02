@@ -167,9 +167,13 @@ data-enter-animation / data-animation / data-exit-animation
      *  startposition-top - optional
      *  loops number - optional default:infinite - give the number of loops
      *  loop back delay - optional default: duration - give the delay to go to the initial position
-   * specialAnimate
+   * specialAnimate, specialAnimateNoWait 
      *  duration
      *  animation description object as in jQuery. ex: {left: 20;top:100;width:300}
+     *  void
+     *  void
+     *  void
+     *  easy function - see http://easings.net/fr
 
 Start the animation with javascript
 ===================================

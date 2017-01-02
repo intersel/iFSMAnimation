@@ -36,42 +36,8 @@
  *				//			});
  *			});
  * </script>
- * 
- * The available animations are:
- * - dummy - non animation
- * 	- animate - animate article from current position or startposition to destination
- * 	- duration
- * 	- destination-left
- * 	- destination-top
- * 	- startposition-left - optional
- * 	- startposition-top - optional
- * 	- animateNoWait - same as animate but does not wait the end of animation to start the next animation 
- * -display - display article (opacity set to 1) with animation from current position or startposition to destination
- * 	- duration
- * 	- destination-left
- * 	- destination-top
- * 	- startposition-left - optional
- * 	- startposition-top - optional
- * -smoothHide - display article (opacity set to 0) with animation from current position or startposition to destination
- * 	- duration
- * 	- destination-left
- * 	- destination-top
- * 	- startposition-left - optional
- * 	- startposition-top - optional
- * -rotate - rotate article 
- * 	- duration
- * 	- angle
- * -loop - loop animation
- * 	- duration
- * 	- destination-left
- * 	- destination-top
- * 	- startposition-left - optional
- * 	- startposition-top - optional
- * 	- loops number - optional default:infinite - give the number of loops
- * 	- loop back delay - optional default: duration - give the delay to go to the initial position
- * -specialAnimate
- * 	- duration
- * 	- animation description object as in jQuery. ex: {left: 20;top:100;width:300}
+ *
+ * if a $('#info') is defined, and debug sets to true, debug info will be displayed in it 
  * -----------------------------------------------------------------------------------------
  * Modifications:
  * - 20141223 - EPO - V1.0.0 - Creation
@@ -88,7 +54,10 @@
  * 
  * index of information in data-.... 
  */
+(function($){
 
+var $defaults = null;
+	
 var ANIMATION_TYPE 				= 0;
 var ANIMATION_DURATION 			= 1;
 var ANIMATION_X_DESTINATION		= 2;
@@ -105,8 +74,11 @@ var ANIMATION_LOOP_FEATURE		= 8; // == ''(default)||'pulse'
 var ANIMATION_NOTWAIT			= 100;
 
 var ANIMATION_NEEDED_SCRIPTS	= [
-	'extlib/waitForImages/dist/jquery.waitforimages.js'
+	 'extlib/iFSM/extlib/jquery.dorequesttimeout.js'
+	,'extlib/iFSM/extlib/jquery.attrchange.js'	
+	,'extlib/waitForImages/dist/jquery.waitforimages.js'
 	,'extlib/FitText/jquery.fittext.js'
+	,'extlib/jquery-ui/jquery-ui.min.js'
 	];
 var WAITFORIMAGES_ULR = 0;
 
@@ -175,15 +147,15 @@ var animatedObjectMachine = {
 					
 				};
 			},
-			process_event_if:'( (this.opts.currentAnimationData != null) && (this.opts.currentAnimationData[ANIMATION_TYPE] != "specialAnimate") && (this.opts.currentAnimationData[ANIMATION_TYPE] != "dummy") )',
+			process_event_if:'( (this.opts.currentAnimationData != null) && (this.opts.currentAnimationData['+ANIMATION_TYPE+'] != "specialAnimate") && (this.opts.currentAnimationData['+ANIMATION_TYPE+'] != "specialAnimateNoWait") && (this.opts.currentAnimationData['+ANIMATION_TYPE+'] != "dummy") )',
 		},
 		doAnimation:
 		{
 			init_function: function() {
 			},
-			how_process_event:{delay:10,preventcancel:true},
+			how_process_event:{delay:1,preventcancel:true},
 			next_state:'EnterAnimation',
-			next_state_when:'(this.opts.currentAnimationData != null) && (this.opts.currentAnimationData[ANIMATION_TYPE] != "dummy")',
+			next_state_when:'(this.opts.currentAnimationData != null) && (this.opts.currentAnimationData['+ANIMATION_TYPE+'] != "dummy")',
 			propagate_event:'voidAnimationData',
 		},
 		voidAnimationData:
@@ -210,10 +182,14 @@ var animatedObjectMachine = {
 			},
 		},
 		//initialization
-		display:'animate',
-		rotate:'animate',
-		smoothHide:'animate',
-		specialAnimate:'animate',
+		specialAnimateNoWait:
+		{
+			init_function: function() {
+				this.opts.currentAnimationData[ANIMATION_NOTWAIT]=1;
+			},
+			propagate_event:'specialAnimate',
+			next_state:'ObjectInMotion',
+		},
 		animateNoWait:
 		{
 			init_function: function() {
@@ -231,6 +207,10 @@ var animatedObjectMachine = {
 			propagate_event:'initLoop',
 			next_state:'ObjectInMotion',
 		},
+		display:'animate',
+		rotate:'animate',
+		smoothHide:'animate',
+		specialAnimate:'animate',
 		animate:
 		{
 			init_function: function() {
@@ -392,10 +372,12 @@ var animatedObjectMachine = {
 					 && (this.opts.currentAnimationCaller) 
 					) 
 				{
-					if (this.opts.currentAnimationCaller) this.opts.currentAnimationCaller.trigger('animationStopped');
+					if (this.opts.currentAnimationCaller) 
+						this.opts.currentAnimationCaller.trigger('animationStopped');
 					this.opts.currentAnimationCaller = null;
 				}
-			}
+			},
+	    	how_process_event:{delay:1,preventcancel:true},
 		},
 		specialAnimate:
 		{
@@ -407,7 +389,15 @@ var animatedObjectMachine = {
 						complete	: function(){aFSM.trigger('animationStopped');},
 						easing		: this.opts.currentAnimationData[ANIMATION_EASING],
 				});
-			}
+				if ( 	(this.opts.currentAnimationData[ANIMATION_NOTWAIT] == 1) 
+						 && (this.opts.currentAnimationCaller) 
+						) 
+				{
+					if (this.opts.currentAnimationCaller) 
+						this.opts.currentAnimationCaller.trigger('animationStopped');
+					this.opts.currentAnimationCaller = null;
+				}
+			},
 		},
 		rotate:
 		{
@@ -427,7 +417,7 @@ var animatedObjectMachine = {
 					if (this.opts.currentAnimationCaller) this.opts.currentAnimationCaller.trigger('animationStopped');
 					this.opts.currentAnimationCaller = null;
 				}
-			}
+			},
 		},
 		smoothHide:
 		{
@@ -441,7 +431,8 @@ var animatedObjectMachine = {
 						duration	: parseInt(this.opts.currentAnimationData[ANIMATION_DURATION]), 
 						complete	: function(){aFSM.trigger('animationStopped');},
 				});
-			}
+			},
+			how_process_event:{delay:1,preventcancel:true},
 		},
 		display:
 		{
@@ -458,7 +449,8 @@ var animatedObjectMachine = {
 							aFSM.trigger('animationStopped');
 						},
 				});
-			}
+			},
+			how_process_event:{delay:1,preventcancel:true},
 		},
 		animationStopped:
 		{
@@ -471,6 +463,7 @@ var animatedObjectMachine = {
 			init_function: function() {
 				this.myUIObject.stop();
 			},
+			how_process_event:{delay:1,preventcancel:true},
 			next_state:'ObjectInitialized',
 			propagate_event:true,
 		}
@@ -553,6 +546,7 @@ var mainAnimation = {
 					 jQuery(this.opts.animationSequence[this.opts.animationStep]).trigger('startEnterAnimation',aFSM);
 				else this.trigger('animationObjectVoid');
 			},
+			how_process_event:{delay:1,preventcancel:true},
 			next_state:'WaitForStartAnimationDone',
 		},
 	},
@@ -561,6 +555,7 @@ var mainAnimation = {
 		animationStopped:
 		{
 			next_state:'Animation',
+			how_process_event:{delay:1,preventcancel:true},
 		},
 		animationObjectVoid:
 		{
@@ -570,10 +565,12 @@ var mainAnimation = {
 			},
 			next_state:'WaitForAnimationDone',
 			next_state_when:'this.opts.animationStep>=this.opts.animationSequence.length',
+			how_process_event:{delay:1,preventcancel:true},
 		},
 		reStartAnimation:
 		{
 			next_state:'StartAnimation',
+			how_process_event:{delay:1,preventcancel:true},
 		},
 	},
 	Animation:
@@ -581,6 +578,7 @@ var mainAnimation = {
 		enterState:
 		{
 			propagate_event:'doAnimation',
+			how_process_event:{delay:1,preventcancel:true},
 		},
 		doAnimation:
 		{
@@ -590,10 +588,12 @@ var mainAnimation = {
 			},
 			next_state:'WaitForAnimationDone',
 			next_state_when:'this.opts.animationStep>=this.opts.animationSequence.length',
+			how_process_event:{delay:1,preventcancel:true},
 		},
 		animationStopped:
 		{
 			next_state:'StartAnimation',
+			how_process_event:{delay:1,preventcancel:true},
 		},
 		
 	},
@@ -603,6 +603,7 @@ var mainAnimation = {
 		animationStopped:
 		{
 			next_state:'EndOfAnimation',
+			how_process_event:{delay:1,preventcancel:true},
 		},
 	},
 	tempAnimationStopped:
@@ -611,6 +612,7 @@ var mainAnimation = {
 		{
 			pushpop_state: 'PopState',
 			propagate_event:'reStartAnimation',
+			how_process_event:{delay:1,preventcancel:true},
 		},
 	},
 	EndOfAnimation:
@@ -622,18 +624,21 @@ var mainAnimation = {
 				if (this.myUIObject.attr('data-delay-before-restart')) 
 					this._stateDefinition['EndOfAnimation']['startEraseAnimation']['how_process_event'] = {delay: this.myUIObject.attr('data-delay-before-restart')};
 				},
+			how_process_event:{delay:1,preventcancel:true},
 			propagate_event:'startEraseAnimation',
 		},
 		resetAnimation:
 		{ 
 			propagate_event : 'resetAnimation',
 			next_state:'DoingEndAndStopAnimation',
+			how_process_event:{delay:1,preventcancel:true},
 		},
 		startEraseAnimation:
 		{ 
 			propagate_event : 'eraseAnimation',
 			how_process_event: {delay:2500},
 			next_state:'DoingEndOfAnimation',
+			how_process_event:{delay:1,preventcancel:true},
 		},
 	},
 	DoingEndAndStopAnimation:
@@ -641,18 +646,22 @@ var mainAnimation = {
 		resetAnimation:
 		{
 			init_function: function() {
-				if ( jQuery(this.opts.animationSequence[this.opts.animationStep]).length>0)  jQuery(this.opts.animationSequence[this.opts.animationStep]).trigger('startExitAnimation',this);
+				if ( jQuery(this.opts.animationSequence[this.opts.animationStep]).length>0)  
+					jQuery(this.opts.animationSequence[this.opts.animationStep]).trigger('startExitAnimation',this);
 				this.opts.animationStep++;
 			},
+			how_process_event:{delay:1,preventcancel:true},
 		},
 		animationStopped:
 		{
 			propagate_event:'resetAnimation',
+			how_process_event:{delay:1,preventcancel:true},
 		},
 		startAnimation:
 		{
 			propagate_event:'startAnimation',
 			next_state:'InitAnimation',
+			how_process_event:{delay:1,preventcancel:true},
 		},
 
 		//prevent action of stop during resetting the animation and retry the event later on...
@@ -675,10 +684,12 @@ var mainAnimation = {
 			},
 			next_state:'WaitForExitAnimationDone',
 			next_state_when:'this.opts.animationStep>=this.opts.animationSequence.length',
+			how_process_event:{delay:1,preventcancel:true},
 		},
 		animationStopped:
 		{
 			propagate_event:'eraseAnimation',
+			how_process_event:{delay:1,preventcancel:true},
 		},
 		//prevent action of stop during resetting the animation and retry the event later on...
 		tempStopAnimation:
@@ -694,6 +705,7 @@ var mainAnimation = {
 		{
 			propagate_event:'startAnimation',
 			next_state:'InitAnimation',
+			how_process_event:{delay:1,preventcancel:true},
 		},
 	},
 	WaitForImagesDownloaded:
@@ -895,6 +907,107 @@ var mainAnimation = {
 		}
 	}
 };
+
+
+/** iFSMACreatePath
+ * 
+ * example :
+ * 	var myFirstPointArray = [
+	                          {x:0,y:-160}
+	                         ,{x:160,y:110}
+	                         ,{x:600,y:-24}
+	                         ,{x:1110,y:400}
+	                         ,{x:760,y:440}
+	                         ];
+	myFirstFollowLinePath = $.iFSMACreatePath(myFirstPointArray,{1250,1250});
+
+ */
+$.fn.iFSMACreatePath = function (aArrayOfPoints,dataBoxSizeReference) {
+		
+	this.len = 0;
+	this.path = null;
+	this.generalSize = {x:0,y:0},
+	
+	this.pointAt = function(percent){
+		return this.path.getPointAtLength( this.len * percent/100 );
+	};
+
+	this.updatePath = function(aArrayOfPoints){
+		
+		var path = this.convertArrayToSvg(aArrayOfPoints);
+		
+		this.path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+		this.path.setAttribute('d', path);
+		this.len = this.path.getTotalLength();
+	}
+	
+	this.getGeneralSize = function ()
+	{
+		var aGeneralSize = dataBoxSizeReference.replace(/[ \t\r]+/g,"").split(',');
+		if (aGeneralSize[0] <= 0) aGeneralSize[0] = $(window).width(); 
+		if (aGeneralSize[1] <= 0) aGeneralSize[1] = $(window).height(); 
+		this.generalSize = {x:aGeneralSize[0],y:aGeneralSize[1]};
+		
+	}
+	this.convertArrayToSvg = function (aPointArray,closePath)
+	{
+		var aSVGPath ="M";
+		var svgPrefix = "";
+		var index, len;
+		if (!closePath) closePath=false;
+		
+		for (index = 0, len = aPointArray.length; index < len; ++index) {
+			aSVGPath += svgPrefix+aPointArray[index].x+" "+aPointArray[index].y;
+			svgPrefix = " L";
+		}
+		if (closePath) aSVGPath += " Z";
+		return aSVGPath;
+	};
+
+	this.css = function(p) {
+		
+		percent = (1-p)*100;
+		currentPoint = this.pointAt(percent);
+		
+		var displayPoint = {};
+		displayPoint.x = currentPoint.x*100/parseInt(this.generalSize.x)+'%';
+		displayPoint.y = currentPoint.y*100/parseInt(this.generalSize.y)+'%';
+
+		//$("#footer").append("<br>"+p+" - "+displayPoint.x+","+displayPoint.y+" - "+currentPoint.x+","+currentPoint.y);
+		
+		return {left: displayPoint.x,top: displayPoint.y};
+	} 
+
+	if( aArrayOfPoints.length ) 
+	{
+		this.updatePath(aArrayOfPoints);
+		this.getGeneralSize();
+	}
+	
+	return this;
+};
+
+/** iFSMAnimation
+ * 
+ */
+$.fn.iFSMAnimation = function(options) {
+	if (options == undefined) options=null;
+	var myOptions = jQuery.extend( {}, $defaults, options || {});
+
+	if (myOptions.debug == undefined)
+		myOptions.debug=false;
+	
+	if (myOptions.ANIMATION_NEEDED_SCRIPTS)
+		ANIMATION_NEEDED_SCRIPTS=myOptions.ANIMATION_NEEDED_SCRIPTS;
+	
+	return this.each(function() {
+		$(this).iFSM(mainAnimation, myOptions);
+	});
+};
+
+})(jQuery);
+
+
 
 /**
  * buttonOnOffMachine - manages button with On/Off states that can handle a distant object

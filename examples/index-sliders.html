@@ -21,22 +21,61 @@
 	<header id="header" role="banner">
 		<h2>this is a animation example using iFMSAnimation :-)</h2>
 	</header>
-    <section id="animation-objects" data-delay-before-restart="0" data-box-size-reference="1300,500"  data-box-responsive="true"  data-div-class="animation">
-        <article id="Slide1" data-animation="display,1000,200,0" data-enter-animation="display, 3000, 50,0,0, 0" data-exit-animation="smoothHide,2000,1550,0">
+    <section id="animation-objects" 
+    			data-delay-before-restart="0" 
+    			data-box-size-reference="1300,500"  
+    			data-box-responsive="true"  
+    			data-div-class="animation">
+        <article id="Slide1" 
+        			data-animation="display,100,200,0" 
+        			data-enter-animation="display, 5O00, 50,0,0, 0" 
+        			data-exit-animation="smoothHide,5000,1550,0">
         	<div style="">I'm a 1 slide....<br>good to be here!</div>
- 	 	    <section id="subanimation-objects" data-delay-before-restart="0" data-box-size-reference="1000,500"  data-box-responsive="true"  data-div-class="animation">
-		        <article id="Slide3" data-animation="display,2000,0,0" data-enter-animation="display, 500, 0,0,-1000, 0" data-exit-animation="smoothHide,500,1550,0">
+ 		    <section id="subanimation-objects" 
+ 						data-delay-before-restart="0" 
+ 						data-box-size-reference="1000,500"  
+ 						data-box-responsive="true"  
+ 						data-div-class="animation">
+		        <article id="Slide3" 
+		        			data-animation="display,2000,0,0" 
+		        			data-enter-animation="display, 500, 0,0,-1000, 0" 
+		        			data-exit-animation="smoothHide,500,1550,0">
 		        	<div>I'm a 3 slide....<br>very good to be here!</div>
 		        	
 		        </article>
-<!-- 		        <article id="Slide4" data-animation="display,2000,0,0" data-enter-animation="display, 1000, 0, -500,0,-500" data-exit-animation="smoothHide,1000,500,0">
+ 		        <article id="Slide4" 
+ 		        			data-animation="display,2000,0,0" 
+ 		        			data-enter-animation="display, 1000, 0, -500,0,-500" 
+ 		        			data-exit-animation="smoothHide,1000,500,0">
 		        	<div style="">I'm a forth slide....</div>
-		        </article>-->
+		        </article>
 			</section>
 
         </article>
-        <article id="Slide2" data-animation="display,1000,0,0" data-enter-animation="display, 1000,0,0, 0, -500" data-exit-animation="smoothHide,10,0,500">
+        <article id="Slide2" 
+        			data-animation="display,1000,0,0" 
+        			data-enter-animation="display, 5000,0,0, 0, -500" 
+        			data-exit-animation="smoothHide,10,0,500">
         	<div>I'm a second slide....</div>
+ 		    <section id="subanimation2-objects" 
+ 						data-delay-before-restart="0" 
+ 						data-box-size-reference="1000,500"  
+ 						data-box-responsive="true"  
+ 						data-div-class="animation">
+		        <article id="Slide3" 
+		        			data-animation="display,2000,0,0" 
+		        			data-enter-animation="display, 500, 0,0,-1000, 0" 
+		        			data-exit-animation="smoothHide,500,1550,0">
+		        	<div>I'm a 5 slide....<br>very good to be here!</div>
+		        	
+		        </article>
+ 		        <article id="Slide4" 
+ 		        			data-animation="display,2000,0,0" 
+ 		        			data-enter-animation="display, 1000, 0, -500,0,-500" 
+ 		        			data-exit-animation="smoothHide,1000,500,0">
+		        	<div style="">I'm a 6th slide....</div>
+		        </article>
+			</section>
         </article>
 	</section>
 	<button class="playAnimation" id="onoff_animation"></button>
@@ -49,8 +88,10 @@
 		$(document).ready(function() {
 			//initialize and start the general animation
 			//$('section#animation-objects div').fitText(1);
-			$('section#animation-objects').iFSM(mainAnimation,{debug:true});
-			$('section#subanimation-objects').iFSM($.extend(true, {}, mainAnimation),{debug:false});
+			$('section#animation-objects').iFSM(mainAnimation,{debug:false});
+//			$('section#subanimation-objects').iFSM(mainAnimation,{debug:true});
+//			$('section#subanimation2-objects').iFSM(mainAnimation,{debug:true});
+			//$('section#subanimation-objects').iFSM($.extend(true, {}, mainAnimation),{debug:false});
 			//Animation Button
 			$("#onoff_animation").iFSM(buttonOnOffMachine,{sendTo:$('section#animation-objects'),sendToMessage:{on:'tempStartAnimation',off:'tempStopAnimation'},text:{on:'Stop Anim',off:'Play Anim'},buttonIsOn:true});
 				

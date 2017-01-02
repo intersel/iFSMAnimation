@@ -7,11 +7,11 @@
 	<meta name="viewport" content="initial-scale=1.0">
 	<meta content="" name="description">
 	<link rel="stylesheet" href="structure.css" media="all">
-	<script type="text/javascript" src="../extlib/jquery-2.2.0.min.js"></script>
+	<script type="text/javascript" src="../extlib/jquery-2.2.4.js"></script>
 	<!-- include of iFSM - see https://github.com/intersel/iFSM/ -->
 	<script type="text/javascript" src="../extlib/iFSM/extlib/jquery.dorequesttimeout.js"></script>
 	<script type="text/javascript" src="../extlib/iFSM/extlib/jquery.attrchange.js"></script>
-	<script type="text/javascript" src="../extlib/iFSM/iFSM.compressed.js"></script>
+	<script type="text/javascript" src="../extlib/iFSM/iFSM.js"></script>
 	
 	<!--  include of the iFSM Animation tool -->
 	<script type="text/javascript" src="../iFSMAnimation.js"></script>
@@ -22,6 +22,7 @@
 	<header id="header" role="banner">
 		<h2>this is an animation example using iFMSAnimation :-)</h2>
 	</header>
+	<div style="float:left;width:551px;">
     <section id="animation-objects" 
     			data-delay-before-restart="3000" 
     			data-box-responsive="true"  
@@ -46,14 +47,17 @@
         	<img src="images/A.png">I'm turning following an arc path...
         </article>
 	</section>
-	<div id="animation2" class="animated_section" style="height:140px;">
+	</div>
+	<div id="animation2" class="animated_section" data-box-size-reference="551,551">
 		<div id="hello" data-animation="loop, 2000, 10, 0, 50, 0, 3000">hello</div>
-		<div id="world" data-animation="specialAnimate,3000,{path : aPath2}">World!</div>
+		<div id="hello2" data-animation="loop, 2000, 0, 0, 180, 0, 5">hello2</div>
+		<div id="hello3" data-animation="specialAnimateNoWait,12000,{path : myFirstFollowLinePath},,,,easeInOutQuint" >hello3</div>
+		<div id="world" data-animation="specialAnimateNoWait,3000,{path : aPath2},,,,easeInElastic">World!</div>
 	</div>
 	<button class="playAnimation" id="onoff_animation"></button>
 	<footer id="footer" role="footer">
 		<p>
-            <a class="signature" href="http://www.intersel.fr/">Animation par V.Marty</a>
+            <a class="signature" href="http://www.intersel.fr/">Intersel</a>
 		</p>
 	</footer>
 		<script>
@@ -73,11 +77,32 @@
 			        dir: 1
 			  }
 		var aPath2 = new $.path.arc(arc_params2);
+
+		// create a way path along multiple points
+		var myFirstPointArray = [
+		                          {x:60,y:44}
+		                         ,{x:0,y:160}
+		                         ,{x:260,y:410}
+		                         ,{x:500,y:24}
+		                         ,{x:110,y:400}
+		                         ,{x:60,y:44}
+		                         ];
+		//path for the ball animation
+		myFirstFollowLinePath = $().iFSMACreatePath(myFirstPointArray,"550,550");
+		
 		$(document).ready(function() {
 			//initialize and start the general animation
-			$('section#animation-objects').iFSM(mainAnimation,{debug:false});
-			ANIMATION_NEEDED_SCRIPTS= null;
-			$('div#animation2').iFSM(mainAnimation,{animatedObjectDefinition:'div',debug:false});
+			$('section#animation-objects').iFSMAnimation({
+				 debug:false
+				,ANIMATION_NEEDED_SCRIPTS:null
+			});
+
+			$('div#animation2').iFSMAnimation({
+				 animatedObjectDefinition:'div'
+				,ANIMATION_NEEDED_SCRIPTS:null
+				,debug:false
+			});
+			
 			//Animation Button
 			$("#onoff_animation").iFSM(buttonOnOffMachine,
 											{	  sendTo:$('section#animation-objects')
