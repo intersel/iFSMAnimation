@@ -46,7 +46,7 @@ Mainly, you need to create:
 <script>
 $(document).ready(function() {
 	//initialize and start the general animation
-	$('#animation-objects').iFSM(mainAnimation);
+	$('#animation-objects').iFSMAnimation();
 )};
 </script>
 ```
@@ -182,12 +182,12 @@ To start the animation, you will need to add this script:
 <script>
 $(document).ready(function() {
 	//initialize and start the general animation
-	$('section').iFSM(mainAnimation);
+	$('section').iFSMAnimation();
 )};
 </script>
 ```
 
-You can define some options on the iFSM machine:
+You can define some options:
 animationSequence
 -----------------
 array, defines the order of animation of the objects. By default, the order is the one found in the DOM.
@@ -200,8 +200,8 @@ examples:
 ---------
 ```javascript
 var myAnimationSequence=['#myAnimObj2','#myAnimObj1'];
-$('#animation-objects').iFSM(mainAnimation,{animationSequence:myAnimationSequence})
-$('#animation2').iFSM(mainAnimation,{animatedObjectDefinition:'div',debug:true});
+$('#animation-objects').iFSMAnimation({animationSequence:myAnimationSequence})
+$('#animation2').iFSMAnimation({animatedObjectDefinition:'div',debug:true});
 ```
 
 
@@ -248,7 +248,10 @@ To work properly, you need to include the following javascript library:
     * attrchange by Selvakumar Arumugam](http://meetselva.github.io/attrchange/) 
 	  * a simple jQuery function to bind a listener function to any HTML element on attribute change
 	  * `<script type="text/javascript" src="extlib/jquery.attrchange.js"></script>`
-* [waitForImages](http://github.com/alexanderdickson/waitForImages/) by Alexander Dickson, in order to garantee that all images of the animation are downloaded and ready. This library is automatically loaded by iFSMAnimation. You can change the used URL by setting yours in the ANIMATION_NEEDED_SCRIPTS[WAITFORIMAGES_ULR] global variable.
+* [waitForImages](http://github.com/alexanderdickson/waitForImages/) by Alexander Dickson, in order to garantee that all images of the animation are downloaded and ready. This library is automatically loaded by iFSMAnimation. 
+* [jQuery UI](http://api.jqueryui.com/easings/) may be used to apply some effect on the animated objects as swing, easing, ...
+* [jquery.path](https://github.com/weepy/jquery.path) may be used to defined arc and bezier for the path of animated objects.
+* [FitText.js](http://fittextjs.com/) may be used to have 'responsive' texts
 
 If you need to do some specific animations, these libraries may be useful:
   * [jquery.path](https://github.com/weepy/jquery.path) - allows to animate objects following a path as an arc or a curve 
