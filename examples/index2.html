@@ -16,6 +16,12 @@
 	<!--  include of the iFSM Animation tool -->
 	<script type="text/javascript" src="../iFSMAnimation.js"></script>
 	<script type="text/javascript" src="../extlib/jquery.path/jquery.path.js"></script>
+	<style>	
+	.anim2 {
+		opacity:0;
+		font-size:25px;
+	}
+	</style>
 	
 </head>
 <body>
@@ -48,11 +54,27 @@
         </article>
 	</section>
 	</div>
-	<div id="animation2" class="animated_section" data-box-size-reference="551,551">
-		<div id="hello" data-animation="loop, 2000, 10, 0, 50, 0, 3000">hello</div>
-		<div id="hello2" data-animation="loop, 2000, 0, 0, 180, 0, 5">hello2</div>
-		<div id="hello3" data-animation="specialAnimateNoWait,12000,{path : myFirstFollowLinePath},,,,easeInOutQuint" >hello3</div>
-		<div id="world" data-animation="specialAnimateNoWait,3000,{path : aPath2},,,,easeInElastic">World!</div>
+	<div id="animation2" class="animated_section" data-box-size-reference="551,451">
+		<div id="hello" 
+			class="anim2"
+			data-animation="loop, 2000, 300, 0, 50, 0, 3000" 
+			data-enter-animation="display, 100, -100, 0">
+			hello
+		</div>
+		<div id="hello2" 
+			class="anim2"
+			data-animation="loop, 2000, 0, 100, 180, 300, 5" 
+			data-enter-animation="display, 100, -100, 0" >
+			hello2
+		</div>
+		<div id="hello3" 
+			class="anim2"
+			data-animation="specialAnimateNoWait,12000,{path : myFirstFollowLinePath},,,,easeInOutQuint" 
+			data-enter-animation="display, 1000, 60, 40, -100, 0">hello3</div>
+		<div id="world" 
+			class="anim2"
+			data-animation="specialAnimateNoWait,3000,{path : aPath2},,,,easeInElastic" 
+			data-enter-animation="display, 1500, 350, 190, -100, 0" >World!</div>
 	</div>
 	<button class="playAnimation" id="onoff_animation"></button>
 	<footer id="footer" role="footer">
@@ -70,8 +92,8 @@
 			  }
 		var aPath = new $.path.arc(arc_params);
 		var arc_params2 = {
-			    center: [50,50],  
-			        radius: 50,    
+			    center: [200,200],  
+			        radius: 150,    
 			        start: 100,
 			        end: 90,
 			        dir: 1
