@@ -165,7 +165,6 @@
 	</div>
 	<audio id="music" src="musique/bethlem-jazz.mp3" preload="auto"></audio>
 	<button class="playMusic" id="onoff_music"></button>
-	<button class="playMusic" id="onoff_animation"></button>
 	<footer id="footer" role="footer">
 		<p>
             <a class="signature" href="http://www.intersel.fr/">Animation designed by V.Marty and Intersel</a>
@@ -180,7 +179,6 @@
 			//Button
 			$("#music").iFSM(musicMachine);
 			$("#onoff_music").iFSM(buttonOnOffMachine,{sendTo:$('#music'),text:{on:'Stop Music',off:'Play Music'}});
-			$("#onoff_animation").iFSM(buttonOnOffMachine,{sendTo:$('section#animation-objects'),sendToMessage:{on:'tempStartAnimation',off:'tempStopAnimation'},text:{on:'Stop Anim',off:'Play Anim'},buttonIsOn:true});
 				
 		});
 	</script>

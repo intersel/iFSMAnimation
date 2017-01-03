@@ -26,7 +26,7 @@
 </head>
 <body>
 	<header id="header" role="banner">
-		<h2>this is an animation example using iFMSAnimation :-)</h2>
+		<h2>Some animation examples using iFMSAnimation :-)</h2>
 	</header>
 	<div style="float:left;width:551px;">
     <section id="animation-objects" 
@@ -76,7 +76,6 @@
 			data-animation="specialAnimateNoWait,3000,{path : aPath2},,,,easeInElastic" 
 			data-enter-animation="display, 1500, 350, 190, -100, 0" >World!</div>
 	</div>
-	<button class="playAnimation" id="onoff_animation"></button>
 	<footer id="footer" role="footer">
 		<p>
             <a class="signature" href="http://www.intersel.fr/">Intersel</a>
@@ -124,14 +123,6 @@
 				,ANIMATION_NEEDED_SCRIPTS:null
 				,debug:false
 			});
-			
-			//Animation Button
-			$("#onoff_animation").iFSM(buttonOnOffMachine,
-											{	  sendTo:$('section#animation-objects')
-												, sendToMessage:{on:'tempStartAnimation',off:'tempStopAnimation'}
-												, text:{on:'Stop Anim',off:'Play Anim'}
-											});
-				
 		});
 	</script>
 	
