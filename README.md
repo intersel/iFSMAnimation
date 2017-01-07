@@ -143,19 +143,21 @@ data-enter-animation / data-animation / data-exit-animation
      *  destination-top
      *  startposition-left - optional
      *  startposition-top - optional
-   * animateNoWait - same as animate but does not wait the end of animation to start the next animation 
+     *  easing function - see http://easings.net/fr - optional
    * display - display article (opacity set to 1) with animation from current position or startposition to destination
      *  duration
      *  destination-left
      *  destination-top
      *  startposition-left - optional
      *  startposition-top - optional
+     *  easing function - see http://easings.net/fr - optional
    * smoothHide - display article (opacity set to 0) with animation from current position or startposition to destination
      *  duration
      *  destination-left
      *  destination-top
      *  startposition-left - optional
      *  startposition-top - optional
+     *  easing function - see http://easings.net/fr - optional
    * rotate - rotate article 
      *  duration
      *  angle
@@ -173,7 +175,11 @@ data-enter-animation / data-animation / data-exit-animation
      *  void
      *  void
      *  void
-     *  easy function - see http://easings.net/fr
+     *  easing function - see http://easings.net/fr - optional
+   * animateNoWait - same as animate but does not wait the end of animation to start the next animation 
+   * displayNoWait - same as display but does not wait the end of animation to start the next animation 
+   * smoothHideNoWait - same as smoothHide but does not wait the end of animation to start the next animation 
+   * rotateNoWait - same as rotate but does not wait the end of animation to start the next animation 
 
 Start the animation with javascript
 ===================================

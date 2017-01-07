@@ -477,6 +477,7 @@ var animatedObjectMachine = {
     					top		: this.rootMachine.opts.currentAnimationData[ANIMATION_Y_DESTINATION],
 				},{
 						duration	: parseInt(this.opts.currentAnimationData[ANIMATION_DURATION]), 
+						easing		: this.opts.currentAnimationData[ANIMATION_EASING],
 						complete	: function(){aFSM.trigger('animationStopped');},
 				});
 				if ( 	(this.opts.currentAnimationData[ANIMATION_NOTWAIT] == 1) 
