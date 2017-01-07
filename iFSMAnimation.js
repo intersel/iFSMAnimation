@@ -125,6 +125,8 @@ var animatedObjectMachine = {
 				this.opts.currentAnimationCaller = jQuery.extend(true, {}, data);
 				if (this.opts.data_enter_animation) this.opts.currentAnimationData 	= jQuery.extend(true, {}, this.opts.data_enter_animation);
 				else this.opts.currentAnimationData = null;
+				this.myUIObject.css({transform:'rotate(0rad)'});
+
 			},
 			propagate_event:['initResponsive','doAnimation'],
 		},
@@ -207,6 +209,30 @@ var animatedObjectMachine = {
 				this.opts.currentAnimationData[ANIMATION_NOTWAIT]=1;
 			},
 			propagate_event:'specialAnimate',
+			next_state:'ObjectInMotion',
+		},
+		displayNoWait:
+		{
+			init_function: function() {
+				this.opts.currentAnimationData[ANIMATION_NOTWAIT]=1;
+			},
+			propagate_event:'display',
+			next_state:'ObjectInMotion',
+		},
+		rotateNoWait:
+		{
+			init_function: function() {
+				this.opts.currentAnimationData[ANIMATION_NOTWAIT]=1;
+			},
+			propagate_event:'rotate',
+			next_state:'ObjectInMotion',
+		},
+		smoothHideNoWait:
+		{
+			init_function: function() {
+				this.opts.currentAnimationData[ANIMATION_NOTWAIT]=1;
+			},
+			propagate_event:'smoothHide',
 			next_state:'ObjectInMotion',
 		},
 		animateNoWait:
@@ -431,9 +457,12 @@ var animatedObjectMachine = {
 				      },
 				      duration:parseInt(aFSM.opts.currentAnimationData[ANIMATION_DURATION])
 				  },'linear');
-				if (this.opts.currentAnimationCaller) 
+				if ( 	(this.opts.currentAnimationData[ANIMATION_NOTWAIT] == 1) 
+						 && (this.opts.currentAnimationCaller) 
+						) 
 				{
-					if (this.opts.currentAnimationCaller) this.opts.currentAnimationCaller.trigger('animationStopped');
+					if (this.opts.currentAnimationCaller) 
+						this.opts.currentAnimationCaller.trigger('animationStopped');
 					this.opts.currentAnimationCaller = null;
 				}
 			},
@@ -450,6 +479,14 @@ var animatedObjectMachine = {
 						duration	: parseInt(this.opts.currentAnimationData[ANIMATION_DURATION]), 
 						complete	: function(){aFSM.trigger('animationStopped');},
 				});
+				if ( 	(this.opts.currentAnimationData[ANIMATION_NOTWAIT] == 1) 
+						 && (this.opts.currentAnimationCaller) 
+						) 
+				{
+					if (this.opts.currentAnimationCaller) 
+						this.opts.currentAnimationCaller.trigger('animationStopped');
+					this.opts.currentAnimationCaller = null;
+				}
 			},
 			how_process_event:{delay:1,preventcancel:true},
 		},
@@ -904,7 +941,8 @@ var mainAnimation = {
 							if (!jQuery.isNumeric(aFSM.myUIObject.css('zIndex')) || aFSM.myUIObject.css('zIndex')==0 )
 							{
 								aFSM.myUIObject.css({
-									zIndex:zindex
+									zIndex:zindex,
+									transform:'0rad'
 								});
 							}
 							zindex=zindex+10;

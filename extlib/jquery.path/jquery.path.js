@@ -48,6 +48,9 @@
     this.rotator = params.rotator;
     if (params.debug) this.debug = params.debug;
     else this.debug = false;
+
+    if (params.trace) this.trace = params.trace;
+    else this.trace = false;
     
     if (params.smoothSteps) this.smoothSteps=params.smoothSteps;
     else this.smoothSteps = 8;
@@ -274,7 +277,7 @@
     fx.elem.style.top = css.top;
     fx.elem.style.left = css.left;
     
-    if (fx.end.debug) 
+    if (fx.end.trace) 
     {
 	    var color = '#000000';
 	    var size = '1px';
