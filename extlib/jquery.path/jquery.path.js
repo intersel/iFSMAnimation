@@ -271,7 +271,10 @@
     
     css.left = css.x*100/parseInt(generalSize.x)+'%';
 	css.top = css.y*100/parseInt(generalSize.y)+'%';
-    if (css.transform) fx.elem.style.transform = css.transform;
+    if (css.transform) 
+    {
+    	fx.elem.style.transform = css.transform;
+    }
 
     
     fx.elem.style.top = css.top;

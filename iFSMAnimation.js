@@ -935,7 +935,6 @@ var mainAnimation = {
 							aFSM.opts.doResponsive = doResponsive;
 							aFSM.myUIObject.css({
 								position:'absolute',
-								transformOrigin:'top left'
 							});
 							
 							//Set zindex if not defined
