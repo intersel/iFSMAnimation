@@ -42,6 +42,14 @@
     }
   };
 
+  /**
+   * 
+   * @param params
+   * - debug: if true, display info in $("#footer")
+   * - trace: if true, will display the trace of the curve
+   * - smoothSteps (default:8)
+   * - transformOrigin (default:'top left') 
+   */
   $.path.bezier = function(params) {
     this.x = params.start.x;
     this.y = params.start.y;
@@ -54,6 +62,9 @@
     
     if (params.smoothSteps) this.smoothSteps=params.smoothSteps;
     else this.smoothSteps = 8;
+    
+    if (params.transformOrigin) this.transformOrigin=params.transformOrigin;
+    else this.transformOrigin = 'top left';
     
     params.start = $.extend( {angle: 0, length: 0.3333}, params.start );
     params.end = $.extend( {angle: 0, length: 0.3333}, params.end );
@@ -274,6 +285,7 @@
     if (css.transform) 
     {
     	fx.elem.style.transform = css.transform;
+    	fx.elem.style.transformOrigin = fx.end.transformOrigin;
     }
 
     
