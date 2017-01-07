@@ -506,6 +506,14 @@ var animatedObjectMachine = {
 							aFSM.trigger('animationStopped');
 						},
 				});
+				if ( 	(this.opts.currentAnimationData[ANIMATION_NOTWAIT] == 1) 
+						 && (this.opts.currentAnimationCaller) 
+						) 
+				{
+					if (this.opts.currentAnimationCaller) 
+						this.opts.currentAnimationCaller.trigger('animationStopped');
+					this.opts.currentAnimationCaller = null;
+				}
 			},
 			how_process_event:{delay:1,preventcancel:true},
 		},
