@@ -37,7 +37,26 @@
  *			});
  * </script>
  *
- * if a $('#info') is defined, and debug sets to true, debug info will be displayed in it 
+ * if a $('#info') is defined, and debug sets to true, debug info will be displayed in it
+ *
+ * Example  of an Image to move along waypoints
+ * 	<script type="text/javascript" src="iFSMAnimation/extlib/jquery.path/jquery.path.js"></script>
+ *
+ *  	        <article id="aImageToMove" 
+ *  	        			data-animation="specialAnimateNoWait,3000,{path : myFirstFollowLinePath}"
+ *  	        			data-enter-animation="display, 250, 450,450,450,450"
+ *          	>
+ *          		<img src="images/myImage.png">
+ *              </article>
+ *
+ *  var myFirstPointArray = [
+ *                             {x:450,y:450}
+ *                             ,{x:650,y:650}
+ *                             ,{x:150,y:750}
+ *                             ,{x:280,y:850}
+ *                           ];
+ * 	myFirstFollowLinePath = $().iFSMACreatePath(myFirstPointArray,90);
+ *
  * -----------------------------------------------------------------------------------------
  * Modifications:
  * - 20141223 - EPO - V1.0.0 - Creation
@@ -878,6 +897,7 @@ var mainAnimation = {
 							aFSM.opts.doResponsive = doResponsive;
 							aFSM.myUIObject.css({
 								position:'absolute',
+								transformOrigin:'top left'
 							});
 							
 							//Set zindex if not defined
@@ -908,6 +928,17 @@ var mainAnimation = {
 	}
 };
 
+$.fn.iFSMAgetGeneralSize =  function ()
+{
+	var aGeneralSize = $.fn.iFSMAgetGeneralSize.dataBoxSizeReference.replace(/[ \t\r]+/g,"").split(',');
+	if (aGeneralSize[0] <= 0) aGeneralSize[0] = $(window).width(); 
+	if (aGeneralSize[1] <= 0) aGeneralSize[1] = $(window).height(); 
+	return {x:aGeneralSize[0],y:aGeneralSize[1]};
+}
+$.fn.iFSMAsetGeneralSize =  function (dataBoxSizeReference)
+{
+	$.fn.iFSMAgetGeneralSize.dataBoxSizeReference = dataBoxSizeReference;
+}
 
 /** iFSMACreatePath
  * 
@@ -922,11 +953,12 @@ var mainAnimation = {
 	myFirstFollowLinePath = $.iFSMACreatePath(myFirstPointArray,{1250,1250});
 
  */
-$.fn.iFSMACreatePath = function (aArrayOfPoints,dataBoxSizeReference) {
+$.fn.iFSMACreatePath = function (aArrayOfPoints,aRotation) {
 		
 	this.len = 0;
 	this.path = null;
-	this.generalSize = {x:0,y:0},
+	this.generalSize = {x:0,y:0};
+	if (!aRotation) aRotation = 0;
 	
 	this.pointAt = function(percent){
 		return this.path.getPointAtLength( this.len * percent/100 );
@@ -939,16 +971,9 @@ $.fn.iFSMACreatePath = function (aArrayOfPoints,dataBoxSizeReference) {
 		this.path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
 		this.path.setAttribute('d', path);
 		this.len = this.path.getTotalLength();
-	}
-	
-	this.getGeneralSize = function ()
-	{
-		var aGeneralSize = dataBoxSizeReference.replace(/[ \t\r]+/g,"").split(',');
-		if (aGeneralSize[0] <= 0) aGeneralSize[0] = $(window).width(); 
-		if (aGeneralSize[1] <= 0) aGeneralSize[1] = $(window).height(); 
-		this.generalSize = {x:aGeneralSize[0],y:aGeneralSize[1]};
 		
 	}
+	
 	this.convertArrayToSvg = function (aPointArray,closePath)
 	{
 		var aSVGPath ="M";
@@ -966,8 +991,9 @@ $.fn.iFSMACreatePath = function (aArrayOfPoints,dataBoxSizeReference) {
 
 	this.css = function(p) {
 		
-		percent = (1-p)*100;
-		currentPoint = this.pointAt(percent);
+		var percent = (1-p)*100;
+		var rotate = (1-p)*aRotation;
+		var currentPoint = this.pointAt(percent);
 		
 		var displayPoint = {};
 		displayPoint.x = currentPoint.x*100/parseInt(this.generalSize.x)+'%';
@@ -975,13 +1001,13 @@ $.fn.iFSMACreatePath = function (aArrayOfPoints,dataBoxSizeReference) {
 
 		//$("#footer").append("<br>"+p+" - "+displayPoint.x+","+displayPoint.y+" - "+currentPoint.x+","+currentPoint.y);
 		
-		return {left: displayPoint.x,top: displayPoint.y};
+		return {x:currentPoint.x, y:currentPoint.y, left: displayPoint.x,top: displayPoint.y,transform:'rotate('+rotate+'deg)'};
 	} 
 
 	if( aArrayOfPoints.length ) 
 	{
 		this.updatePath(aArrayOfPoints);
-		this.getGeneralSize();
+		this.generalSize = $().iFSMAgetGeneralSize();
 	}
 	
 	return this;
