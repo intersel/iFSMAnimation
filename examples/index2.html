@@ -29,52 +29,49 @@
 		<h2>Some animation examples using iFMSAnimation :-)</h2>
 	</header>
 	<div style="float:left;width:551px;">
-    <section id="animation-objects" 
-    			data-delay-before-restart="3000" 
-    			data-box-responsive="true"  
-    			data-div-class="animation"
-    			data-box-size-reference="551,551"
-    			>
-        <article id="HappyNewYear_B" 
-        			data-animation="loop, 2000, 190, 204, 90, 104, 0, 3000" 
-        			data-enter-animation="display, 2000, 90, 104, 90, 0" 
-        			data-exit-animation="smoothHide,1000,90,104"
-        			style="width:50px;"
-        >
-        	<img src="images/B.png"><br>
-        	I'm looping forth and back....
-        </article>
-        <article id="HappyNewYear_A" 
-        			data-animation="specialAnimate,3000,{path : aPath}" 
-        			data-enter-animation="display,2000,335,275,335,235" 
-        			data-exit-animation="smoothHide,1000,383,168,383,168"
-        			style="width:50px;"
-        >
-        	<img src="images/A.png">I'm turning following an arc path...
-        </article>
-	</section>
+	    <section id="animation-objects" 
+	    			data-delay-before-restart="3000" 
+	    			data-box-responsive="true"  
+	    			data-div-class="animation"
+	    			data-box-size-reference="551,551"
+	    			>
+	        <article id="HappyNewYear_B" 
+	        			data-animation="loop, 2000, 190, 204, 90, 104, 0, 3000" 
+	        			data-enter-animation="display, 2000, 90, 104, 90, 0" 
+	        			data-exit-animation="smoothHide,1000,90,104"
+	        			style="width:50px;"
+	        >
+	        	<img src="images/B.png"><br>
+	        	I'm looping forth and back....
+	        </article>
+	        <article id="HappyNewYear_A" 
+	        			data-animation="specialAnimate,3000,{path : aPath}" 
+	        			data-enter-animation="display,2000,335,275,335,235" 
+	        			data-exit-animation="smoothHide,1000,383,168,383,168"
+	        			style="width:50px;"
+	        >
+	        	<img src="images/A.png">I'm turning following an arc path...
+	        </article>
+		</section>
 	</div>
 	<div id="animation2" class="animated_section" data-box-size-reference="551,451">
 		<div id="hello" 
 			class="anim2"
 			data-animation="loop, 2000, 300, 0, 50, 0, 3000" 
-			data-enter-animation="display, 100, -100, 0">
-			hello
+			data-enter-animation="display, 1000, 300,0,-100, 0, easeOutBounce">
+			hello coming forth and back
 		</div>
-		<div id="hello2" 
-			class="anim2"
-			data-animation="loop, 2000, 0, 100, 180, 300, 5" 
-			data-enter-animation="display, 100, -100, 0" >
-			hello2
-		</div>
-		<div id="hello3" 
+		<div id="waypoints" 
 			class="anim2"
 			data-animation="specialAnimateNoWait,12000,{path : myFirstFollowLinePath},,,,easeInOutQuint" 
-			data-enter-animation="display, 1000, 60, 40, -100, 0">hello3</div>
-		<div id="world" 
+			data-enter-animation="display, 1000, 60, 44, -100, 0">
+			Following a waypoint path<br>
+			with an 'easeInOutQuint' effect
+		</div>
+		<div id="arc" 
 			class="anim2"
 			data-animation="specialAnimateNoWait,3000,{path : aPath2},,,,easeInElastic" 
-			data-enter-animation="display, 1500, 350, 190, -100, 0" >World!</div>
+			data-enter-animation="display, 1500, 350, 190, -100, 0" >Along an arc,<br>with elastic effect!</div>
 	</div>
 	<footer id="footer" role="footer">
 		<p>
@@ -82,6 +79,10 @@
 		</p>
 	</footer>
 		<script>
+		
+		//give the global box of the paths
+		$().iFSMAsetGeneralSize($('#animation-objects').attr('data-box-size-reference'));
+		
 		var arc_params = {
 			    center: [285,185],  
 			        radius: 100,    
@@ -93,7 +94,7 @@
 		var arc_params2 = {
 			    center: [200,200],  
 			        radius: 150,    
-			        start: 100,
+			        start: 92,
 			        end: 90,
 			        dir: 1
 			  }

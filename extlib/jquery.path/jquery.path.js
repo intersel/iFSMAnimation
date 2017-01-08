@@ -181,6 +181,10 @@
     		initAtan2 = Math.atan2(initVector.y, initVector.x);
     		angle = 0;
     	}
+    	if (initVector.x == prevState.vectx && initVector.y == prevState.vecty) 
+    	{
+    		angle = 0;
+    	}
     	else
     	{
         	angle = Math.atan2(prevState.vecty, prevState.vectx) - initAtan2;
@@ -231,6 +235,18 @@
     if($.path.rotators.isRotator(fx.end.rotator)) 
     {
         var myElem =  $(fx.elem);
+
+    	if (fx.pos == 0)
+    	{
+    		myElem.attr('prevState_x',0);
+        	myElem.attr('prevState_y',0);
+    		myElem.attr('prevState_vectx',0);
+        	myElem.attr('prevState_vecty',0);
+        	myElem.attr('prevState_orix',0);
+        	myElem.attr('prevState_oriy',0);
+        	myElem.attr('prevState_rotate',0);
+    	}
+    	
     	var prevState = {	
 				x:myElem.attr('prevState_x'),
 				y:myElem.attr('prevState_y'),

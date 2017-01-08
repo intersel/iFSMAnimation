@@ -54,8 +54,16 @@ body {
 /*	background-color:	#1c3970;*/
 }
 
-section#animation-objects article {
+#animation-objectsonpath {
+	background: #fff;
+}
+
+
+section article,div#animation2 div {
 	opacity		: 0;
+	color		: orange;
+	font-family: Arial,Helvetica Neue,Helvetica,sans-serif;
+	font-size	: 12px;
 /*	width:1300px;
 	height:500px;
 	*/

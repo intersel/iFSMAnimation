@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="UTF-8">
+	<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+	<title>Elements following a bezier path</title>
+	<!--meta name="viewport" content="width=device-width,initial-scale=1.0"-->
+	<meta name="viewport" content="width=device-width">
+	<meta content="" name="description">
+	<link rel="stylesheet" href="structure.css" media="all">
+	<script type="text/javascript" src="../extlib/jquery-2.2.4.js"></script>
+	<script type="text/javascript" src="../extlib/jquery.path/jquery.path.js"></script>
+	<script type="text/javascript" src="../extlib/jquery.path/jquery.cssHooks.transform.js"></script>
+	
+	<!--  include of the iFSM Animation tool -->
+	<script type="text/javascript" src="../iFSMAnimation.js"></script>
+	<!-- include of iFSM - see https://github.com/intersel/iFSM/ -->
+	<script type="text/javascript" src="../extlib/iFSM/iFSM.js"></script>
+</head>
+<body>
+	<header id="header" role="banner">
+	</header>
+	<div id="animation">
+	
+	    <section id="animation-objectsonpath" 
+	    			data-delay-before-restart="3500" 
+	    			data-box-size-reference="2000,2000" 
+	    			data-box-responsive="true" 
+	    			data-div-class="animationDiv"  
+	    			data-loader-class="animationLoader"
+	    			data-keep-height-visible="true"
+	    			>
+ 	        <article id="petale_vert" 
+	        			data-animation="specialAnimateNoWait,3000,{path : greenLogoPath}"
+	        			data-enter-animation="display, 0, 775,775,775,775" 
+	        			data-exit-animation="smoothHide,0,-1210,0"
+	        	>
+	        	<img src="images/petal-vert-605-871.png">
+	        </article>
+ 	        <article id="petale_bleu" 
+  	           			data-animation="specialAnimateNoWait,3000,{path : blueLogoPath}"
+	        			data-enter-animation="display, 0, 774,1040,774,1040" 
+	        			data-exit-animation="smoothHide,0,-1210,0"
+	        	>
+	        	<img src="images/petale-bleu-605-1032.png">
+	        	yes I<br> follow<br> 
+	        	a Bezier<br> path!<br>
+	        	and rotate<br>
+	        	accordingly
+	        </article>
+ 	        <article id="petale_orange" 
+  	           			data-animation="specialAnimateNoWait,3000,{path : orangeLogoPath}"
+	        			data-enter-animation="display, 0, 923,775,923,775" 
+	        			data-exit-animation="smoothHide,0,-1210,0"
+	        	>
+	        	<img src="images/petale-jaune-700-871.png">
+	        	with the dotted path
+	        </article>
+  	        <article id="petale_violet" 
+  	           			data-animation="specialAnimateNoWait,3000,{path : violetLogoPath}"
+	        			data-enter-animation="display, 0, 1024,930,1024,930" 
+	        			data-exit-animation="smoothHide,0,-1210,0"
+	        	>
+	        	<img src="images/petale-violet-766-965.png">
+	        </article>
+		</section>
+	</div>
+	<audio id="music" src="musique/bethlem-jazz.mp3" preload="auto"></audio>
+	<button id="onoff_music"></button>
+	<footer id="footer"></footer>
+	<script>
+	
+	//give the global box of the paths
+	$().iFSMAsetGeneralSize($('#animation-objectsonpath').attr('data-box-size-reference'));
+	
+	
+  	var greenLogoPath = new $.path.bezier({
+        start: { x:775, y:775, angle: -50},	
+      	end: {x:900,y:950, angle: 15},
+      	rotator: new $.path.rotators.setRotation(45),
+      	trace:false
+      });
+	var blueLogoPath = new $.path.bezier({
+        start: { x:774, y:1040, angle: -80},	
+      	end: {x:-320,y:1013, angle: 60},
+		rotator: new $.path.rotators.followPath(),
+      	trace:false
+      });
+	var orangeLogoPath = new $.path.bezier({
+        start: { x:923, y:775, angle: -80},	
+      	end: {x:2320,y:805, angle: 60},
+      	rotator: new $.path.rotators.setRotation(45),
+      	trace:true
+      });
+	var violetLogoPath = new $.path.bezier({
+        start: { x:1024, y:930, angle: -80},	
+      	end: {x:1200,y:2320, angle: 60},
+      	rotator: new $.path.rotators.setRotation(75),
+      	trace:false
+      });
+	
+	$(document).ready(function() {
+		$('section#animation-objectsonpath')
+			.iFSMAnimation(
+					{	debug:false
+						,logFSM:'FSM_1,FSM_20,FSM_37'
+						});
+
+		//Button
+		$("#music").iFSM(musicMachine,{debug:true});
+		$("#onoff_music").iFSM(buttonOnOffMachine,{sendTo:$('#music'),text:{on:'Sound On',off:'Sound Off'},debug:true});
+		
+	});
+	</script>
+	
+</body>
+</html>
