@@ -110,7 +110,7 @@
 		                         ,{x:60,y:44}
 		                         ];
 		//path for the ball animation
-		myFirstFollowLinePath = $().iFSMACreatePath(myFirstPointArray,"550,550");
+		myFirstFollowLinePath = $().iFSMACreatePath(myFirstPointArray,$('#animation-objects').attr('data-box-size-reference'));
 		
 		$(document).ready(function() {
 			//initialize and start the general animation
