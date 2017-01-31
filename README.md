@@ -15,9 +15,10 @@ iFSMAnimation is javascript library that allows to create animations from an htm
 Demos
 =====
 
-* http://intersel.net/demos/intersel/voeux_demo/
-* http://www.macofi.fr/assets/site/voeux2015/
+* https://www.intersel.fr/projects/voeux2017/
 * http://www.macofi.fr/assets/site/voeux2016/
+* http://www.macofi.fr/assets/site/voeux2015/
+* http://intersel.net/demos/intersel/voeux_demo/
 
 
 Getting started
