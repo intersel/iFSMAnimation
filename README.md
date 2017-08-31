@@ -29,27 +29,70 @@ Mainly, you need to create:
 * at the end, add a little script to start the animation... 
 * that's it! You've got an animation that is RESPONSIVE ! Without having to know how to write javascript code lines...
 
+First Example
+=============
+
+The following example is a full animation that writes four pictures with different kinds of animation and you could use as a starter template... 
+
 ```html
-<section id="animation-objects" data-delay-before-restart="3000">
-        <article id="HappyNewYear_B" data-animation="animate,300,168,220" data-enter-animation="display, 200, 90, 104, 90, 104" data-exit-animation="smoothHide,100,90,104">
-        	<img src="images/B.png">
-        </article>
-        <article id="HappyNewYear_O" data-animation="specialAnimate,300,{left:500;top:130;width:250}" data-enter-animation="display,200,170,104,170,104" data-exit-animation="smoothHide,100,170,104">
-        	<img src="images/O.png">
-        </article>
-                <article id="HappyNewYear_star" data-animation="rotate,20000,3060" data-enter-animation="display,10,277,417,277,417" data-exit-animation="smoothHide,100,433,-220">
-        	<img src="images/etoile.png">
-        </article>
-        <article id="HappyNewYear_N3" data-animation="dummy" data-enter-animation="display,200,252,104,252,104" data-exit-animation="smoothHide,100,252,104">
-        	<img src="images/N.png">
-        </article>        
-</section>
-<script>
-$(document).ready(function() {
-	//initialize and start the general animation
-	$('#animation-objects').iFSMAnimation();
-)};
-</script>
+<!DOCTYPE html>
+<html>
+        <head>
+                <script src="../extlib/jquery-3.2.0.min.js"></script>
+                <script src="../extlib/iFSM/iFSM.compressed.js"></script>
+                <script src="../iFSMAnimation.js"></script>
+                <style>
+                        article {opacity:0;}
+                </style>
+        </head>
+        <body>
+                <div id="animation">
+
+                <section id="animation-objects"
+                        data-delay-before-restart="1000"
+                        data-box-responsive="true"
+                        data-box-size-reference="700,700"
+                                data-div-class="animationDiv"
+                                data-loader-class="animationLoader"
+                >
+                        <article id="HappyNewYear_B"
+                                data-animation="animate,300,90,220"
+                                data-enter-animation="display, 1000, 90, 104, 90, 104"
+                                data-exit-animation="smoothHide,500,90,350"
+                        >
+                                <img src="images/B.png">
+                        </article>
+                        <article id="HappyNewYear_O"
+                                data-animation="specialAnimate,300,{left:150;top:150;width:100}"
+                                data-enter-animation="display,200,170,104,170,104,easeInOutElastic"
+                                data-exit-animation="specialAnimate,300,{left:150;top:270;opacity:0;width:50}"
+                        >
+                                <img src="images/O.png">
+                        </article>
+                        <article id="HappyNewYear_N3"
+                                data-animation="dummy"
+                                data-enter-animation="display,200,262,220,262,220"
+                                data-exit-animation="smoothHide,100,262,350"
+                        >
+                                <img src="images/N.png">
+                        </article>
+                        <article id="HappyNewYear_star"
+                                data-animation="rotateNoWait,2000,3060"
+                                data-enter-animation="display,1000,160,190,160,90,easeOutBounce"
+                                data-exit-animation="smoothHide,100,160,260"
+                        >
+                                <img src="images/etoile.png">
+                        </article>
+                </section>
+                </div>
+                <script>
+                        $(document).ready(function() {
+                                //initialize and start the general animation
+                                $('#animation-objects').iFSMAnimation();
+                        });
+                </script>
+        </body>
+</html>
 ```
 
 General process
