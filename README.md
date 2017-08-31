@@ -309,6 +309,11 @@ If you need to do some specific animations, these libraries may be useful:
 FAQ
 ===
 
+* my objects don't seem to be correctly positionned on the Y axe.
+  * Did you correctly set the "<!DOCTYPE html>" at the beginning of your file? without it, strange behaviour occurs!
+
+Still some questions?
+=====================
 If you have questions or unsolved problems, you can have a look on the our [FAQs](https://github.com/intersel/iFSMAnimation/wiki) 
 or leave a message on the [Issue board](https://github.com/intersel/iFSMAnimation/issues).
 
