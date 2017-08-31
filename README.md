@@ -32,7 +32,7 @@ Mainly, you need to create:
 First Example
 =============
 
-The following example is a full animation that writes four pictures with different kinds of animation and you could use as a starter template... 
+The following example is a full animation that displays four pictures where different animations are applied. You could use this example as a starter template... 
 
 ```html
 <!DOCTYPE html>
