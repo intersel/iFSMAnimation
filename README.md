@@ -309,7 +309,7 @@ FAQ
 ===
 
 * my objects don't seem to be correctly positionned on the Y axe.
-  * Did you correctly set the "<!DOCTYPE html>" at the beginning of your file? without it, strange behaviour occurs!
+  * Did you correctly set the "`<!DOCTYPE html>`" at the beginning of your file? without it, strange behaviour occurs!
 
 Still some questions?
 =====================
