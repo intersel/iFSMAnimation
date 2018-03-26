@@ -16,8 +16,8 @@ Demos
 =====
 
 * https://www.intersel.fr/projects/voeux2017/
-* http://www.macofi.fr/assets/site/voeux2016/
-* https://www.intersel.fr/autres-pages/github/ifsm-animation-jquery-plugin.html - demos of the "examples" directory
+* http://www.macofi.fr/en/approach/
+* https://www.intersel.fr/en/other-pages/github/ifsm-animation-jquery-plugin.html - demos of the "examples" directory
 
 
 Getting started
