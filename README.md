@@ -1,7 +1,7 @@
 iFSMAnimation
 =============
 
-Create simple HTML5 animations in responsive design easily and quickly, writing only one line of javascript code!
+Create elegant HTML5 animations in responsive design easily and quickly, with only one line of javascript code!
 
 You describe the DOM objects that you want to animate, attached them to the animation machine, and let's animate!
 
@@ -25,13 +25,13 @@ Getting started
 
 Mainly, you need to create:
 * a HTML 'section' (or whatever) that will define where is defined the animation and HTML 'articles' to define the different objects that must be animated.
-* at the end, add a little script to start the animation... 
+* at the end, add a little script to start the animation...
 * that's it! You've got an animation that is RESPONSIVE ! Without having to know how to write javascript code lines...
 
 First Example
 =============
 
-The following example is a full animation that displays four pictures where different animations are applied. You could use this example as a starter template... 
+The following example is a full animation that displays four pictures where different animations are applied. You could use this example as a starter template...
 
 ```html
 <!DOCTYPE html>
@@ -99,7 +99,7 @@ General process
 
 An animation is defined by a main animation object attached to a container such a 'section'.
 
-Within the container, you define the different animated objects attached/described by a subcontainer that is by default an 'article'. 
+Within the container, you define the different animated objects attached/described by a subcontainer that is by default an 'article'.
 
 Take care to **give an id to each object you will animate**.
 
@@ -111,9 +111,9 @@ Attributes on the main container
 ===============================
 data-delay-before-restart
 -------------------------
-The 'data-delay-before-restart' attribute allows to define the delay before the animation restarts. 
+The 'data-delay-before-restart' attribute allows to define the delay before the animation restarts.
 
-Example: 
+Example:
 ```html
 <section id="animation-objects" data-delay-before-restart="10000">
 ```
@@ -123,7 +123,7 @@ data-box-responsive
 Boolean, if 'true', the animation will be 'responsive'.
 Limitations known with using 'specialAnimate'.
 
-Example: 
+Example:
 ```html
 <section id="animation-objects" data-box-responsive="true">
 ```
@@ -134,7 +134,7 @@ data-box-size-reference
 
 "BoxWidth,BoxHeight" give the used dimensions as reference for the position of the animated objects. Useful in Responsive mode.
 
-Example: 
+Example:
 ```html
 <section id="animation-objects" data-box-size-reference="551,551" >
 ```
@@ -142,17 +142,17 @@ Example:
 data-keep-height-visible
 ------------------------
 Boolean, if 'true', the width and height will be fixed in order that the animation is fully shown on the window display.
-Example: 
+Example:
 ```html
 <section id="animation-objects" data-keep-height-visible="true">
 ```
- 
+
 
 data-div-class
 --------------
 Actually, a 'div' encapsultes the animation. It is possible to define the class that should be used on this div.
 
-Example: 
+Example:
 ```html
 <section id="animation-objects" data-div-class="animation">
 ```
@@ -160,24 +160,24 @@ Example:
 data-loader-class
 -----------------
 
-A loader may be set during initialization. 
+A loader may be set during initialization.
 
 To display a loader, just indicate the class to use with the data-loader-class attribute.
 
-Example: 
+Example:
 ```html
 <section id="animation-objects" data-loader-class="myLoaderClass">
 ```
 
- 
+
 Attributes on a sub container
 =============================
 
 data-enter-animation / data-animation / data-exit-animation
 -----------------------------------------------------------
-  
+
   These attributes define the animation of the object.
-  
+
   The available animation are:
    * dummy - non animation
    * animate - animate article from current position or startposition to destination
@@ -201,7 +201,7 @@ data-enter-animation / data-animation / data-exit-animation
      *  startposition-left - optional
      *  startposition-top - optional
      *  easing function - see http://easings.net/fr - optional
-   * rotate - rotate article 
+   * rotate - rotate article
      *  duration
      *  angle
    * loop - loop animation
@@ -212,17 +212,17 @@ data-enter-animation / data-animation / data-exit-animation
      *  startposition-top - optional
      *  loops number - optional default:infinite - give the number of loops
      *  loop back delay - optional default: duration - give the delay to go to the initial position
-   * specialAnimate, specialAnimateNoWait 
+   * specialAnimate, specialAnimateNoWait
      *  duration
      *  animation description object as in jQuery. ex: {left: 20;top:100;width:300}
      *  void
      *  void
      *  void
      *  easing function - see http://easings.net/fr - optional
-   * animateNoWait - same as animate but does not wait the end of animation to start the next animation 
-   * displayNoWait - same as display but does not wait the end of animation to start the next animation 
-   * smoothHideNoWait - same as smoothHide but does not wait the end of animation to start the next animation 
-   * rotateNoWait - same as rotate but does not wait the end of animation to start the next animation 
+   * animateNoWait - same as animate but does not wait the end of animation to start the next animation
+   * displayNoWait - same as display but does not wait the end of animation to start the next animation
+   * smoothHideNoWait - same as smoothHide but does not wait the end of animation to start the next animation
+   * rotateNoWait - same as rotate but does not wait the end of animation to start the next animation
 
 Start the animation with javascript
 ===================================
@@ -261,7 +261,7 @@ In order to have the animation playing correctly, you can use the following css 
 
 ```css
 body {
-	margin		: 0px; 
+	margin		: 0px;
 	padding		: 0px;
 	text-align	: center;
 	}
@@ -288,36 +288,44 @@ The 'examples' folder gives you some examples on how to animate your DOM objects
 LIBRARY DEPENDENCIES
 ====================
 To work properly, you need to include the following javascript library:
-* jQuery (>= 1.10) `<script type="text/javascript" src="extlib/jquery-1.10.2.min.js"></script>`
+* jQuery (>= 3.2) `<script type="text/javascript" src="extlib/jquery-1.10.2.min.js"></script>`
 * [iFSM by intersel](https://github.com/intersel/iFSM/)
   * this library manages finite state machines and needs these libraries:
     * doTimeout by ["Cowboy" Ben Alman](http://benalman.com/projects/jquery-dotimeout-plugin/)
 	  * this library brings some very usefull feature on the usual javascript setTimeout function like Debouncing, Delays & Polling Loops, Hover Intent...
 	  * `<script type="text/javascript" src="extlib/jquery.dotimeout.js"></script>`
-    * attrchange by Selvakumar Arumugam](http://meetselva.github.io/attrchange/) 
+    * attrchange by Selvakumar Arumugam](http://meetselva.github.io/attrchange/)
 	  * a simple jQuery function to bind a listener function to any HTML element on attribute change
 	  * `<script type="text/javascript" src="extlib/jquery.attrchange.js"></script>`
-* [waitForImages](http://github.com/alexanderdickson/waitForImages/) by Alexander Dickson, in order to garantee that all images of the animation are downloaded and ready. This library is automatically loaded by iFSMAnimation. 
+* [waitForImages](http://github.com/alexanderdickson/waitForImages/) by Alexander Dickson, in order to garantee that all images of the animation are downloaded and ready. This library is automatically loaded by iFSMAnimation.
 * [jQuery UI](http://api.jqueryui.com/easings/) may be used to apply some effect on the animated objects as swing, easing, ...
 * [jquery.path](https://github.com/weepy/jquery.path) may be used to defined arc and bezier for the path of animated objects.
 * [FitText.js](http://fittextjs.com/) may be used to have 'responsive' texts
 
 If you need to do some specific animations, these libraries may be useful:
-  * [jquery.path](https://github.com/weepy/jquery.path) - allows to animate objects following a path as an arc or a curve 
+  * [jquery.path](https://github.com/weepy/jquery.path) - allows to animate objects following a path as an arc or a curve
 
 FAQ
 ===
 
 * my objects don't seem to be correctly positionned on the Y axe.
   * Did you correctly set the "`<!DOCTYPE html>`" at the beginning of your file? without it, strange behaviour occurs!
+* iFSMAnimation loads all its jquery libraries... but they are still loaded...
+  * you can empty the list of the libraries to load using the option 'ANIMATION_NEEDED_SCRIPTS':
+
+```javascript
+$('#myAnimation').iFSMAnimation({	 
+    ANIMATION_NEEDED_SCRIPTS:[]
+});
+```
 
 Still some questions?
 =====================
-If you have questions or unsolved problems, you can have a look on the our [FAQs](https://github.com/intersel/iFSMAnimation/wiki) 
+If you have questions or unsolved problems, you can have a look on the our [FAQs](https://github.com/intersel/iFSMAnimation/wiki)
 or leave a message on the [Issue board](https://github.com/intersel/iFSMAnimation/issues).
 
 
 Contact
 =======
-If you have any ideas, feedback, requests or bug reports, you can reach me at github@intersel.org, 
+If you have any ideas, feedback, requests or bug reports, you can reach me at github@intersel.org,
 or via my website: http://www.intersel.fr

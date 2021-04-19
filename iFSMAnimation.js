@@ -7,11 +7,11 @@
  * Abstract: iFSMAnimation allows to create simple HTML5 animations in responsive design easily on DOM objects
  * Remark  : based on iFSM (cf. https://github.com/intersel/iFSM)
  * Official help: https://github.com/intersel/iFSMAnimation
- * 
+ *
  * Description:
- * 
+ *
  * create a section with articles with the animation definition for each article as the following example:
- * 
+ *
  * @code
  * <section id="animation-objects">
  *  	<article id="anim1" data-animation="dummy,10,90,104" data-enter-animation="display, 200, 90, 104, 90, 104" data-exit-animation="smoothHide,100,90,104">
@@ -42,7 +42,7 @@
  * Example  of an Image to move along waypoints
  * 	<script type="text/javascript" src="iFSMAnimation/extlib/jquery.path/jquery.path.js"></script>
  *
- *  	        <article id="aImageToMove" 
+ *  	        <article id="aImageToMove"
  *  	        			data-animation="specialAnimateNoWait,3000,{path : myFirstFollowLinePath}"
  *  	        			data-enter-animation="display, 250, 450,450,450,450"
  *          	>
@@ -61,22 +61,23 @@
  * Modifications:
  * - 20141223 - EPO - V1.0.0 - Creation
  * - 20160210 - EPO - V1.1.0 - bug fixes
+ * - 20210419 - E.Podvin - V1.1.1 - bug fix when no scripts to load
  * -----------------------------------------------------------------------------------------
- * @copyright Intersel 2014
+ * @copyright Intersel 2014-2021
  * @author    E.Podvin emmanuel.podvin@intersel.fr
- * @version   <1.1.0> (to be updated to the current_version of the developed software if file is touched)
+ * @version   <1.1.1> (to be updated to the current_version of the developed software if file is touched)
  * -----------------------------------------------------------------------------------------
  */
 
 
 /**
- * 
- * index of information in data-.... 
+ *
+ * index of information in data-....
  */
 (function($){
 
 var $defaults = null;
-	
+
 var ANIMATION_TYPE 				= 0;
 var ANIMATION_DURATION 			= 1;
 var ANIMATION_X_DESTINATION		= 2;
@@ -87,14 +88,14 @@ var ANIMATION_X_ORIGIN			= 4;
 var ANIMATION_Y_ORIGIN			= 5;
 var ANIMATION_EASING			= 6;
 var ANIMATION_LOOP_NUMBER		= 6; // if == 0 then infinite loop
-var ANIMATION_LOOP_BACK_DELAY	= 7; // 
-var ANIMATION_LOOP_FEATURE		= 8; // == ''(default)||'pulse' 
+var ANIMATION_LOOP_BACK_DELAY	= 7; //
+var ANIMATION_LOOP_FEATURE		= 8; // == ''(default)||'pulse'
 
 var ANIMATION_NOTWAIT			= 100;
 
 var ANIMATION_NEEDED_SCRIPTS	= [
 	 'extlib/iFSM/extlib/jquery.dorequesttimeout.js'
-	,'extlib/iFSM/extlib/jquery.attrchange.js'	
+	,'extlib/iFSM/extlib/jquery.attrchange.js'
 	,'extlib/waitForImages/dist/jquery.waitforimages.js'
 	,'extlib/FitText/jquery.fittext.js'
 	,'extlib/jquery-ui/jquery-ui.min.js'
@@ -102,7 +103,7 @@ var ANIMATION_NEEDED_SCRIPTS	= [
 var WAITFORIMAGES_ULR = 0;
 
 var animatedObjectMachine = {
-	InitAnimatedObject: 
+	InitAnimatedObject:
 	{
 		enterState:
 		{
@@ -165,7 +166,7 @@ var animatedObjectMachine = {
 					this.opts.currentAnimationData[ANIMATION_X_DESTINATION] = this.opts.currentAnimationData[ANIMATION_X_DESTINATION]*100/parseInt(this.opts.generalSize.X)+'%';
 					this.opts.currentAnimationData[ANIMATION_Y_DESTINATION] = this.opts.currentAnimationData[ANIMATION_Y_DESTINATION]*100/parseInt(this.opts.generalSize.Y)+'%';
 					if (!this.opts.currentAnimationData[ANIMATION_EASING]) this.opts.currentAnimationData[ANIMATION_EASING]="linear";
-					
+
 				};
 			},
 			process_event_if:'( (this.opts.currentAnimationData != null) && (this.opts.currentAnimationData['+ANIMATION_TYPE+'] != "specialAnimate") && (this.opts.currentAnimationData['+ANIMATION_TYPE+'] != "specialAnimateNoWait") && (this.opts.currentAnimationData['+ANIMATION_TYPE+'] != "dummy") )',
@@ -193,11 +194,11 @@ var animatedObjectMachine = {
 
 				if (this.opts.currentAnimationData[ANIMATION_X_ORIGIN]) styles['left'] = this.opts.currentAnimationData[ANIMATION_X_ORIGIN];
 				if (this.opts.currentAnimationData[ANIMATION_Y_ORIGIN]) styles['top']  = this.opts.currentAnimationData[ANIMATION_Y_ORIGIN];
-				
+
 				//initialize initial position if not a loop...
 				if (this.opts.currentAnimationData[ANIMATION_TYPE] != 'loop')
 					this.myUIObject.css(styles);
-				
+
 				if (this.opts.doResponsive) this.myUIObject.find('img').css({width:'100%'});
 				this.trigger(this.opts.currentAnimationData[ANIMATION_TYPE]);
 			},
@@ -247,7 +248,7 @@ var animatedObjectMachine = {
 		{
 			init_function: function() {
 				this.opts.currentAnimationData[ANIMATION_NOTWAIT]=1;
-				
+
 			},
 			propagate_event:'initLoop',
 			next_state:'ObjectInMotion',
@@ -270,26 +271,26 @@ var animatedObjectMachine = {
 	    enterState:
 		{
 		},
-		delegate_machines: 
+		delegate_machines:
 	    {
-	        LoopSubmachine: 
+	        LoopSubmachine:
 	        {
-	            submachine: 
+	            submachine:
 	            {
 	            	LoopInMotionStart:
 	            	{
 	            		initLoop:
 	            		{
 	            			init_function: function() {
-	            				if (this.rootMachine.opts.currentAnimationData[ANIMATION_LOOP_NUMBER] && this.rootMachine.opts.currentAnimationData[ANIMATION_LOOP_NUMBER] != 0) 
+	            				if (this.rootMachine.opts.currentAnimationData[ANIMATION_LOOP_NUMBER] && this.rootMachine.opts.currentAnimationData[ANIMATION_LOOP_NUMBER] != 0)
 	            					this.opts.numberOfLoops=this.rootMachine.opts.currentAnimationData[ANIMATION_LOOP_NUMBER];
 	            				else this.opts.numberOfLoops=10000000;
 
 	            				if (!this.rootMachine.opts.currentAnimationData[ANIMATION_LOOP_BACK_DELAY]) this.rootMachine.opts.currentAnimationData[ANIMATION_LOOP_BACK_DELAY]=this.rootMachine.opts.currentAnimationData[ANIMATION_DURATION];
 
-	            				if ( 	(this.rootMachine.opts.currentAnimationData[ANIMATION_NOTWAIT] == 1) 
-	            						 && (this.rootMachine.opts.currentAnimationCaller) 
-	            						) 
+	            				if ( 	(this.rootMachine.opts.currentAnimationData[ANIMATION_NOTWAIT] == 1)
+	            						 && (this.rootMachine.opts.currentAnimationCaller)
+	            						)
 	            				{
 	            					this.rootMachine.opts.currentAnimationCaller.trigger('animationStopped');
 	            					this.rootMachine.opts.currentAnimationCaller=null;
@@ -309,7 +310,7 @@ var animatedObjectMachine = {
 
 	            				this.opts.numberOfLoops--;
 	            				this._log('numberOfLoop:'+this.opts.numberOfLoops,2);
-	            				
+
 	            				if (this.opts.debug) $('#info').html('LOOP:x:'+this.myUIObject.position().left+';y:'+this.myUIObject.position().top);
 
 	            				var easingFunc = "linear";
@@ -317,12 +318,12 @@ var animatedObjectMachine = {
             					{
 	            					easingFunc = this.rootMachine.opts.currentAnimationData[ANIMATION_LOOP_FEATURE];
             					}
-	            				
+
 	            				this.myUIObject.stop().animate({
 	            					left	: this.rootMachine.opts.currentAnimationData[ANIMATION_X_DESTINATION],
 	            					top		: this.rootMachine.opts.currentAnimationData[ANIMATION_Y_DESTINATION],
 	            					},{
-	            						duration	: parseInt(this.rootMachine.opts.currentAnimationData[ANIMATION_DURATION]), 
+	            						duration	: parseInt(this.rootMachine.opts.currentAnimationData[ANIMATION_DURATION]),
 	            						easing		: easingFunc,
 	            						complete	: function(){
 	            							aFSM.trigger('loopEnd');
@@ -335,11 +336,11 @@ var animatedObjectMachine = {
 	            		loopEnd:
 	            		{
 	            			init_function: function() {
-	            				
+
 	            				var aFSM = this;//mandatory for complete trigger...
-	            				
+
 	            				if (this.opts.debug)  $('#info').html('LOOPEND/x:'+this.myUIObject.position().left+';y:'+this.myUIObject.position().top);
-	            				
+
 	            				var easingFunc = "linear";
 	            				if (this.rootMachine.opts.currentAnimationData[ANIMATION_LOOP_FEATURE])
             					{
@@ -350,7 +351,7 @@ var animatedObjectMachine = {
 	            					left	: this.rootMachine.opts.currentAnimationData[ANIMATION_X_ORIGIN],
 	            					top		: this.rootMachine.opts.currentAnimationData[ANIMATION_Y_ORIGIN],
 	            					},{
-	            					duration	: parseInt(this.rootMachine.opts.currentAnimationData[ANIMATION_LOOP_BACK_DELAY]), 
+	            					duration	: parseInt(this.rootMachine.opts.currentAnimationData[ANIMATION_LOOP_BACK_DELAY]),
             						easing		: easingFunc,
 	            					complete	: function(){
 	            						aFSM.trigger('loopEndReinit');
@@ -379,7 +380,7 @@ var animatedObjectMachine = {
 	            		startExitAnimation:
 	            		{
 	            			init_function: function() {
-		            			if (this.rootMachine.opts.currentAnimationCaller) 
+		            			if (this.rootMachine.opts.currentAnimationCaller)
 		           				{
 		           					this.rootMachine.opts.currentAnimationCaller.trigger('animationStopped');
 		           					this.rootMachine.opts.currentAnimationCaller=null;
@@ -388,16 +389,16 @@ var animatedObjectMachine = {
 	            			prevent_bubble:true, //while loop is not finished, continue...
 	            		}
 	            	},
-	            	DefaultState: 
+	            	DefaultState:
 	            	{
-	            		start: 
+	            		start:
 	            		{
 	            			next_state : 'LoopInMotionStart',
 	            		},
 	            	},
 	            },
-	        },          
-	    },          
+	        },
+	    },
 		animate:
 		{
 			init_function: function() {
@@ -407,17 +408,17 @@ var animatedObjectMachine = {
 						left	: this.rootMachine.opts.currentAnimationData[ANIMATION_X_DESTINATION],
 						top		: this.rootMachine.opts.currentAnimationData[ANIMATION_Y_DESTINATION],
 					},{
-						duration	: parseInt(this.opts.currentAnimationData[ANIMATION_DURATION]), 
+						duration	: parseInt(this.opts.currentAnimationData[ANIMATION_DURATION]),
 						easing		: this.opts.currentAnimationData[ANIMATION_EASING],
 						complete	: function(){
 							aFSM.trigger('animationStopped');
 					},
 				});
-				if ( 	(this.opts.currentAnimationData[ANIMATION_NOTWAIT] == 1) 
-					 && (this.opts.currentAnimationCaller) 
-					) 
+				if ( 	(this.opts.currentAnimationData[ANIMATION_NOTWAIT] == 1)
+					 && (this.opts.currentAnimationCaller)
+					)
 				{
-					if (this.opts.currentAnimationCaller) 
+					if (this.opts.currentAnimationCaller)
 						this.opts.currentAnimationCaller.trigger('animationStopped');
 					this.opts.currentAnimationCaller = null;
 				}
@@ -430,15 +431,15 @@ var animatedObjectMachine = {
 				var aFSM = this;
 				eval('var aAnimation='+this.opts.currentAnimationData[SPECIALANIMATION_DEFINITION].replace(/[;]+/g,","));
 				this.myUIObject.stop().animate(aAnimation,{
-						duration	: parseInt(this.opts.currentAnimationData[ANIMATION_DURATION]), 
+						duration	: parseInt(this.opts.currentAnimationData[ANIMATION_DURATION]),
 						complete	: function(){aFSM.trigger('animationStopped');},
 						easing		: this.opts.currentAnimationData[ANIMATION_EASING],
 				});
-				if ( 	(this.opts.currentAnimationData[ANIMATION_NOTWAIT] == 1) 
-						 && (this.opts.currentAnimationCaller) 
-						) 
+				if ( 	(this.opts.currentAnimationData[ANIMATION_NOTWAIT] == 1)
+						 && (this.opts.currentAnimationCaller)
+						)
 				{
-					if (this.opts.currentAnimationCaller) 
+					if (this.opts.currentAnimationCaller)
 						this.opts.currentAnimationCaller.trigger('animationStopped');
 					this.opts.currentAnimationCaller = null;
 				}
@@ -451,17 +452,17 @@ var animatedObjectMachine = {
 				this.myUIObject.css('border-spacing','0px');
 				this.myUIObject.stop().animate({ borderSpacing: parseInt(aFSM.opts.currentAnimationData[ROTATE_ANGLE]) }, {
 				    step: function(now,fx) {
-				        $(this).css('-webkit-transform','rotate('+now+'deg)'); 
+				        $(this).css('-webkit-transform','rotate('+now+'deg)');
 				        $(this).css('-moz-transform','rotate('+now+'deg)');
 				        $(this).css('transform','rotate('+now+'deg)');
 				      },
 				      duration:parseInt(aFSM.opts.currentAnimationData[ANIMATION_DURATION])
 				  },'linear');
-				if ( 	(this.opts.currentAnimationData[ANIMATION_NOTWAIT] == 1) 
-						 && (this.opts.currentAnimationCaller) 
-						) 
+				if ( 	(this.opts.currentAnimationData[ANIMATION_NOTWAIT] == 1)
+						 && (this.opts.currentAnimationCaller)
+						)
 				{
-					if (this.opts.currentAnimationCaller) 
+					if (this.opts.currentAnimationCaller)
 						this.opts.currentAnimationCaller.trigger('animationStopped');
 					this.opts.currentAnimationCaller = null;
 				}
@@ -476,15 +477,15 @@ var animatedObjectMachine = {
     					left	: this.rootMachine.opts.currentAnimationData[ANIMATION_X_DESTINATION],
     					top		: this.rootMachine.opts.currentAnimationData[ANIMATION_Y_DESTINATION],
 				},{
-						duration	: parseInt(this.opts.currentAnimationData[ANIMATION_DURATION]), 
+						duration	: parseInt(this.opts.currentAnimationData[ANIMATION_DURATION]),
 						easing		: this.opts.currentAnimationData[ANIMATION_EASING],
 						complete	: function(){aFSM.trigger('animationStopped');},
 				});
-				if ( 	(this.opts.currentAnimationData[ANIMATION_NOTWAIT] == 1) 
-						 && (this.opts.currentAnimationCaller) 
-						) 
+				if ( 	(this.opts.currentAnimationData[ANIMATION_NOTWAIT] == 1)
+						 && (this.opts.currentAnimationCaller)
+						)
 				{
-					if (this.opts.currentAnimationCaller) 
+					if (this.opts.currentAnimationCaller)
 						this.opts.currentAnimationCaller.trigger('animationStopped');
 					this.opts.currentAnimationCaller = null;
 				}
@@ -500,17 +501,17 @@ var animatedObjectMachine = {
     					left	: this.rootMachine.opts.currentAnimationData[ANIMATION_X_DESTINATION],
     					top		: this.rootMachine.opts.currentAnimationData[ANIMATION_Y_DESTINATION],
 				},{
-						duration	: parseInt(this.opts.currentAnimationData[ANIMATION_DURATION]), 
+						duration	: parseInt(this.opts.currentAnimationData[ANIMATION_DURATION]),
 						easing		: this.opts.currentAnimationData[ANIMATION_EASING],
 						complete	: function(){
 							aFSM.trigger('animationStopped');
 						},
 				});
-				if ( 	(this.opts.currentAnimationData[ANIMATION_NOTWAIT] == 1) 
-						 && (this.opts.currentAnimationCaller) 
-						) 
+				if ( 	(this.opts.currentAnimationData[ANIMATION_NOTWAIT] == 1)
+						 && (this.opts.currentAnimationCaller)
+						)
 				{
-					if (this.opts.currentAnimationCaller) 
+					if (this.opts.currentAnimationCaller)
 						this.opts.currentAnimationCaller.trigger('animationStopped');
 					this.opts.currentAnimationCaller = null;
 				}
@@ -544,9 +545,9 @@ var animatedObjectMachine = {
 			next_state:'ObjectInitialized',
 		}
 	},
-	DefaultState: 
+	DefaultState:
 	{
-		start: 
+		start:
 		{
 			next_state : 'InitAnimatedObject',
 		},
@@ -576,10 +577,10 @@ var animatedObjectMachine = {
  *  Each animated object will have a "startEnterAnimation" then "startAnimation" triggered in a loop
  *  Then objects will receive "startExitAnimation"
  *  then we repplay the whole...
- *  
- *  @param int    data-delay-before-restart - delay before restart animation in ms  
+ *
+ *  @param int    data-delay-before-restart - delay before restart animation in ms
  *  @param int,int data-box-size-reference - gives the width and height of the reference outer box (default: 500,500)
- *  @param boolean data-box-responsive - true/false, if true, the box should be responsive 
+ *  @param boolean data-box-responsive - true/false, if true, the box should be responsive
  *  @param array  opts.animationSequence (optional) - list of the animated objects in the order of their animation. If defined, you need to previously attach the iFSM machines to them.
  *  @param string opts.animatedObjectDefinition (optional, default = '> article') - definition to find the animated objects under the object attached to the iFSM machine (myUIObject)
  *  @param boolean opts.automaticStart (optional, default: true) : if false, the animation needs to be start with the 'startAnimation' event
@@ -607,7 +608,7 @@ var mainAnimation = {
 		{
 			init_function: function() {
 				var aFSM=this;
-				if ( jQuery(this.opts.animationSequence[this.opts.animationStep]).length>0) 
+				if ( jQuery(this.opts.animationSequence[this.opts.animationStep]).length>0)
 					 jQuery(this.opts.animationSequence[this.opts.animationStep]).trigger('startEnterAnimation',aFSM);
 				else this.trigger('animationObjectVoid');
 			},
@@ -660,7 +661,7 @@ var mainAnimation = {
 			next_state:'StartAnimation',
 			how_process_event:{delay:1,preventcancel:true},
 		},
-		
+
 	},
 	WaitForAnimationDone: // do the next element
 	{
@@ -686,20 +687,20 @@ var mainAnimation = {
 		{
 			init_function: function() {
 				this.opts.animationStep=0;
-				if (this.myUIObject.attr('data-delay-before-restart')) 
+				if (this.myUIObject.attr('data-delay-before-restart'))
 					this._stateDefinition['EndOfAnimation']['startEraseAnimation']['how_process_event'] = {delay: this.myUIObject.attr('data-delay-before-restart')};
 				},
 			how_process_event:{delay:1,preventcancel:true},
 			propagate_event:'startEraseAnimation',
 		},
 		resetAnimation:
-		{ 
+		{
 			propagate_event : 'resetAnimation',
 			next_state:'DoingEndAndStopAnimation',
 			how_process_event:{delay:1,preventcancel:true},
 		},
 		startEraseAnimation:
-		{ 
+		{
 			propagate_event : 'eraseAnimation',
 			how_process_event: {delay:2500},
 			next_state:'DoingEndOfAnimation',
@@ -711,7 +712,7 @@ var mainAnimation = {
 		resetAnimation:
 		{
 			init_function: function() {
-				if ( jQuery(this.opts.animationSequence[this.opts.animationStep]).length>0)  
+				if ( jQuery(this.opts.animationSequence[this.opts.animationStep]).length>0)
 					jQuery(this.opts.animationSequence[this.opts.animationStep]).trigger('startExitAnimation',this);
 				this.opts.animationStep++;
 			},
@@ -735,7 +736,7 @@ var mainAnimation = {
 			propagate_event:true,
 			how_process_event:{delay:500,preventcancel:true},
 		}
-		
+
 	},
 
 	DoingEndOfAnimation:
@@ -762,7 +763,7 @@ var mainAnimation = {
 			propagate_event:true,
 			how_process_event:{delay:500,preventcancel:true},
 		}
-		
+
 	},
 	WaitForExitAnimationDone: // do the next element
 	{
@@ -806,15 +807,15 @@ var mainAnimation = {
 		{
 			init_function: function() {
 				var myFSM = this;
-				
-				//get js path
-				var dir = document.querySelector('script[src$="iFSMAnimation.js"]').getAttribute('src');
-				var name = dir.split('/').pop(); 
-				dir = dir.replace('/'+name,"");
-				
-				if (this.opts.scriptsToLoad)
+
+				if (this.opts.scriptsToLoad && this.opts.scriptsToLoad.length>0)
 				{
-					jQuery.each(this.opts.scriptsToLoad,	function(aKey,aScriptURL){			
+					//get js path
+					var dir = document.querySelector('script[src$="iFSMAnimation.js"]').getAttribute('src');
+					var name = dir.split('/').pop();
+					dir = dir.replace('/'+name,"");
+
+					jQuery.each(this.opts.scriptsToLoad,	function(aKey,aScriptURL){
 						jQuery.getScript( dir+'/'+aScriptURL, function() {
 							myFSM.trigger('scriptDownloaded');
 						});
@@ -835,21 +836,21 @@ var mainAnimation = {
                 propagate_event:true,
         },
 	},
-	DefaultState: 
+	DefaultState:
 	{
-		start: 
+		start:
 		{
 			init_function: function() {
-				
+
  				this.myUIObject.css({width:'0px'}); // a way to undisplay without breaking things during rendering...
- 				
+
 				//start loader picto if any
 
  				//if the data-loader-class attribute is define, will remove any pre-defined opts.loader
  				if (this.myUIObject.attr('data-loader-class')) this.opts.loader={class:this.myUIObject.attr('data-loader-class')};
-				
+
 				if (this.opts.automaticStart==undefined) this.opts.automaticStart=true;//by default, start animation automatically  (if undefined then it's true (automactic))
- 				
+
  				if (this.opts.loader)
  				{
  	 				if (!this.opts.loader.id) this.opts.loader.id = 'AnimationLoader-'+this.myUIObject.attr('id');
@@ -858,7 +859,7 @@ var mainAnimation = {
  	 				this.myUIObject.before( '<div id="'+this.opts.loader.id+'" class="'+this.opts.loader.class+'"></div>');
  	 				$('#'+this.opts.loader.id).stop().fadeIn( 500 );
  				}
- 				
+
  				//initialize variables
 				if (this.opts.scriptsToLoad) this.opts.scriptsToLoad = ANIMATION_NEEDED_SCRIPTS.concat(this.opts.scriptsToLoad);
 				else this.opts.scriptsToLoad = ANIMATION_NEEDED_SCRIPTS;
@@ -866,16 +867,16 @@ var mainAnimation = {
 			},
 			next_state: 'WaitForJavascriptFileDownloaded',
 		},
-		initAnimatedObjects: 
+		initAnimatedObjects:
 		{
 			init_function: function() {
 				if (!this.opts.animatedObjectDefinition) this.opts.animatedObjectDefinition='> article';
-				
+
 				if (!this.opts.animationSequence)
 				{
 					//get the animated objects
 					this.opts.animationSequence=this.myUIObject.find(this.opts.animatedObjectDefinition);
-					
+
 					//attached them to the animatedObjectMachine machine
 					var myOptions={};
 					if (this.opts.debug) myOptions['debug']=this.opts.debug;
@@ -883,20 +884,20 @@ var mainAnimation = {
 					if (this.opts.LogLevel) myOptions['LogLevel']=this.opts.LogLevel;
 					this.opts.animationSequence.iFSM(animatedObjectMachine,myOptions);
 				};
-				
+
 				//define general box size to the animated objects
-				
+
 				//set default general size
 				if (!this.myUIObject.attr('data-box-size-reference')) this.myUIObject.attr('data-box-size-reference',this.myUIObject.width()+','+this.myUIObject.height());
-			
+
 				//get the external boxing
 				var aGeneralSize = this.myUIObject.attr('data-box-size-reference').replace(/[ \t\r]+/g,"").split(',');
 				var aClass = '';
 				if (this.myUIObject.attr('data-div-class')) aClass='class="'+this.myUIObject.attr('data-div-class')+'"';
 
 				this.myUIObject.wrapAll('<div '+aClass+'/>');
-				if (aGeneralSize[0] <= 0) aGeneralSize[0] = $(window).width(); 
-				if (aGeneralSize[1] <= 0) aGeneralSize[1] = $(window).height(); 
+				if (aGeneralSize[0] <= 0) aGeneralSize[0] = $(window).width();
+				if (aGeneralSize[1] <= 0) aGeneralSize[1] = $(window).height();
 
 				var widthAnim = Math.min( jQuery(window).width(),aGeneralSize[0]);
 				var ratio = aGeneralSize[0] / aGeneralSize[1];
@@ -904,13 +905,13 @@ var mainAnimation = {
 
 				if (this.myUIObject.attr('data-keep-height-visible') == 'true')
 				{
-					if (heightAnim > $(window).height()) 
+					if (heightAnim > $(window).height())
 					{
 						widthAnim = $(window).height() * ratio;
 						heightAnim = widthAnim/ratio;
 					}
 				}
-				
+
 				this.myUIObject.parent().css({
 					maxWidth	: widthAnim+'px',
 					maxHeight	: heightAnim+'px',
@@ -928,23 +929,23 @@ var mainAnimation = {
 
 					maxWidth	: widthAnim+'px',
 				});
-				
-				
+
+
 				var doResponsive = this.myUIObject.attr('data-box-responsive');
 				if (!doResponsive || doResponsive == "false") doResponsive=false;
-				
+
 				var zindex = 10;
-				jQuery.each(this.opts.animationSequence, 
+				jQuery.each(this.opts.animationSequence,
 						function(aKey,aValue)
 						{
-							var aFSM =  jQuery(aValue).getFSM()[0]; 
+							var aFSM =  jQuery(aValue).getFSM()[0];
 							if (!aFSM || aFSM.length == 0) return;
 							aFSM.opts.generalSize = {X:aGeneralSize[0],Y:aGeneralSize[1]};
 							aFSM.opts.doResponsive = doResponsive;
 							aFSM.myUIObject.css({
 								position:'absolute',
 							});
-							
+
 							//Set zindex if not defined
 							if (!jQuery.isNumeric(aFSM.myUIObject.css('zIndex')) || aFSM.myUIObject.css('zIndex')==0 )
 							{
@@ -958,7 +959,7 @@ var mainAnimation = {
 								width:aFSM.myUIObject.width()*100/parseInt(aFSM.opts.generalSize.X)+"%"
 							});
 				});
-				
+
 				if (this.opts.loader) $('#'+this.opts.loader.id).stop().fadeOut( 500 );
 
 				if (this.opts.automaticStart) this.trigger('startAnimation');
@@ -977,8 +978,8 @@ var mainAnimation = {
 $.fn.iFSMAgetGeneralSize =  function ()
 {
 	var aGeneralSize = $.fn.iFSMAgetGeneralSize.dataBoxSizeReference.replace(/[ \t\r]+/g,"").split(',');
-	if (aGeneralSize[0] <= 0) aGeneralSize[0] = $(window).width(); 
-	if (aGeneralSize[1] <= 0) aGeneralSize[1] = $(window).height(); 
+	if (aGeneralSize[0] <= 0) aGeneralSize[0] = $(window).width();
+	if (aGeneralSize[1] <= 0) aGeneralSize[1] = $(window).height();
 	return {x:aGeneralSize[0],y:aGeneralSize[1]};
 }
 $.fn.iFSMAsetGeneralSize =  function (dataBoxSizeReference)
@@ -987,7 +988,7 @@ $.fn.iFSMAsetGeneralSize =  function (dataBoxSizeReference)
 }
 
 /** iFSMACreatePath
- * 
+ *
  * example :
  * 	var myFirstPointArray = [
 	                          {x:0,y:-160}
@@ -1000,33 +1001,33 @@ $.fn.iFSMAsetGeneralSize =  function (dataBoxSizeReference)
 
  */
 $.fn.iFSMACreatePath = function (aArrayOfPoints,aRotation) {
-		
+
 	this.len = 0;
 	this.path = null;
 	this.generalSize = {x:0,y:0};
 	if (!aRotation) aRotation = 0;
-	
+
 	this.pointAt = function(percent){
 		return this.path.getPointAtLength( this.len * percent/100 );
 	};
 
 	this.updatePath = function(aArrayOfPoints){
-		
+
 		var path = this.convertArrayToSvg(aArrayOfPoints);
-		
+
 		this.path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
 		this.path.setAttribute('d', path);
 		this.len = this.path.getTotalLength();
-		
+
 	}
-	
+
 	this.convertArrayToSvg = function (aPointArray,closePath)
 	{
 		var aSVGPath ="M";
 		var svgPrefix = "";
 		var index, len;
 		if (!closePath) closePath=false;
-		
+
 		for (index = 0, len = aPointArray.length; index < len; ++index) {
 			aSVGPath += svgPrefix+aPointArray[index].x+" "+aPointArray[index].y;
 			svgPrefix = " L";
@@ -1036,31 +1037,31 @@ $.fn.iFSMACreatePath = function (aArrayOfPoints,aRotation) {
 	};
 
 	this.css = function(p) {
-		
+
 		var percent = (1-p)*100;
 		var rotate = (1-p)*aRotation;
 		var currentPoint = this.pointAt(percent);
-		
+
 		var displayPoint = {};
 		displayPoint.x = currentPoint.x*100/parseInt(this.generalSize.x)+'%';
 		displayPoint.y = currentPoint.y*100/parseInt(this.generalSize.y)+'%';
 
 		//$("#footer").append("<br>"+p+" - "+displayPoint.x+","+displayPoint.y+" - "+currentPoint.x+","+currentPoint.y);
-		
-		return {x:currentPoint.x, y:currentPoint.y, left: displayPoint.x,top: displayPoint.y,transform:'rotate('+rotate+'deg)'};
-	} 
 
-	if( aArrayOfPoints.length ) 
+		return {x:currentPoint.x, y:currentPoint.y, left: displayPoint.x,top: displayPoint.y,transform:'rotate('+rotate+'deg)'};
+	}
+
+	if( aArrayOfPoints.length )
 	{
 		this.updatePath(aArrayOfPoints);
 		this.generalSize = $().iFSMAgetGeneralSize();
 	}
-	
+
 	return this;
 };
 
 /** iFSMAnimation
- * 
+ *
  */
 $.fn.iFSMAnimation = function(options) {
 	if (options == undefined) options=null;
@@ -1068,10 +1069,10 @@ $.fn.iFSMAnimation = function(options) {
 
 	if (myOptions.debug == undefined)
 		myOptions.debug=false;
-	
+
 	if (myOptions.ANIMATION_NEEDED_SCRIPTS)
 		ANIMATION_NEEDED_SCRIPTS=myOptions.ANIMATION_NEEDED_SCRIPTS;
-	
+
 	return this.each(function() {
 		$(this).iFSM(mainAnimation, myOptions);
 	});
@@ -1083,7 +1084,7 @@ $.fn.iFSMAnimation = function(options) {
 
 /**
  * buttonOnOffMachine - manages button with On/Off states that can handle a distant object
- * @example: 
+ * @example:
  * <code>
  * 		<button class="playMusic" id="onoff_music"></button>
  * ....
@@ -1101,40 +1102,40 @@ $.fn.iFSMAnimation = function(options) {
  * 			- on: text to trigger when button is on (default:'setOn')
  * 			- off: text to set when button is off (default:'setOff')
  * 		- buttonIsOn (optional): if true, the start state of the button is 'on' (default: 'off')
- * 
+ *
  */
 var buttonOnOffMachine = {
-		ButtonOn		: 
+		ButtonOn		:
 		{
-			enterState : 
+			enterState :
 			{
 				init_function		: function (){
 					if (this.opts.text) 	this.myUIObject.html(this.opts.text.on).attr({'class':'on'});
 					if (this.opts.sendTo) 	this.opts.sendTo.trigger(this.opts.sendToMessage.on);
 				}
 			},
-			click	:	
+			click	:
 			{
 				next_state			: 'ButtonOff'
 			},
 		},
-		ButtonOff		: 
+		ButtonOff		:
 		{
-			enterState : 
+			enterState :
 			{
 				init_function		: function (){
 					if (this.opts.text) 	this.myUIObject.html(this.opts.text.off).attr({'class':'off'});
 					if (this.opts.sendTo) 	this.opts.sendTo.trigger(this.opts.sendToMessage.off);
 				},
 			},
-			click	:	
+			click	:
 			{
 				next_state		: 'ButtonOn'
 			}
 		},
 		DefaultState			:
 		{
-			start	:	
+			start	:
 			{
 				init_function		: function (){
 					if (!this.opts.sendToMessage) this.opts.sendToMessage = {on:'setOn',off:'setOff'};
@@ -1142,7 +1143,7 @@ var buttonOnOffMachine = {
 				},
 				next_state		: 'ButtonOn'
 			}
-		}				
+		}
 	};
 
 /**
@@ -1161,33 +1162,33 @@ var buttonOnOffMachine = {
  * 		- volume (default: 0.2)
  */
 var musicMachine = {
-	Playing		: 
+	Playing		:
 	{
-		enterState : 
+		enterState :
 		{
 			init_function		: function (){
 				this.myUIObject.trigger('play');
 			}
 		},
-		setOff	:	
+		setOff	:
 		{
 			next_state			: 'Paused'
 		},
 	},
-	Paused		: 
+	Paused		:
 	{
-		enterState : 
+		enterState :
 		{
 			init_function		: function (){this.myUIObject.trigger('pause');},
 		},
-		setOn	:	
+		setOn	:
 		{
 			next_state		: 'Playing'
 		}
 	},
 	DefaultState			:
 	{
-		start	:	
+		start	:
 		{
 			init_function		: function (){
 				if (!this.opts.volume) this.opts.volume=0.1;
@@ -1195,5 +1196,5 @@ var musicMachine = {
 			},
 			next_state		: 'Paused'
 		}
-	}				
+	}
 };
