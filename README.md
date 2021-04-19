@@ -15,8 +15,9 @@ iFSMAnimation is javascript library that allows to create animations from an htm
 Demos
 =====
 
-* https://www.intersel.fr/projects/voeux2017/
 * http://www.macofi.fr/en/approach/
+* https://www.intersel.fr/projects/franceurbaine/
+* https://www.intersel.fr/projects/voeux2017/
 * https://www.intersel.fr/en/other-pages/github/ifsm-animation-jquery-plugin.html - demos of the "examples" directory
 
 
