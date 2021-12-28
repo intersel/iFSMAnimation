@@ -151,7 +151,7 @@ Example:
 
 data-div-class
 --------------
-Actually, a 'div' encapsultes the animation. It is possible to define the class that should be used on this div.
+Actually, a 'div' embeds the animation. It is possible to define the class that should be used on this div.
 
 Example:
 ```html
