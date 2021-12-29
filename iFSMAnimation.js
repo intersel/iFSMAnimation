@@ -923,7 +923,7 @@ var mainAnimation = {
 					minHeight	: '50px',
 					maxHeight	: heightAnim+'px',
 					margin		: '0px auto',
-					paddingBottom : '90%',
+					paddingBottom : 100/ratio+'%',
 					position	: 'relative',
 					width		: '100%',
 
